@@ -10,7 +10,10 @@ CPMAddPackage(
         OPTIONS "MIZU_BUILD_EXAMPLE OFF"
 )
 
-add_executable(amanita main.cpp)
+add_executable(amanita
+        include/fungespace.hpp
+        src/fungespace.cpp
+        main.cpp)
 
 target_compile_features(amanita PRIVATE cxx_std_23)
 target_include_directories(amanita PRIVATE include)
