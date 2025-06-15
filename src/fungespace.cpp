@@ -16,7 +16,7 @@ Fungespace::Fungespace(const std::filesystem::path &path) {
         px_py_.emplace_back();
         px_py_.reserve(line.size());
         for (const auto &c: line)
-            px_py_.back().push_back(c);
+            px_py_.back().push_back(static_cast<unsigned char>(c));
 
         max_coord[0] = std::max(max_coord[0], static_cast<std::int64_t>(line.size()));
         max_coord[1]++;
@@ -37,14 +37,19 @@ Cell Fungespace::get(std::int64_t x, std::int64_t y) const {
 }
 
 void Fungespace::put(std::int64_t x, std::int64_t y, Cell v) {
+    if (v != EMPTY) {
+        min_coord[0] = std::min(min_coord[0], x);
+        min_coord[1] = std::min(min_coord[1], y);
+        max_coord[0] = std::max(max_coord[0], x + 1);
+        max_coord[1] = std::max(max_coord[1], y + 1);
+    }
+
     const auto coord = make_fixed_coord_(x, y);
     check_resize_(coord);
     coord.quadrant[coord.y][coord.x] = v;
 
-    min_coord[0] = std::min(min_coord[0], x);
-    min_coord[1] = std::min(min_coord[1], y);
-    max_coord[0] = std::max(max_coord[0], x + 1);
-    max_coord[1] = std::max(max_coord[1], y + 1);
+    if (v == EMPTY)
+        check_shrink_bounds_(x, y, v);
 }
 
 bool Fungespace::in_bounds(std::int64_t x, std::int64_t y) const {
@@ -87,4 +92,65 @@ void Fungespace::check_resize_(const FixedCoord_ &coord) {
         coord.quadrant.resize(coord.y + 1);
     if (coord.x >= coord.quadrant[coord.y].size())
         coord.quadrant[coord.y].resize(coord.x + 1, EMPTY);
+}
+
+void Fungespace::check_shrink_bounds_(std::int64_t x, std::int64_t y, Cell v) {
+    // TODO: This is more or less the most naive possible way to implement this
+    //       May want to research some way to store some additional data to speed this up
+
+    if (y == min_coord[1]) {
+        bool all_empty = true;
+        while (min_coord[1] < max_coord[1] && all_empty) {
+            for (std::int64_t cx = min_coord[0]; cx < max_coord[0]; ++cx) {
+                if (get(cx, min_coord[1]) != EMPTY) {
+                    all_empty = false;
+                    break;
+                }
+            }
+            if (all_empty)
+                min_coord[1]++;
+        }
+    }
+
+    if (x == min_coord[0]) {
+        bool all_empty = true;
+        while (min_coord[0] < max_coord[0] && all_empty) {
+            for (std::int64_t cy = min_coord[1]; cy < max_coord[1]; ++cy) {
+                if (get(min_coord[0], cy) != EMPTY) {
+                    all_empty = false;
+                    break;
+                }
+            }
+            if (all_empty)
+                min_coord[0]++;
+        }
+    }
+
+    if (y == max_coord[1] - 1) {
+        bool all_empty = true;
+        while (max_coord[1] >= min_coord[1] && all_empty) {
+            for (std::int64_t cx = min_coord[0]; cx < max_coord[0]; ++cx) {
+                if (get(cx, max_coord[1] - 1) != EMPTY) {
+                    all_empty = false;
+                    break;
+                }
+            }
+            if (all_empty)
+                max_coord[1]--;
+        }
+    }
+
+    if (x == max_coord[0] - 1) {
+        bool all_empty = true;
+        while (max_coord[0] >= min_coord[0] && all_empty) {
+            for (std::int64_t cy = min_coord[1]; cy < max_coord[1]; ++cy) {
+                if (get(max_coord[0] - 1, cy) != EMPTY) {
+                    all_empty = false;
+                    break;
+                }
+            }
+            if (all_empty)
+                max_coord[0]--;
+        }
+    }
 }
