@@ -17,6 +17,9 @@ constexpr Cell EMPTY = 32;
 
 class Fungespace {
 public:
+    std::int64_t min_coord[2]{0, 0};
+    std::int64_t max_coord[2]{0, 0};
+
     explicit Fungespace(const std::filesystem::path &path);
 
     Cell get(std::int64_t x, std::int64_t y) const;
@@ -38,9 +41,6 @@ private:
     std::vector<std::vector<Cell>> px_ny_{};
     std::vector<std::vector<Cell>> nx_py_{};
     std::vector<std::vector<Cell>> nx_ny_{};
-
-    std::int64_t min_coord_[2]{0, 0};
-    std::int64_t max_coord_[2]{0, 0};
 
     FixedCoord_ make_fixed_coord_(std::int64_t x, std::int64_t y) const;
     void check_resize_(const FixedCoord_ &coord);

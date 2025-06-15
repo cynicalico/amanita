@@ -81,7 +81,7 @@ enum class Instruction : std::int64_t {
     JumpForward = 106,
     Iterate = 107,
     GoLow = 108,
-    HighLow = 109,
+    HighLowIf = 109,
     ClearStack = 110,
     OutputFile = 111,
     Put = 112,

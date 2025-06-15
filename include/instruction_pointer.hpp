@@ -18,10 +18,16 @@ public:
     bool stringmode{false};
     Cell cache_ins{'\0'};
     StackStack stack{};
+    std::int64_t storage_offset[2]{0, 0};
 
     void step();
 
     void reflect();
+
+    void begin_block();
+    void end_block();
+
+    void stack_under_stack();
 };
 
 #endif // AMANITA_INSTRUCTION_POINTER_HPP

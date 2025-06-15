@@ -5,7 +5,7 @@ BasedOnStyle: clang-format
 AccessModifierOffset: -4
 AllowShortCaseExpressionOnASingleLine: true
 AllowShortBlocksOnASingleLine: Always
-AllowShortCaseLabelsOnASingleLine: true
+AllowShortCaseLabelsOnASingleLine: false
 AllowShortCompoundRequirementOnASingleLine: true
 AllowShortEnumsOnASingleLine: true
 AllowShortFunctionsOnASingleLine: Inline

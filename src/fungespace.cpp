@@ -18,8 +18,8 @@ Fungespace::Fungespace(const std::filesystem::path &path) {
         for (const auto &c: line)
             px_py_.back().push_back(c);
 
-        max_coord_[0] = std::max(max_coord_[0], static_cast<std::int64_t>(line.size()));
-        max_coord_[1]++;
+        max_coord[0] = std::max(max_coord[0], static_cast<std::int64_t>(line.size()));
+        max_coord[1]++;
     }
 }
 
@@ -41,19 +41,19 @@ void Fungespace::put(std::int64_t x, std::int64_t y, Cell v) {
     check_resize_(coord);
     coord.quadrant[coord.y][coord.x] = v;
 
-    min_coord_[0] = std::min(min_coord_[0], x);
-    min_coord_[1] = std::min(min_coord_[1], y);
-    max_coord_[0] = std::max(max_coord_[0], x + 1);
-    max_coord_[1] = std::max(max_coord_[1], y + 1);
+    min_coord[0] = std::min(min_coord[0], x);
+    min_coord[1] = std::min(min_coord[1], y);
+    max_coord[0] = std::max(max_coord[0], x + 1);
+    max_coord[1] = std::max(max_coord[1], y + 1);
 }
 
 bool Fungespace::in_bounds(std::int64_t x, std::int64_t y) const {
-    return x >= min_coord_[0] && y >= min_coord_[1] && x < max_coord_[0] && y < max_coord_[1];
+    return x >= min_coord[0] && y >= min_coord[1] && x < max_coord[0] && y < max_coord[1];
 }
 
 void Fungespace::print() const {
-    for (std::int64_t y = min_coord_[1]; y < max_coord_[1]; ++y) {
-        for (std::int64_t x = min_coord_[0]; x < max_coord_[0]; ++x) {
+    for (std::int64_t y = min_coord[1]; y < max_coord[1]; ++y) {
+        for (std::int64_t x = min_coord[0]; x < max_coord[0]; ++x) {
             auto c = static_cast<char>(get(x, y));
             fmt::print("{}", c);
         }
