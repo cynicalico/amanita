@@ -1,6 +1,7 @@
 #ifndef AMANITA_FUNGESPACE_HPP
 #define AMANITA_FUNGESPACE_HPP
 
+#include <cstdint>
 #include <filesystem>
 #include <vector>
 
@@ -19,6 +20,7 @@ public:
     explicit Fungespace(const std::filesystem::path &path);
 
     Cell get(std::int64_t x, std::int64_t y) const;
+
     void put(std::int64_t x, std::int64_t y, Cell v);
 
     bool in_bounds(std::int64_t x, std::int64_t y) const;

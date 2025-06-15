@@ -12,7 +12,13 @@ CPMAddPackage(
 
 add_executable(amanita
         include/fungespace.hpp
+        include/instruction_action.hpp
+        include/instruction_pointer.hpp
+        include/instructions.hpp
+        include/stackstack.hpp
         src/fungespace.cpp
+        src/instruction_pointer.cpp
+        src/stackstack.cpp
         main.cpp)
 
 target_compile_features(amanita PRIVATE cxx_std_23)
