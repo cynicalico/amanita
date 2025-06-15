@@ -10,7 +10,9 @@ Fungespace::Fungespace(const std::filesystem::path &path) {
 
     std::string line;
     while (std::getline(file, line)) {
-        auto ret = std::ranges::remove_if(line, [](const char c) { return c == '\n' || c == '\r' || c == '\f'; });
+        auto ret = std::ranges::remove_if(line, [](const char c) {
+            return c == '\n' || c == '\r' || c == '\f';
+        });
         line.erase(ret.begin(), ret.end());
 
         px_py_.emplace_back();
@@ -49,7 +51,7 @@ void Fungespace::put(std::int64_t x, std::int64_t y, Cell v) {
     coord.quadrant[coord.y][coord.x] = v;
 
     if (v == EMPTY)
-        check_shrink_bounds_(x, y, v);
+        check_shrink_bounds_(x, y);
 }
 
 bool Fungespace::in_bounds(std::int64_t x, std::int64_t y) const {
@@ -94,7 +96,7 @@ void Fungespace::check_resize_(const FixedCoord_ &coord) {
         coord.quadrant[coord.y].resize(coord.x + 1, EMPTY);
 }
 
-void Fungespace::check_shrink_bounds_(std::int64_t x, std::int64_t y, Cell v) {
+void Fungespace::check_shrink_bounds_(std::int64_t x, std::int64_t y) {
     // TODO: This is more or less the most naive possible way to implement this
     //       May want to research some way to store some additional data to speed this up
 

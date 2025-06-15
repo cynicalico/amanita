@@ -28,46 +28,82 @@ int main(int argc, char *argv[]) {
 
 void run(const std::filesystem::path &path) {
     auto fungespace = Fungespace(path);
-    auto ip = InstructionPointer();
 
-    bool running = true;
-    while (running) {
-        Cell ins;
-        do {
-            ins = fungespace.get(ip.pos[0], ip.pos[1]);
-            if (!ip.stringmode && (ins == Instruction::Space || ins == Instruction::JumpOver))
-                step_to_next_instruction(fungespace, ip, '\0', ins == Instruction::JumpOver);
-            else
-                break;
-        } while (true);
-        ip.cache_ins = ins;
+    std::vector<InstructionPointer> active_list{};
+    std::vector<InstructionPointer> inactive_list{};
 
-        if (ip.stringmode) {
-            if (ins != Instruction::ToggleStringmode) {
-                ip.stack.push(ins);
-                step_to_next_instruction(fungespace, ip, ip.cache_ins, false);
-                continue;
-            }
+    active_list.emplace_back();
+
+    while (!active_list.empty()) {
+        inactive_list.clear();
+
+        for (auto &ip: active_list) {
+            Cell ins;
+            do {
+                ins = fungespace.get(ip.pos[0], ip.pos[1]);
+                if (!ip.stringmode && (ins == Instruction::Space || ins == Instruction::JumpOver))
+                    step_to_next_instruction(fungespace, ip, '\0', ins == Instruction::JumpOver);
+                else
+                    break;
+            } while (true);
+            ip.cache_ins = ins;
+
+            auto action = perform_instruction(static_cast<Instruction>(ins), fungespace, ip);
+            std::visit(
+                    overloaded{
+                            [&](const IterAction &a) {
+                                if (!ip.alive)
+                                    return;
+
+                                for (const auto &sub_action: a.actions) {
+                                    if (std::holds_alternative<SplitAction>(sub_action)) {
+                                        auto new_ip = InstructionPointer(ip);
+                                        // new_ip.id = next_ip_id();
+                                        new_ip.reflect();
+
+                                        inactive_list.push_back(std::move(new_ip));
+
+                                    } else if (std::holds_alternative<QuitAction>(sub_action)) {
+                                        std::exit(std::get<QuitAction>(sub_action).exit_code);
+                                    }
+                                }
+
+                                inactive_list.push_back(std::move(ip));
+                            },
+                            [&](const KillAction &) {
+                                /* do nothing, ip does not live on */
+                            },
+                            [&](const MoveAction &) {
+                                inactive_list.push_back(std::move(ip));
+                            },
+                            [&](const SplitAction &) {
+                                auto new_ip = InstructionPointer(ip);
+                                // new_ip.id = next_ip_id();
+                                new_ip.reflect();
+
+                                inactive_list.push_back(std::move(new_ip));
+                                inactive_list.push_back(std::move(ip));
+                            },
+                            [&](const QuitAction &a) {
+                                std::exit(a.exit_code);
+                            }},
+                    action);
         }
 
-        auto action = perform_instruction(static_cast<Instruction>(ins), fungespace, ip);
-        std::visit(
-                overloaded{
-                        [&](const IterAction &) {
-                            if (!ip.alive)
-                                running = false;
-                            else
-                                step_to_next_instruction(fungespace, ip, ip.cache_ins, false);
-                        },
-                        [&](const KillAction &) { running = false; },
-                        [&](const MoveAction &) { step_to_next_instruction(fungespace, ip, ip.cache_ins, false); },
-                        [&](const SplitAction &) { /* TODO */ },
-                        [&](const QuitAction &) { running = false; }},
-                action);
+        std::swap(active_list, inactive_list);
+        for (auto &ip: active_list)
+            step_to_next_instruction(fungespace, ip, ip.cache_ins, false);
     }
 }
 
 InstructionAction perform_instruction(Instruction ins, Fungespace &fungespace, InstructionPointer &ip) {
+    if (ip.stringmode) {
+        if (ins != Instruction::ToggleStringmode) {
+            ip.stack.push(static_cast<std::int64_t>(ins));
+            return MoveAction{};
+        }
+    }
+
     switch (ins) {
     case Instruction::Space:
         std::unreachable();
@@ -437,8 +473,7 @@ InstructionAction perform_instruction(Instruction ins, Fungespace &fungespace, I
     }
 
     case Instruction::Split:
-        ip.reflect(); // TODO
-        return MoveAction{};
+        return SplitAction{};
 
     case Instruction::StackUnderStack:
         ip.stack_under_stack();
@@ -478,7 +513,7 @@ InstructionAction perform_instruction(Instruction ins, Fungespace &fungespace, I
         // 0x04: high if o is implemented
         // 0x08: high if = is implemented
         // 0x10: high if unbuffered stdio
-        sysinfo.push_back(0b00000);
+        sysinfo.push_back(0b00001);
 
         // number of bytes per cell
         sysinfo.push_back(8);
@@ -502,8 +537,8 @@ InstructionAction perform_instruction(Instruction ins, Fungespace &fungespace, I
         // number of scalars per vector (1 for une, 2 for be, 3 for trefunge)
         sysinfo.push_back(2);
 
-        // TODO: unique ID for current IP
-        sysinfo.push_back(0);
+        // unique ID for current IP
+        sysinfo.push_back(ip.id);
 
         // TODO: unique team number for current IP
         sysinfo.push_back(0);

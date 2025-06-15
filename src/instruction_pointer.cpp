@@ -1,5 +1,20 @@
 #include "instruction_pointer.hpp"
 
+std::int64_t next_ip_id() {
+    static std::int64_t next_id = 0;
+    return ++next_id;
+}
+
+InstructionPointer::InstructionPointer(const InstructionPointer &other)
+    : id(next_ip_id()), // Redundant, but it makes the intent clearer
+      alive(other.alive),
+      pos{other.pos[0], other.pos[1]},
+      delta{other.delta[0], other.delta[1]},
+      stringmode(other.stringmode),
+      cache_ins(other.cache_ins),
+      stack(other.stack),
+      storage_offset{other.storage_offset[0], other.storage_offset[1]} {}
+
 void InstructionPointer::step() {
     pos[0] += delta[0];
     pos[1] += delta[1];

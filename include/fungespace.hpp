@@ -44,7 +44,7 @@ private:
 
     FixedCoord_ make_fixed_coord_(std::int64_t x, std::int64_t y) const;
     void check_resize_(const FixedCoord_ &coord);
-    void check_shrink_bounds_(std::int64_t x, std::int64_t y, Cell v);
+    void check_shrink_bounds_(std::int64_t x, std::int64_t y);
 };
 
 #endif // AMANITA_FUNGESPACE_HPP
