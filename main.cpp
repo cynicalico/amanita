@@ -4,6 +4,7 @@
 #include "instruction_action.hpp"
 #include "instruction_pointer.hpp"
 #include "instructions.hpp"
+#include "mizu/util/rng.hpp"
 
 void run(const std::filesystem::path &path);
 InstructionAction perform_instruction(Instruction ins, Fungespace &fungespace, InstructionPointer &ip);
@@ -58,7 +59,6 @@ void run(const std::filesystem::path &path) {
                                 for (const auto &sub_action: a.actions) {
                                     if (std::holds_alternative<SplitAction>(sub_action)) {
                                         auto new_ip = InstructionPointer(ip);
-                                        // new_ip.id = next_ip_id();
                                         new_ip.reflect();
 
                                         inactive_list.push_back(std::move(new_ip));
@@ -78,7 +78,6 @@ void run(const std::filesystem::path &path) {
                             },
                             [&](const SplitAction &) {
                                 auto new_ip = InstructionPointer(ip);
-                                // new_ip.id = next_ip_id();
                                 new_ip.reflect();
 
                                 inactive_list.push_back(std::move(new_ip));
@@ -275,9 +274,29 @@ InstructionAction perform_instruction(Instruction ins, Fungespace &fungespace, I
         return MoveAction{};
     }
 
-    case Instruction::GoAway:
-        ip.reflect(); // TODO
+    case Instruction::GoAway: {
+        switch (mizu::rng::get<std::size_t>(3)) {
+        case 0:
+            ip.delta[0] = SOUTH[0];
+            ip.delta[1] = SOUTH[1];
+            break;
+        case 1:
+            ip.delta[0] = EAST[0];
+            ip.delta[1] = EAST[1];
+            break;
+        case 2:
+            ip.delta[0] = NORTH[0];
+            ip.delta[1] = NORTH[1];
+            break;
+        case 3:
+            ip.delta[0] = WEST[0];
+            ip.delta[1] = WEST[1];
+            break;
+        default:
+            std::unreachable();
+        }
         return MoveAction{};
+    }
 
     case Instruction::Stop:
         ip.alive = false;
