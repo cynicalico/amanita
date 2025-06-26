@@ -13,6 +13,10 @@
  */
 
 using Cell = std::int64_t;
+
+constexpr Cell CARRIAGE_RETURN = '\r';
+constexpr Cell NEWLINE = '\n';
+constexpr Cell FORM_FEED = '\f';
 constexpr Cell EMPTY = 32;
 
 class Fungespace {

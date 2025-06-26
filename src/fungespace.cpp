@@ -28,10 +28,10 @@ bool Fungespace::input_file(const std::string &filename, const std::int64_t flag
         unsigned char buf[CHUNK_SIZE];
         file.read(reinterpret_cast<char *>(buf), sizeof(buf));
         for (std::size_t i = 0; i < file.gcount(); ++i) {
-            if (!binary_mode && (buf[i] == '\r' || buf[i] == '\f'))
+            if (!binary_mode && (buf[i] == CARRIAGE_RETURN || buf[i] == FORM_FEED))
                 continue;
 
-            if (!binary_mode && buf[i] == '\n') {
+            if (!binary_mode && buf[i] == NEWLINE) {
                 size[0] = std::max(size[0], input_pos[0] - x);
                 input_pos[0] = x;
 
@@ -69,9 +69,9 @@ bool Fungespace::output_file(const std::string &filename, const std::int64_t fla
         if (linear_mode) {
             rtrim(line);
             if (oy < y + h - 1)
-                line += "\n";
+                line += NEWLINE;
         } else
-            line += "\n";
+            line += NEWLINE;
 
         file << line;
     }
