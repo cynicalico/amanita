@@ -24,7 +24,7 @@ int main(const int argc, char *argv[]) {
             auto i = Interpreter(program.get<std::string>("program"));
             i.run();
         } catch (const std::exception &e) {
-            fmt::println("Exception during execution: {}", e.what());
+            fmt::println(stderr, "Exception during execution: {}", e.what());
             return 1;
         }
     }
