@@ -22,6 +22,9 @@ public:
 
     explicit Fungespace(const std::filesystem::path &path);
 
+    bool input_file(std::string filename, std::int64_t flags, std::int64_t x, std::int64_t y,
+                    std::int64_t size[2]);
+
     Cell get(std::int64_t x, std::int64_t y) const;
 
     void put(std::int64_t x, std::int64_t y, Cell v);
@@ -34,13 +37,13 @@ private:
     struct FixedCoord_ {
         std::size_t x;
         std::size_t y;
-        std::vector<std::vector<Cell>> &quadrant;
+        std::vector<std::vector<Cell> > &quadrant;
     };
 
-    std::vector<std::vector<Cell>> px_py_{};
-    std::vector<std::vector<Cell>> px_ny_{};
-    std::vector<std::vector<Cell>> nx_py_{};
-    std::vector<std::vector<Cell>> nx_ny_{};
+    std::vector<std::vector<Cell> > px_py_{};
+    std::vector<std::vector<Cell> > px_ny_{};
+    std::vector<std::vector<Cell> > nx_py_{};
+    std::vector<std::vector<Cell> > nx_ny_{};
 
     FixedCoord_ make_fixed_coord_(std::int64_t x, std::int64_t y) const;
     void check_resize_(const FixedCoord_ &coord);

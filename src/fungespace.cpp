@@ -25,6 +25,42 @@ Fungespace::Fungespace(const std::filesystem::path &path) {
     }
 }
 
+bool Fungespace::input_file(std::string filename, std::int64_t flags, std::int64_t x, std::int64_t y,
+                            std::int64_t size[2]) {
+    // TODO: Check if initial file was loaded in a subfolder, and check subfolder
+    std::ifstream file(filename);
+    if (!file.is_open())
+        return false;
+
+    std::int64_t input_pos[2] = {x, y};
+    size[0] = 0;
+    size[1] = 0;
+
+    std::string line;
+    while (std::getline(file, line)) {
+        if ((flags & 0b1) != 1) {
+            auto ret = std::ranges::remove_if(line, [](const char c) {
+                return c == '\n' || c == '\r' || c == '\f';
+            });
+            line.erase(ret.begin(), ret.end());
+        }
+
+        for (const auto &c: line) {
+            if (c != EMPTY)
+                put(input_pos[0], input_pos[1], c);
+            input_pos[0]++;
+        }
+
+        size[0] = std::max(size[0], input_pos[0] - x);
+        input_pos[0] = x;
+
+        size[1]++;
+        input_pos[1]++;
+    }
+
+    return true;
+}
+
 Cell Fungespace::get(std::int64_t x, std::int64_t y) const {
     if (!in_bounds(x, y))
         return EMPTY;
@@ -71,22 +107,30 @@ void Fungespace::print() const {
 Fungespace::FixedCoord_ Fungespace::make_fixed_coord_(std::int64_t x, std::int64_t y) const {
     if (x < 0) {
         if (y < 0) {
-            return {.x = static_cast<std::size_t>(-x - 1),
-                    .y = static_cast<std::size_t>(-y - 1),
-                    .quadrant = const_cast<std::vector<std::vector<Cell>> &>(nx_ny_)};
+            return {
+                .x = static_cast<std::size_t>(-x - 1),
+                .y = static_cast<std::size_t>(-y - 1),
+                .quadrant = const_cast<std::vector<std::vector<Cell> > &>(nx_ny_)
+            };
         }
-        return {.x = static_cast<std::size_t>(-x - 1),
-                .y = static_cast<std::size_t>(y),
-                .quadrant = const_cast<std::vector<std::vector<Cell>> &>(nx_py_)};
+        return {
+            .x = static_cast<std::size_t>(-x - 1),
+            .y = static_cast<std::size_t>(y),
+            .quadrant = const_cast<std::vector<std::vector<Cell> > &>(nx_py_)
+        };
     }
     if (y < 0) {
-        return {.x = static_cast<std::size_t>(x),
-                .y = static_cast<std::size_t>(-y - 1),
-                .quadrant = const_cast<std::vector<std::vector<Cell>> &>(px_ny_)};
+        return {
+            .x = static_cast<std::size_t>(x),
+            .y = static_cast<std::size_t>(-y - 1),
+            .quadrant = const_cast<std::vector<std::vector<Cell> > &>(px_ny_)
+        };
     }
-    return {.x = static_cast<std::size_t>(x),
-            .y = static_cast<std::size_t>(y),
-            .quadrant = const_cast<std::vector<std::vector<Cell>> &>(px_py_)};
+    return {
+        .x = static_cast<std::size_t>(x),
+        .y = static_cast<std::size_t>(y),
+        .quadrant = const_cast<std::vector<std::vector<Cell> > &>(px_py_)
+    };
 }
 
 void Fungespace::check_resize_(const FixedCoord_ &coord) {

@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <vector>
+#include <string>
 
 using Stack = std::vector<std::int64_t>;
 
@@ -16,6 +17,7 @@ public:
     void push(std::int64_t value);
     std::int64_t peek() const;
     std::int64_t pop();
+    std::string pop_gnirts();
     void clear();
 
     std::int64_t pick(std::int64_t n) const;

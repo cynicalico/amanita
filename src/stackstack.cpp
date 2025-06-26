@@ -1,7 +1,8 @@
 #include "stackstack.hpp"
 
 StackStack::StackStack()
-    : stacks_(1), toss_(0), soss_(0) {}
+    : stacks_(1), toss_(0), soss_(0) {
+}
 
 std::size_t StackStack::count() const {
     return stacks_.size();
@@ -26,6 +27,17 @@ std::int64_t StackStack::peek() const {
 
 std::int64_t StackStack::pop() {
     return pop_(toss_);
+}
+
+std::string StackStack::pop_gnirts() {
+    std::string ret;
+    std::int64_t c;
+    do {
+        c = pop();
+        if (c != 0)
+            ret += static_cast<char>(c);
+    } while (c != 0);
+    return ret;
 }
 
 void StackStack::clear() {
