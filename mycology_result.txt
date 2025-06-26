@@ -1,4 +1,4 @@
-0 1 2 3 4 5 6 7
+0 1 2 3 4 5 6 7 
 GOOD: , works
 GOOD: : duplicates
 GOOD: empty stack pops zero
@@ -63,30 +63,31 @@ GOOD: u with zero count does nothing
 GOOD: u with a positive count transfers cells correctly
 GOOD: u with a negative count transfers cells correctly
 y claims all of the following:
-        That t is implemented
-        That i is implemented
-        That buffered I/O is being used
-        That the number of bytes per cell is 8
-        That the interpreter's handprint is 0
-        That the interpreter's version is 1
-        That the behaviour of = is unavailable
-        That the system's path separator is /
-        That this Funge has 2 dimensions
-        That the ID of the current IP is 1
-        That the team number of the current IP is 0
-        That the position of the IP was ( 64 89 )
-        That the delta of the IP was ( -1 0 )
-        That the offset of the IP was ( 0 0 )
-        That the least point containing a non-space cell is ( -3 -2 )
-        That the greatest point, relative to that point, is ( 183 911 )
-        That the day of the month is 26
-        That the month is 6
-        That the year is 2025
-        That the time is 11 : 23 : 47
-        That the size of the stack stack is 1
-        That the stack sizes are [ 0 ] from top to bottom
-        That the command-line arguments were: [ null ]
-        That the environment variables are:
+	That t is implemented
+	That i is implemented
+	That o is implemented
+	That buffered I/O is being used
+	That the number of bytes per cell is 8 
+	That the interpreter's handprint is 0 
+	That the interpreter's version is 1 
+	That the behaviour of = is unavailable
+	That the system's path separator is /
+	That this Funge has 2 dimensions
+	That the ID of the current IP is 1 
+	That the team number of the current IP is 0 
+	That the position of the IP was ( 64 89 )
+	That the delta of the IP was ( -1 0 )
+	That the offset of the IP was ( 0 0 )
+	That the least point containing a non-space cell is ( -3 -2 )
+	That the greatest point, relative to that point, is ( 183 911 )
+	That the day of the month is 26 
+	That the month is 6 
+	That the year is 2025 
+	That the time is 14 : 11 : 39 
+	That the size of the stack stack is 1 
+	That the stack sizes are [ 0 ] from top to bottom
+	That the command-line arguments were: [ null ]
+	That the environment variables are:
 Best that the above claims are manually verified to be correct.
 GOOD: 1y works
 GOOD: 5y works
@@ -100,13 +101,27 @@ GOOD: i pushed correct Va (60, 119)
 GOOD: i pushed correct Vb (90, 16)
 Entering MycoRand...
 
-The directions were generated in the order <^v>
-? was met 8 times
+The directions were generated in the order ^><v
+? was met 4 times
 
 Successfully exited MycoRand. Rerun a few times to ensure ? works.
 GOOD: i works in text mode
-
-1y says o is not supported, won't test it...
+Opening mycotmp0.tmp... succeeded. Won't overwrite...
+Opening mycotmp1.tmp... succeeded. Won't overwrite...
+Opening mycotmp2.tmp... succeeded. Won't overwrite...
+Opening mycotmp3.tmp... succeeded. Won't overwrite...
+Opening mycotmp4.tmp... failed.
+Trying to write to it with o...
+Wrote to mycotmp4.tmp with o.
+Reading back with i...
+GOOD: read written data to (-10, -10)
+GOOD: (-8, -9) is @
+GOOD: read data in binary mode to (-10, -10)
+GOOD: (0, -10) is 13 
+Wrote to mycotmp4.tmp with o in linear text mode.
+GOOD: o removed space prior to newline
+UNDEF: o doesn't remove spaces prior to newline-valued cells
+UNDEF: o didn't write EOL to EOF
 
 1y says this is Concurrent Funge-98
 
@@ -116,8 +131,8 @@ Will continue to produce textual output, so strings must work correctly where co
 
 GOOD: basic concurrency seems to work
 GOOD: reflected IP copied stack
-Parent IP: ID 1
-Child IP: ID 2
+Parent IP: ID 1 
+Child IP: ID 2 
 GOOD: child IP executed before parent IP
 GOOD: single space takes 0 ticks
 GOOD: multiple spaces take 0 ticks
