@@ -2,9 +2,9 @@
 #define AMANITA_INTERPRETER_HPP
 
 #include "fungespace.hpp"
+#include "instruction_action.hpp"
 #include "instruction_pointer.hpp"
 #include "instructions.hpp"
-#include "instruction_action.hpp"
 
 class Interpreter {
 public:
@@ -12,14 +12,13 @@ public:
     std::vector<InstructionPointer> active_list{};
     std::vector<InstructionPointer> inactive_list{};
 
-    Interpreter(const std::filesystem::path &path);
+    explicit Interpreter(const std::filesystem::path &path);
 
     void run();
 
-    InstructionAction perform_instruction(Instruction ins, Fungespace &fungespace, InstructionPointer &ip);
-    void step_wrap(const Fungespace &fungespace, InstructionPointer &ip);
-    void step_to_next_instruction(const Fungespace &fungespace, InstructionPointer &ip, Cell prev_ins,
-                                  bool start_skipping);
+    InstructionAction perform_instruction(Instruction ins, InstructionPointer &ip);
+    void step_wrap(InstructionPointer &ip);
+    void step_to_next_instruction(InstructionPointer &ip, Cell prev_ins, bool start_skipping);
 };
 
 #endif // AMANITA_INTERPRETER_HPP

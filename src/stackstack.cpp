@@ -1,8 +1,7 @@
 #include "stackstack.hpp"
 
 StackStack::StackStack()
-    : stacks_(1), toss_(0), soss_(0) {
-}
+    : stacks_(1), toss_(0), soss_(0) {}
 
 std::size_t StackStack::count() const {
     return stacks_.size();

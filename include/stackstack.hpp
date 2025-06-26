@@ -2,8 +2,8 @@
 #define AMANITA_STACKSTACK_HPP
 
 #include <cstdint>
-#include <vector>
 #include <string>
+#include <vector>
 
 using Stack = std::vector<std::int64_t>;
 

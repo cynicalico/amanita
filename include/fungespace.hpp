@@ -26,11 +26,16 @@ public:
 
     explicit Fungespace(const std::filesystem::path &path);
 
-    bool input_file(const std::string &filename, std::int64_t flags, std::int64_t x, std::int64_t y,
-                    std::int64_t size[2]);
+    bool
+    input_file(const std::string &filename, std::int64_t flags, std::int64_t x, std::int64_t y, std::int64_t size[2]);
 
-    bool output_file(const std::string &filename, std::int64_t flags, std::int64_t x, std::int64_t y, std::int64_t w,
-                     std::int64_t h);
+    bool output_file(
+            const std::string &filename,
+            std::int64_t flags,
+            std::int64_t x,
+            std::int64_t y,
+            std::int64_t w,
+            std::int64_t h);
 
     Cell get(std::int64_t x, std::int64_t y) const;
 
@@ -44,13 +49,13 @@ private:
     struct FixedCoord_ {
         std::size_t x;
         std::size_t y;
-        std::vector<std::vector<Cell> > &quadrant;
+        std::vector<std::vector<Cell>> &quadrant;
     };
 
-    std::vector<std::vector<Cell> > px_py_{};
-    std::vector<std::vector<Cell> > px_ny_{};
-    std::vector<std::vector<Cell> > nx_py_{};
-    std::vector<std::vector<Cell> > nx_ny_{};
+    std::vector<std::vector<Cell>> px_py_{};
+    std::vector<std::vector<Cell>> px_ny_{};
+    std::vector<std::vector<Cell>> nx_py_{};
+    std::vector<std::vector<Cell>> nx_ny_{};
 
     FixedCoord_ make_fixed_coord_(std::int64_t x, std::int64_t y) const;
     void check_resize_(const FixedCoord_ &coord);

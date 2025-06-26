@@ -1,19 +1,23 @@
 #include "fungespace.hpp"
-#include "sops.hpp"
 #include <fmt/format.h>
 #include <fmt/std.h>
 #include <fstream>
+#include "sops.hpp"
 
 constexpr std::size_t CHUNK_SIZE = 1024;
 
 Fungespace::Fungespace(const std::filesystem::path &path) {
     std::int64_t unused[2];
-    input_file(path.string(), 0, 0, 0, unused);
+    if (!input_file(path.string(), 0, 0, 0, unused))
+        throw std::runtime_error(fmt::format("Failed to open file: '{}'", path));
 }
 
-bool Fungespace::input_file(const std::string &filename, const std::int64_t flags, const std::int64_t x,
-                            const std::int64_t y,
-                            std::int64_t size[2]) {
+bool Fungespace::input_file(
+        const std::string &filename,
+        const std::int64_t flags,
+        const std::int64_t x,
+        const std::int64_t y,
+        std::int64_t size[2]) {
     std::ifstream file(filename, std::ios::binary);
     if (!file.is_open())
         return false;
@@ -50,9 +54,13 @@ bool Fungespace::input_file(const std::string &filename, const std::int64_t flag
     return true;
 }
 
-bool Fungespace::output_file(const std::string &filename, const std::int64_t flags, const std::int64_t x,
-                             const std::int64_t y,
-                             const std::int64_t w, const std::int64_t h) {
+bool Fungespace::output_file(
+        const std::string &filename,
+        const std::int64_t flags,
+        const std::int64_t x,
+        const std::int64_t y,
+        const std::int64_t w,
+        const std::int64_t h) {
     std::ofstream file(filename, std::ios::binary);
     if (!file.is_open())
         return false;
@@ -62,16 +70,16 @@ bool Fungespace::output_file(const std::string &filename, const std::int64_t fla
     for (std::int64_t oy = y; oy < y + h; ++oy) {
         std::string line;
 
-        for (std::int64_t ox = x; ox < x + w; ++ox) {
+        for (std::int64_t ox = x; ox < x + w; ++ox)
             line += static_cast<unsigned char>(get(ox, oy));
-        }
 
         if (linear_mode) {
             rtrim(line);
             if (oy < y + h - 1)
-                line += NEWLINE;
-        } else
-            line += NEWLINE;
+                line += static_cast<unsigned char>(NEWLINE);
+        } else {
+            line += static_cast<unsigned char>(NEWLINE);
+        }
 
         file << line;
     }
@@ -125,30 +133,22 @@ void Fungespace::print() const {
 Fungespace::FixedCoord_ Fungespace::make_fixed_coord_(std::int64_t x, std::int64_t y) const {
     if (x < 0) {
         if (y < 0) {
-            return {
-                .x = static_cast<std::size_t>(-x - 1),
-                .y = static_cast<std::size_t>(-y - 1),
-                .quadrant = const_cast<std::vector<std::vector<Cell> > &>(nx_ny_)
-            };
+            return {.x = static_cast<std::size_t>(-x - 1),
+                    .y = static_cast<std::size_t>(-y - 1),
+                    .quadrant = const_cast<std::vector<std::vector<Cell>> &>(nx_ny_)};
         }
-        return {
-            .x = static_cast<std::size_t>(-x - 1),
-            .y = static_cast<std::size_t>(y),
-            .quadrant = const_cast<std::vector<std::vector<Cell> > &>(nx_py_)
-        };
+        return {.x = static_cast<std::size_t>(-x - 1),
+                .y = static_cast<std::size_t>(y),
+                .quadrant = const_cast<std::vector<std::vector<Cell>> &>(nx_py_)};
     }
     if (y < 0) {
-        return {
-            .x = static_cast<std::size_t>(x),
-            .y = static_cast<std::size_t>(-y - 1),
-            .quadrant = const_cast<std::vector<std::vector<Cell> > &>(px_ny_)
-        };
+        return {.x = static_cast<std::size_t>(x),
+                .y = static_cast<std::size_t>(-y - 1),
+                .quadrant = const_cast<std::vector<std::vector<Cell>> &>(px_ny_)};
     }
-    return {
-        .x = static_cast<std::size_t>(x),
-        .y = static_cast<std::size_t>(y),
-        .quadrant = const_cast<std::vector<std::vector<Cell> > &>(px_py_)
-    };
+    return {.x = static_cast<std::size_t>(x),
+            .y = static_cast<std::size_t>(y),
+            .quadrant = const_cast<std::vector<std::vector<Cell>> &>(px_py_)};
 }
 
 void Fungespace::check_resize_(const FixedCoord_ &coord) {
