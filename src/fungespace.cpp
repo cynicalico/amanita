@@ -25,7 +25,8 @@ Fungespace::Fungespace(const std::filesystem::path &path) {
     }
 }
 
-bool Fungespace::input_file(std::string filename, std::int64_t flags, std::int64_t x, std::int64_t y,
+bool Fungespace::input_file(const std::string &filename, const std::int64_t flags, const std::int64_t x,
+                            const std::int64_t y,
                             std::int64_t size[2]) {
     // TODO: Check if initial file was loaded in a subfolder, and check subfolder
     std::ifstream file(filename);

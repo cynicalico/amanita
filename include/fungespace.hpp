@@ -22,7 +22,7 @@ public:
 
     explicit Fungespace(const std::filesystem::path &path);
 
-    bool input_file(std::string filename, std::int64_t flags, std::int64_t x, std::int64_t y,
+    bool input_file(const std::string &filename, std::int64_t flags, std::int64_t x, std::int64_t y,
                     std::int64_t size[2]);
 
     Cell get(std::int64_t x, std::int64_t y) const;
