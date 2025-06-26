@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 3.30)
-project(amanita)
+project(amanita
+        VERSION 1.0.0
+        DESCRIPTION "Mycology compliant Funge-98 interpreter"
+        HOMEPAGE_URL "https://github.com/cynicalico/amanita"
+        LANGUAGES CXX)
 
 if (MSVC)
     set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
@@ -26,6 +30,7 @@ add_executable(amanita
         src/instruction_pointer.cpp
         src/interpreter.cpp
         src/stackstack.cpp
+        thirdparty/argparse.hpp
         main.cpp)
 
 target_compile_features(amanita PRIVATE cxx_std_23)
@@ -34,8 +39,7 @@ if (WIN32)
     target_compile_options(amanita PUBLIC /utf-8 /W4)
 endif ()
 
-target_include_directories(amanita PRIVATE include)
-target_include_directories(amanita PRIVATE thirdparty)
+target_include_directories(amanita PRIVATE include thirdparty)
 
 target_link_libraries(amanita PRIVATE mizu::mizu)
 

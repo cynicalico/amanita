@@ -4,7 +4,7 @@ amanita is a [Mycology](https://github.com/Deewiant/Mycology) [compliant](mycolo
 
 ### Usage
 
-`amanita <file>`
+See output of `amanita --help`
 
 ### TODO
 
@@ -13,7 +13,7 @@ amanita is a [Mycology](https://github.com/Deewiant/Mycology) [compliant](mycolo
 - [ ] Execute (`=`)
 - [ ] Fingerprints
 - [ ] Visual editor/debugger
-  - Built on top of [mizu](https://github.com/cynicalico/mizu), my graphics engine (dogfooding!)
+    - Built on top of [mizu](https://github.com/cynicalico/mizu), my graphics engine (dogfooding!)
 
 ### Fingerprints
 
@@ -33,3 +33,8 @@ UNDEF: the empty string wrapped around the edge of space contains 1 character(s)
 UNDEF: ( with a negative count reflects and pops 0 times or less than the absolute value of the count
 UNDEF: ) with a negative count reflects and pops 0 times or less than the absolute value of the count
 ```
+
+### Dependencies
+
+- [argparse](https://github.com/p-ranav/argparse)
+- [mizu](https://github.com/cynicalico/mizu)

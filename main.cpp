@@ -1,19 +1,33 @@
 #include <fmt/format.h>
+#include "argparse.hpp"
 #include "interpreter.hpp"
 
-int main(int argc, char *argv[]) {
-    if (argc != 2) {
-        fmt::println("Usage: amanita <program>");
-        return 1;
-    }
+int main(const int argc, char *argv[]) {
+    argparse::ArgumentParser program("amanita", "1.0.0");
+
+    program.add_argument("program").help("Funge-98 program to run");
+    program.add_argument("--gui").help("Open GUI debugger").flag();
 
     try {
-        auto i = Interpreter(argv[1]);
-        i.run();
-    } catch (std::runtime_error &e) {
-        fmt::println("Exception: {}", e.what());
-        return 1;
+        program.parse_args(argc, argv);
+    } catch (const std::exception &e) {
+        fmt::println(stderr, "{}", e.what());
+        fmt::println("");
+        fmt::print(stderr, "{}", program.help().str());
+        return EXIT_FAILURE;
     }
 
-    return 0;
+    if (program["--gui"] == true) {
+        fmt::println("GUI coming soon!");
+    } else {
+        try {
+            auto i = Interpreter(program.get<std::string>("program"));
+            i.run();
+        } catch (const std::exception &e) {
+            fmt::println("Exception during execution: {}", e.what());
+            return 1;
+        }
+    }
+
+    return EXIT_SUCCESS;
 }
