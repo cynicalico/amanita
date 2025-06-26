@@ -1,62 +1,79 @@
 #include "fungespace.hpp"
+#include "sops.hpp"
 #include <fmt/format.h>
 #include <fmt/std.h>
 #include <fstream>
 
+constexpr std::size_t CHUNK_SIZE = 1024;
+
 Fungespace::Fungespace(const std::filesystem::path &path) {
-    std::ifstream file(path);
-    if (!file.is_open())
-        throw std::runtime_error(fmt::format("Failed to open file: '{}'", path));
-
-    std::string line;
-    while (std::getline(file, line)) {
-        auto ret = std::ranges::remove_if(line, [](const char c) {
-            return c == '\n' || c == '\r' || c == '\f';
-        });
-        line.erase(ret.begin(), ret.end());
-
-        px_py_.emplace_back();
-        px_py_.reserve(line.size());
-        for (const auto &c: line)
-            px_py_.back().push_back(static_cast<unsigned char>(c));
-
-        max_coord[0] = std::max(max_coord[0], static_cast<std::int64_t>(line.size()));
-        max_coord[1]++;
-    }
+    std::int64_t unused[2];
+    input_file(path.string(), 0, 0, 0, unused);
 }
 
 bool Fungespace::input_file(const std::string &filename, const std::int64_t flags, const std::int64_t x,
                             const std::int64_t y,
                             std::int64_t size[2]) {
-    // TODO: Check if initial file was loaded in a subfolder, and check subfolder
-    std::ifstream file(filename);
+    std::ifstream file(filename, std::ios::binary);
     if (!file.is_open())
         return false;
+
+    const bool binary_mode = (flags & 0b1) == 1;
 
     std::int64_t input_pos[2] = {x, y};
     size[0] = 0;
     size[1] = 0;
 
-    std::string line;
-    while (std::getline(file, line)) {
-        if ((flags & 0b1) != 1) {
-            auto ret = std::ranges::remove_if(line, [](const char c) {
-                return c == '\n' || c == '\r' || c == '\f';
-            });
-            line.erase(ret.begin(), ret.end());
-        }
+    do {
+        unsigned char buf[CHUNK_SIZE];
+        file.read(reinterpret_cast<char *>(buf), sizeof(buf));
+        for (std::size_t i = 0; i < file.gcount(); ++i) {
+            if (!binary_mode && (buf[i] == '\r' || buf[i] == '\f'))
+                continue;
 
-        for (const auto &c: line) {
-            if (c != EMPTY)
-                put(input_pos[0], input_pos[1], c);
+            if (!binary_mode && buf[i] == '\n') {
+                size[0] = std::max(size[0], input_pos[0] - x);
+                input_pos[0] = x;
+
+                size[1]++;
+                input_pos[1]++;
+
+                continue;
+            }
+
+            if (buf[i] != EMPTY)
+                put(input_pos[0], input_pos[1], buf[i]);
             input_pos[0]++;
         }
+    } while (file.gcount() == CHUNK_SIZE);
 
-        size[0] = std::max(size[0], input_pos[0] - x);
-        input_pos[0] = x;
+    return true;
+}
 
-        size[1]++;
-        input_pos[1]++;
+bool Fungespace::output_file(const std::string &filename, const std::int64_t flags, const std::int64_t x,
+                             const std::int64_t y,
+                             const std::int64_t w, const std::int64_t h) {
+    std::ofstream file(filename, std::ios::binary);
+    if (!file.is_open())
+        return false;
+
+    const bool linear_mode = (flags & 0b1) == 1;
+
+    for (std::int64_t oy = y; oy < y + h; ++oy) {
+        std::string line;
+
+        for (std::int64_t ox = x; ox < x + w; ++ox) {
+            line += static_cast<unsigned char>(get(ox, oy));
+        }
+
+        if (linear_mode) {
+            rtrim(line);
+            if (oy < y + h - 1)
+                line += "\n";
+        } else
+            line += "\n";
+
+        file << line;
     }
 
     return true;

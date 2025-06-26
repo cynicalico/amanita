@@ -390,8 +390,8 @@ InstructionAction Interpreter::perform_instruction(Instruction ins, Fungespace &
         case Instruction::InputFile: {
             const auto filename = ip.stack.pop_gnirts();
             const auto flags = ip.stack.pop();
-            const auto y = ip.stack.pop() + ip.storage_offset[0];
-            const auto x = ip.stack.pop() + ip.storage_offset[1];
+            const auto y = ip.stack.pop() + ip.storage_offset[1];
+            const auto x = ip.stack.pop() + ip.storage_offset[0];
 
             std::int64_t size[2];
             if (fungespace.input_file(filename, flags, x, y, size)) {
@@ -455,9 +455,19 @@ InstructionAction Interpreter::perform_instruction(Instruction ins, Fungespace &
             ip.stack.clear();
             return MoveAction{};
 
-        case Instruction::OutputFile:
-            ip.reflect(); // TODO
+        case Instruction::OutputFile: {
+            const auto filename = ip.stack.pop_gnirts();
+            const auto flags = ip.stack.pop();
+            const auto y = ip.stack.pop() + ip.storage_offset[1];
+            const auto x = ip.stack.pop() + ip.storage_offset[0];
+            const auto h = ip.stack.pop();
+            const auto w = ip.stack.pop();
+
+            if (!fungespace.output_file(filename, flags, x, y, w, h))
+                ip.reflect();
+
             return MoveAction{};
+        }
 
         case Instruction::Put: {
             const auto y = ip.stack.pop();
@@ -521,7 +531,7 @@ InstructionAction Interpreter::perform_instruction(Instruction ins, Fungespace &
             // 0x04: high if o is implemented
             // 0x08: high if = is implemented
             // 0x10: high if unbuffered stdio
-            sysinfo.push_back(0b00011);
+            sysinfo.push_back(0b00111);
 
             // number of bytes per cell
             sysinfo.push_back(8);
