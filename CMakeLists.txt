@@ -14,11 +14,12 @@ include(thirdparty/get_cpm.cmake)
 CPMAddPackage(
         NAME mizu
         GITHUB_REPOSITORY cynicalico/mizu
-        GIT_TAG acb9dd41f109165232ea031de32a4b0060468ed5
+        GIT_TAG 992f3c08044deb614cef917fbbfa0ef74dbeae0d
         OPTIONS "MIZU_BUILD_EXAMPLE OFF"
 )
 
 add_executable(amanita
+        include/editor.hpp
         include/fungespace.hpp
         include/instruction_action.hpp
         include/instruction_pointer.hpp
@@ -26,11 +27,13 @@ add_executable(amanita
         include/interpreter.hpp
         include/sops.hpp
         include/stackstack.hpp
+        src/editor.cpp
         src/fungespace.cpp
         src/instruction_pointer.cpp
         src/interpreter.cpp
         src/stackstack.cpp
         thirdparty/argparse.hpp
+        thirdparty/utf8.h
         main.cpp)
 
 target_compile_features(amanita PRIVATE cxx_std_23)

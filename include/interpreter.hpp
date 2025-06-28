@@ -12,13 +12,15 @@ public:
     std::vector<InstructionPointer> active_list{};
     std::vector<InstructionPointer> inactive_list{};
 
+    Interpreter();
     explicit Interpreter(const std::filesystem::path &path);
 
     void run();
 
-    InstructionAction perform_instruction(Instruction ins, InstructionPointer &ip);
-    void step_wrap(InstructionPointer &ip);
-    void step_to_next_instruction(InstructionPointer &ip, Cell prev_ins, bool start_skipping);
+private:
+    InstructionAction perform_instruction_(Instruction ins, InstructionPointer &ip);
+    void step_wrap_(InstructionPointer &ip);
+    void step_to_next_instruction_(InstructionPointer &ip, Cell prev_ins, bool start_skipping);
 };
 
 #endif // AMANITA_INTERPRETER_HPP

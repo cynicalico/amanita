@@ -3,6 +3,8 @@
 #include "fmt/format.h"
 #include "mizu/util/rng.hpp"
 
+Interpreter::Interpreter() = default;
+
 Interpreter::Interpreter(const std::filesystem::path &path)
     : fungespace(path) {}
 
@@ -17,13 +19,13 @@ void Interpreter::run() {
             do {
                 ins = fungespace.get(ip.pos[0], ip.pos[1]);
                 if (!ip.stringmode && (ins == Instruction::Space || ins == Instruction::JumpOver))
-                    step_to_next_instruction(ip, '\0', ins == Instruction::JumpOver);
+                    step_to_next_instruction_(ip, '\0', ins == Instruction::JumpOver);
                 else
                     break;
             } while (true);
             ip.cache_ins = ins;
 
-            auto action = perform_instruction(static_cast<Instruction>(ins), ip);
+            auto action = perform_instruction_(static_cast<Instruction>(ins), ip);
             std::visit(
                     overloaded{
                             [&](const IterAction &a) {
@@ -64,11 +66,11 @@ void Interpreter::run() {
 
         std::swap(active_list, inactive_list);
         for (auto &ip: active_list)
-            step_to_next_instruction(ip, ip.cache_ins, false);
+            step_to_next_instruction_(ip, ip.cache_ins, false);
     }
 }
 
-InstructionAction Interpreter::perform_instruction(Instruction ins, InstructionPointer &ip) {
+InstructionAction Interpreter::perform_instruction_(Instruction ins, InstructionPointer &ip) {
     if (ip.stringmode) {
         if (ins != Instruction::ToggleStringmode) {
             ip.stack.push(static_cast<std::int64_t>(ins));
@@ -89,7 +91,7 @@ InstructionAction Interpreter::perform_instruction(Instruction ins, InstructionP
         return MoveAction{};
 
     case Instruction::Trampoline:
-        step_wrap(ip);
+        step_wrap_(ip);
         return MoveAction{};
 
     case Instruction::Pop:
@@ -108,7 +110,7 @@ InstructionAction Interpreter::perform_instruction(Instruction ins, InstructionP
         return MoveAction{};
 
     case Instruction::FetchCharacter: {
-        step_wrap(ip);
+        step_wrap_(ip);
         ip.stack.push(fungespace.get(ip.pos[0], ip.pos[1]));
         return MoveAction{};
     }
@@ -415,7 +417,7 @@ InstructionAction Interpreter::perform_instruction(Instruction ins, InstructionP
             n = std::abs(n);
         }
         for (std::int64_t i = 0; i < n; ++i)
-            step_wrap(ip);
+            step_wrap_(ip);
 
         ip.delta[0] = saved_delta[0];
         ip.delta[1] = saved_delta[1];
@@ -427,7 +429,7 @@ InstructionAction Interpreter::perform_instruction(Instruction ins, InstructionP
         const auto n = ip.stack.pop();
 
         std::int64_t saved_pos[2] = {ip.pos[0], ip.pos[1]};
-        step_to_next_instruction(ip, '\0', false);
+        step_to_next_instruction_(ip, '\0', false);
 
         if (n == 0)
             return MoveAction{};
@@ -438,7 +440,7 @@ InstructionAction Interpreter::perform_instruction(Instruction ins, InstructionP
 
         std::vector<InstructionAction> ret{};
         for (std::int64_t i = 0; i < n; ++i)
-            ret.emplace_back(perform_instruction(static_cast<Instruction>(iter_ins), ip));
+            ret.emplace_back(perform_instruction_(static_cast<Instruction>(iter_ins), ip));
 
         return IterAction{ret};
     }
@@ -484,7 +486,7 @@ InstructionAction Interpreter::perform_instruction(Instruction ins, InstructionP
 
     case Instruction::StoreCharacter: {
         const auto v = ip.stack.pop();
-        step_wrap(ip);
+        step_wrap_(ip);
         fungespace.put(ip.pos[0], ip.pos[1], v);
         return MoveAction{};
     }
@@ -506,9 +508,9 @@ InstructionAction Interpreter::perform_instruction(Instruction ins, InstructionP
         const auto b = ip.stack.pop();
         const auto a = ip.stack.pop();
         if (a > b)
-            return perform_instruction(Instruction::TurnRight, ip);
+            return perform_instruction_(Instruction::TurnRight, ip);
         if (b > a)
-            return perform_instruction(Instruction::TurnLeft, ip);
+            return perform_instruction_(Instruction::TurnLeft, ip);
         return MoveAction{};
     }
 
@@ -660,7 +662,7 @@ InstructionAction Interpreter::perform_instruction(Instruction ins, InstructionP
     }
 }
 
-void Interpreter::step_wrap(InstructionPointer &ip) {
+void Interpreter::step_wrap_(InstructionPointer &ip) {
     ip.step();
     if (!fungespace.in_bounds(ip.pos[0], ip.pos[1])) {
         ip.reflect();
@@ -672,10 +674,10 @@ void Interpreter::step_wrap(InstructionPointer &ip) {
     }
 }
 
-void Interpreter::step_to_next_instruction(InstructionPointer &ip, Cell prev_ins, bool start_skipping) {
+void Interpreter::step_to_next_instruction_(InstructionPointer &ip, Cell prev_ins, bool start_skipping) {
     bool skipping = start_skipping;
     do {
-        step_wrap(ip);
+        step_wrap_(ip);
         const auto ins = fungespace.get(ip.pos[0], ip.pos[1]);
 
         if (ip.stringmode) {

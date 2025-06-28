@@ -24,6 +24,7 @@ public:
     std::int64_t min_coord[2]{0, 0};
     std::int64_t max_coord[2]{0, 0};
 
+    Fungespace();
     explicit Fungespace(const std::filesystem::path &path);
 
     bool
@@ -36,6 +37,10 @@ public:
             std::int64_t y,
             std::int64_t w,
             std::int64_t h);
+
+    void save_bak();
+
+    void reset();
 
     Cell get(std::int64_t x, std::int64_t y) const;
 
@@ -56,6 +61,10 @@ private:
     std::vector<std::vector<Cell>> px_ny_{};
     std::vector<std::vector<Cell>> nx_py_{};
     std::vector<std::vector<Cell>> nx_ny_{};
+
+    std::int64_t min_coord_bak_[2]{0, 0};
+    std::int64_t max_coord_bak_[2]{0, 0};
+    std::vector<std::vector<Cell>> px_py_bak_{};
 
     FixedCoord_ make_fixed_coord_(std::int64_t x, std::int64_t y) const;
     void check_resize_(const FixedCoord_ &coord);

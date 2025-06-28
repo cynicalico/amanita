@@ -6,6 +6,8 @@
 
 constexpr std::size_t CHUNK_SIZE = 1024;
 
+Fungespace::Fungespace() = default;
+
 Fungespace::Fungespace(const std::filesystem::path &path) {
     std::int64_t unused[2];
     if (!input_file(path.string(), 0, 0, 0, unused))
@@ -85,6 +87,26 @@ bool Fungespace::output_file(
     }
 
     return true;
+}
+
+void Fungespace::save_bak() {
+    min_coord_bak_[0] = min_coord[0];
+    min_coord_bak_[1] = min_coord[1];
+    max_coord_bak_[0] = max_coord[0];
+    max_coord_bak_[1] = max_coord[1];
+    px_py_bak_ = px_py_;
+    // Negative quadrants can't be saved, runtime only
+}
+
+void Fungespace::reset() {
+    px_py_ = px_py_bak_;
+    px_ny_.clear();
+    nx_py_.clear();
+    nx_ny_.clear();
+    min_coord[0] = min_coord_bak_[0];
+    min_coord[1] = min_coord_bak_[1];
+    max_coord[0] = max_coord_bak_[0];
+    max_coord[1] = max_coord_bak_[1];
 }
 
 Cell Fungespace::get(std::int64_t x, std::int64_t y) const {

@@ -1,5 +1,6 @@
 #include <fmt/format.h>
 #include "argparse.hpp"
+#include "editor.hpp"
 #include "interpreter.hpp"
 
 int main(const int argc, char *argv[]) {
@@ -18,7 +19,7 @@ int main(const int argc, char *argv[]) {
     }
 
     if (program["--gui"] == true) {
-        fmt::println("GUI coming soon!");
+        mizu::Engine("amanita", {500, 500}, [](auto &) {}).mainloop<Editor>(program.get<std::string>("program"));
     } else {
         try {
             auto i = Interpreter(program.get<std::string>("program"));
