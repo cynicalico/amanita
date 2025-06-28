@@ -1,6 +1,21 @@
 #include "editor.hpp"
 #include "utf8.h"
 
+constexpr std::size_t ROWS = 25;
+constexpr std::size_t COLS = 80;
+constexpr std::size_t STACKSTACK_DIGIT_MAX = 19;
+constexpr std::size_t STACKSTACK_ENTRIES = 15;
+
+constexpr float MARGIN = 5.0f;
+constexpr float PROGRAM_MARGIN = 5.0f;
+constexpr float STACKSTACK_MARGIN = 5.0f;
+
+const mizu::Rgba BORDER_COLOR = mizu::rgb(0x767676);
+const mizu::Rgba PROGRAM_COLOR = mizu::rgb(0xcccccc);
+const mizu::Rgba CURSOR_COLOR = mizu::rgb(0x0037da);
+
+void draw_rect(mizu::G2d &g2d, glm::vec2 pos, glm::vec2 size, const mizu::Color &color);
+
 Editor::Editor(mizu::Engine *engine, const std::filesystem::path &path)
     : Application(engine),
       g2d(*engine->g2d),
@@ -10,31 +25,45 @@ Editor::Editor(mizu::Engine *engine, const std::filesystem::path &path)
       cursor{0, 0},
       cursor_delta{EAST[0], EAST[1]},
       interpreter(path) {
-    button_font = std::make_unique<mizu::Font>(g2d, "font/ter-u16b.bdf");
-    program_font = std::make_unique<mizu::Font>(g2d, "font/ter-u16b.bdf");
-    stackstack_font = std::make_unique<mizu::Font>(g2d, "font/ter-u12b.bdf");
-    title_font = std::make_unique<mizu::Font>(g2d, "font/ter-u20b.bdf");
-
-    title_badge_size = title_font->calc_size("amanita");
-
+    button_font = std::make_unique<mizu::Font>(g2d, "font/ter-u18b.bdf");
     buttons = mizu::gui::GuiBuilder()
                       .start<mizu::gui::HStack>(
-                              {.grow = mizu::gui::Grow::None, .outer_pad = mizu::gui::Padding(3.0f), .inner_pad = 3.0f})
+                              {.grow = mizu::gui::Grow::None,
+                               .outer_pad = mizu::gui::Padding(MARGIN),
+                               .inner_pad = MARGIN})
                       .add<mizu::gui::Button>(
                               {.grow = mizu::gui::Grow::None,
                                .font = button_font.get(),
-                               .text = "Edit",
-                               .text_pad = mizu::gui::Padding(3.0f, 5.0f)})
+                               .text = "Run",
+                               .text_pad = mizu::gui::Padding(MARGIN),
+                               .border = mizu::gui::PxBorder(BORDER_COLOR)})
                       .add<mizu::gui::Button>(
                               {.grow = mizu::gui::Grow::None,
                                .font = button_font.get(),
                                .text = "Load",
-                               .text_pad = mizu::gui::Padding(3.0f, 5.0f)})
+                               .text_pad = mizu::gui::Padding(MARGIN),
+                               .border = mizu::gui::PxBorder(BORDER_COLOR)})
                       .build();
     buttons->resize(mizu::gui::UNDEFINED_SIZE_V, {0, 0});
 
-    const auto w_size = program_font->calc_size("W");
-    window.set_size({3 + 1 + w_size.x * 80 + 1 + 3, buttons->size().y + 1 + w_size.y * 25 + 1 + title_badge_size.y});
+    program_font = std::make_unique<mizu::Font>(g2d, "font/ter-u18b.bdf");
+    program_char_size = program_font->calc_size("W");
+    program_size = {
+            PROGRAM_MARGIN + program_char_size.x * COLS + PROGRAM_MARGIN,
+            PROGRAM_MARGIN + program_char_size.y * ROWS + PROGRAM_MARGIN};
+    program_pos = {MARGIN + 1, buttons->size().y + 1};
+
+    stackstack_font = std::make_unique<mizu::Font>(g2d, "font/ter-u12b.bdf");
+    stackstack_char_size = stackstack_font->calc_size("W");
+    stackstack_size = {
+            STACKSTACK_MARGIN + stackstack_char_size.x * 20 + STACKSTACK_MARGIN,
+            STACKSTACK_MARGIN + stackstack_char_size.y * STACKSTACK_ENTRIES + STACKSTACK_MARGIN};
+    toss_pos = {program_pos.x + program_size.x + 1 + MARGIN + 1, program_pos.y};
+    soss_pos = {toss_pos.x, toss_pos.y + stackstack_size.y + 1 + MARGIN + 1};
+
+    window.set_size(
+            {MARGIN + 1 + program_size.x + 1 + MARGIN + 1 + stackstack_size.x + 1 + MARGIN,
+             buttons->size().y + 1 + program_size.y + 1 + MARGIN});
 
     input.start_text_input();
 }
@@ -46,31 +75,44 @@ void Editor::update(double dt) {
 void Editor::draw() {
     g2d.clear(mizu::rgb(0x000000));
 
-    title_font->draw(
-            title_badge_text,
-            {window.size().x - title_badge_size.x - 3,
-             window.size().y - title_font->line_height() + title_font->pen_offset()});
     buttons->draw(g2d);
 
-    g2d.line({3, buttons->size().y}, {window.size().x - 3, buttons->size().y}, mizu::rgb(0xffffff));
-    g2d.line({3, buttons->size().y}, {3, window.size().y - title_badge_size.y}, mizu::rgb(0xffffff));
-    g2d.line(
-            {3, window.size().y - title_badge_size.y},
-            {window.size().x - 3, window.size().y - title_badge_size.y},
-            mizu::rgb(0xffffff));
-    g2d.line(
-            {window.size().x - 4, buttons->size().y},
-            {window.size().x - 4, window.size().y - title_badge_size.y},
-            mizu::rgb(0xffffff));
+    draw_program();
+    draw_stacks();
+}
 
-    for (std::int64_t y = 0; y < 25; ++y) {
+void Editor::draw_program() {
+    draw_rect(g2d, program_pos - glm::vec2(1.0f), program_size + glm::vec2(2.0f), BORDER_COLOR);
+
+    g2d.fill_rect(
+            {program_pos.x + PROGRAM_MARGIN + cursor[0] * program_char_size.x,
+             program_pos.y + PROGRAM_MARGIN + cursor[1] * program_char_size.y},
+            program_char_size,
+            CURSOR_COLOR);
+
+    for (std::int64_t y = 0; y < ROWS; ++y) {
         std::string s = "";
-        for (std::int64_t x = 0; x < 80; ++x)
+        for (std::int64_t x = 0; x < COLS; ++x)
             s += static_cast<char>(interpreter.fungespace.get(x, y));
 
-        const glm::vec2 pos = {4, buttons->size().y + 1 + y * program_font->line_height()};
-        program_font->draw(s, {pos.x, pos.y + program_font->pen_offset()});
+        const glm::vec2 pos = {
+                program_pos.x + PROGRAM_MARGIN, program_pos.y + PROGRAM_MARGIN + y * program_font->line_height()};
+        program_font->draw(s, {pos.x, pos.y + program_font->pen_offset()}, PROGRAM_COLOR);
     }
+}
+
+void Editor::draw_stacks() {
+    draw_rect(g2d, toss_pos - glm::vec2(1.0f), stackstack_size + glm::vec2(2.0f), BORDER_COLOR);
+    stackstack_font->draw(
+            fmt::format("{:>{}}", "TOSS", STACKSTACK_DIGIT_MAX + 1),
+            {toss_pos.x + STACKSTACK_MARGIN, toss_pos.y + STACKSTACK_MARGIN + stackstack_font->pen_offset()},
+            mizu::rgb(0xffffff));
+
+    draw_rect(g2d, soss_pos - glm::vec2(1.0f), stackstack_size + glm::vec2(2.0f), BORDER_COLOR);
+    stackstack_font->draw(
+            fmt::format("{:>{}}", "SOSS", STACKSTACK_DIGIT_MAX + 1),
+            {soss_pos.x + STACKSTACK_MARGIN, soss_pos.y + STACKSTACK_MARGIN + stackstack_font->pen_offset()},
+            mizu::rgb(0xffffff));
 }
 
 void Editor::key_release_callback(mizu::Key key, mizu::Mod mods) {
@@ -80,12 +122,13 @@ void Editor::key_release_callback(mizu::Key key, mizu::Mod mods) {
         fmt::println("save!");
 }
 
-void Editor::text_input_callback(const char *text) {
-    if (mode == Mode::Edit) {
-        const auto cp = utf8::next(text, text + strlen(text));
-        interpreter.fungespace.put(cursor[0], cursor[1], static_cast<Cell>(cp));
+void Editor::text_input_callback(const char *text) {}
 
-        cursor[0] += cursor_delta[0];
-        cursor[1] += cursor_delta[1];
-    }
+void draw_rect(mizu::G2d &g2d, const glm::vec2 pos, glm::vec2 size, const mizu::Color &color) {
+    size.x -= 1;
+    size.y -= 1;
+    g2d.line(pos, {pos.x + size.x, pos.y}, color);
+    g2d.line({pos.x + size.x, pos.y}, pos + size, color);
+    g2d.line({pos.x, pos.y + size.y}, pos + size, color);
+    g2d.line(pos, {pos.x, pos.y + size.y}, color);
 }

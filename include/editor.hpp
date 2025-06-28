@@ -13,17 +13,21 @@ public:
     mizu::InputMgr &input;
 
     std::unique_ptr<mizu::Font> button_font;
-    std::unique_ptr<mizu::Font> program_font;
-    std::unique_ptr<mizu::Font> stackstack_font;
-    std::unique_ptr<mizu::Font> title_font;
-
-    const char *title_badge_text{"amanita"};
-    glm::vec2 title_badge_size{};
-
     std::unique_ptr<mizu::gui::Gui> buttons;
 
+    std::unique_ptr<mizu::Font> program_font;
+    glm::vec2 program_char_size{};
+    glm::vec2 program_size{};
+    glm::vec2 program_pos{};
+
+    std::unique_ptr<mizu::Font> stackstack_font;
+    glm::vec2 stackstack_char_size{};
+    glm::vec2 stackstack_size{};
+    glm::vec2 toss_pos{};
+    glm::vec2 soss_pos{};
+
     const std::filesystem::path path;
-    Mode mode{Mode::Edit};
+    Mode mode{Mode::Run};
     std::int64_t cursor[2];
     std::int64_t cursor_delta[2];
     Interpreter interpreter{};
@@ -33,9 +37,10 @@ public:
     void update(double dt) override;
 
     void draw() override;
+    void draw_program();
+    void draw_stacks();
 
     void key_release_callback(mizu::Key key, mizu::Mod mods) override;
-
     void text_input_callback(const char *text) override;
 };
 
