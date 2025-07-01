@@ -14,7 +14,7 @@ include(thirdparty/get_cpm.cmake)
 CPMAddPackage(
         NAME mizu
         GITHUB_REPOSITORY cynicalico/mizu
-        GIT_TAG 992f3c08044deb614cef917fbbfa0ef74dbeae0d
+        GIT_TAG 87969bdbfbf38002b644c5d97c3b462f3a0e6ef1
         OPTIONS "MIZU_BUILD_EXAMPLE OFF"
 )
 

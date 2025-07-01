@@ -56,7 +56,7 @@ Editor::Editor(mizu::Engine *engine, const std::filesystem::path &path)
     stackstack_font = std::make_unique<mizu::Font>(g2d, "font/ter-u12b.bdf");
     stackstack_char_size = stackstack_font->calc_size("W");
     stackstack_size = {
-            STACKSTACK_MARGIN + stackstack_char_size.x * 20 + STACKSTACK_MARGIN,
+            STACKSTACK_MARGIN + stackstack_char_size.x * (STACKSTACK_DIGIT_MAX + 1) + STACKSTACK_MARGIN,
             STACKSTACK_MARGIN + stackstack_char_size.y * STACKSTACK_ENTRIES + STACKSTACK_MARGIN};
     toss_pos = {program_pos.x + program_size.x + 1 + MARGIN + 1, program_pos.y};
     soss_pos = {toss_pos.x, toss_pos.y + stackstack_size.y + 1 + MARGIN + 1};
@@ -125,6 +125,7 @@ void Editor::key_release_callback(mizu::Key key, mizu::Mod mods) {
 void Editor::text_input_callback(const char *text) {}
 
 void draw_rect(mizu::G2d &g2d, const glm::vec2 pos, glm::vec2 size, const mizu::Color &color) {
+    // TODO: Add proper GL_LINE_LOOP support for mizu and use that instead
     size.x -= 1;
     size.y -= 1;
     g2d.line(pos, {pos.x + size.x, pos.y}, color);

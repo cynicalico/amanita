@@ -1,4 +1,5 @@
 #include "interpreter.hpp"
+#include <chrono>
 #include <utility>
 #include "fmt/format.h"
 #include "mizu/util/rng.hpp"
