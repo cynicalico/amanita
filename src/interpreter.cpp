@@ -108,6 +108,7 @@ InstructionAction Interpreter::perform_instruction(Instruction ins, InstructionP
 
         case Instruction::InputInteger: {
             // Decimal input reads and discards characters until it encounters decimal digit characters
+            // TODO: deal with the case where the '-' isn't immediately followed by digits
 
             int ch;
             do {
