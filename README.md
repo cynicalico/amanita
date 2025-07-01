@@ -36,7 +36,7 @@ input: <br>
 `abc1234\n`
 
 "up until (but not including)" would imply leaving the newline in the input stream, but this gives
-very non-intuitive behavior if followed by a `~` (Input Character) command, which will happily eat the newline but is
+very unintuitive behavior if followed by a `~` (Input Character) command, which will happily eat the newline but is
 probably not what was desired.
 
 For comparison, consider the following similar input: <br>
