@@ -30,7 +30,7 @@ The Funge-98 specification reads:
 > the point at which input characters stop being digits, or the point where the next digit
 > would cause a cell overflow, whichever comes first
 
-This leads to an interesting dillemma with line-buffered input for integers. Consider the following
+This leads to an interesting dilemma with line-buffered input for integers. Consider the following
 input: <br>
 
 `abc1234\n`
