@@ -22,23 +22,28 @@ TODO
 ### Notable Implementation Details
 
 #### Decimal input (`&`)
+
 The Funge-98 specification reads:
 
->Decimal input reads and discards characters until it encounters decimal digit characters 
-> at which point it reads a decimal number from those digits, up until (but not including) 
-> the point at which input characters stop being digits, or the point where the next digit 
+> Decimal input reads and discards characters until it encounters decimal digit characters
+> at which point it reads a decimal number from those digits, up until (but not including)
+> the point at which input characters stop being digits, or the point where the next digit
 > would cause a cell overflow, whichever comes first
 
-This leads to an interesting dillemma with line-buffered input for integers. consider the following 
-input: `abc1234\n` (newline from line-buffering will be in the input stream)
+This leads to an interesting dillemma with line-buffered input for integers. Consider the following
+input: <br>
 
-"up until (but not including)" would imply leaving the newline in the input stream, but this gives 
-very non-intuitive behavior if followed by a `~` (Input Character) command, which will happily eat the newline but is 
+`abc1234\n`
+
+"up until (but not including)" would imply leaving the newline in the input stream, but this gives
+very non-intuitive behavior if followed by a `~` (Input Character) command, which will happily eat the newline but is
 probably not what was desired.
 
-For comparison, consider the following similar input: `abc1234abc\n`
+For comparison, consider the following similar input: <br>
 
-Following the same logic, it would be expected that the `abc\n` is left in the input stream, and in this case, 
+`abc1234abc\n`
+
+Following the same logic, it would be expected that the `abc\n` is left in the input stream, and in this case,
 it very well could be desired.
 
 As an attempt to perform the most "intuitive" action, amanita will discard the newline only if it immediately follows
