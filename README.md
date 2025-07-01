@@ -9,7 +9,7 @@ See output of `amanita --help`
 ### TODO
 
 - [ ] CLI arguments and ENV variables (`y`)
-- [x] User input (`&` and `~`)
+- [ ] User input (`&` and `~`)
 - [ ] Execute (`=`)
 - [ ] Fingerprints
 - [ ] Visual editor/debugger
