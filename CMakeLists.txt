@@ -44,11 +44,13 @@ add_executable(amanita
         include/fingerprints/hrti.hpp
         include/fingerprints/modu.hpp
         include/fingerprints/null.hpp
+        include/fingerprints/refc.hpp
         include/fingerprints/roma.hpp
         include/fingerprints/toys.hpp
 
         src/fingerprints/hrti.cpp
         src/fingerprints/modu.cpp
+        src/fingerprints/refc.cpp
         src/fingerprints/roma.cpp
         src/fingerprints/toys.cpp
 

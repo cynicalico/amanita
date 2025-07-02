@@ -20,6 +20,7 @@ See output of `amanita --help`
 [HRTI](https://web.archive.org/web/20250124201720/https://catseye.tc/view/Funge-98/library/HRTI.markdown) \
 [MODU](https://web.archive.org/web/20250523022748/https://catseye.tc/view/funge-98/library/MODU.markdown) \
 [NULL](https://web.archive.org/web/20250124201817/https://catseye.tc/view/Funge-98/library/NULL.markdown) \
+[REFC](https://web.archive.org/web/20250124201827/https://catseye.tc/view/Funge-98/library/REFC.markdown) \
 [ROMA](https://web.archive.org/web/20250523145159/https://catseye.tc/view/funge-98/library/ROMA.markdown) \
 [TOYS](https://web.archive.org/web/20211201092300/https://catseye.tc/view/funge-98/library/TOYS.markdown)
 
@@ -93,4 +94,5 @@ UNDEF: Z in Befunge reflects
 ## Dependencies
 
 - [argparse](https://github.com/p-ranav/argparse)
+- [utf8-cpp](https://github.com/nemtrif/utfcpp)
 - [mizu](https://github.com/cynicalico/mizu)
