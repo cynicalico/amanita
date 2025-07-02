@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include "fungespace.hpp"
+#include "instruction_stack.hpp"
 #include "stackstack.hpp"
 
 constexpr std::int64_t SOUTH[2] = {0, 1};
@@ -22,6 +23,7 @@ public:
     Cell cache_ins{'\0'};
     StackStack stack{};
     std::int64_t storage_offset[2]{0, 0};
+    InstructionStack instruction_stack{};
 
     InstructionPointer() = default;
     ~InstructionPointer() = default;
@@ -33,6 +35,8 @@ public:
     InstructionPointer &operator=(InstructionPointer &&other) = default;
 
     void step();
+    void step_wrap(Fungespace &fungespace);
+    void step_to_next_instruction(Fungespace &fungespace, Cell prev_ins, bool start_skipping);
 
     void reflect();
 

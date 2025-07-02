@@ -23,6 +23,7 @@ add_executable(amanita
         include/fungespace.hpp
         include/instruction_action.hpp
         include/instruction_pointer.hpp
+        include/instruction_stack.hpp
         include/instructions.hpp
         include/interpreter.hpp
         include/sops.hpp
@@ -30,6 +31,7 @@ add_executable(amanita
         src/editor.cpp
         src/fungespace.cpp
         src/instruction_pointer.cpp
+        src/instruction_stack.cpp
         src/interpreter.cpp
         src/stackstack.cpp
         thirdparty/argparse.hpp

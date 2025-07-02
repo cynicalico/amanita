@@ -16,11 +16,6 @@ public:
     explicit Interpreter(const std::filesystem::path &path);
 
     void run();
-
-private:
-    InstructionAction perform_instruction_(Instruction ins, InstructionPointer &ip);
-    void step_wrap_(InstructionPointer &ip);
-    void step_to_next_instruction_(InstructionPointer &ip, Cell prev_ins, bool start_skipping);
 };
 
 #endif // AMANITA_INTERPRETER_HPP
