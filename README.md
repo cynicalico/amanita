@@ -11,13 +11,14 @@ See output of `amanita --help`
 - [ ] CLI arguments and ENV variables (`y`)
 - [x] User input (`&` and `~`)
 - [ ] Execute (`=`)
-- [ ] Fingerprints
+- [x] Fingerprints
 - [ ] Visual editor/debugger
     - Built on top of [mizu](https://github.com/cynicalico/mizu), my graphics engine (dogfooding!)
 
 ## Fingerprints
 
-TODO
+[MODU](https://web.archive.org/web/20250523022748/https://catseye.tc/view/funge-98/library/MODU.markdown) <br>
+[ROMA](https://web.archive.org/web/20250523145159/https://catseye.tc/view/funge-98/library/ROMA.markdown)
 
 ## Notable Implementation Details
 

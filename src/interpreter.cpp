@@ -1,14 +1,10 @@
 #include "interpreter.hpp"
-#include <chrono>
 #include <utility>
-#include "fmt/format.h"
-#include "mizu/util/rng.hpp"
 
 Interpreter::Interpreter() = default;
 
 Interpreter::Interpreter(const std::filesystem::path &path)
-    : fungespace(path) {
-}
+    : fungespace(path) {}
 
 void Interpreter::run() {
     active_list.emplace_back();
@@ -29,42 +25,41 @@ void Interpreter::run() {
 
             auto action = ip.instruction_stack.perform(static_cast<Instruction>(ins), fungespace, ip);
             std::visit(
-                overloaded{
-                    [&](const IterAction &a) {
-                        if (!ip.alive)
-                            return;
+                    overloaded{
+                            [&](const IterAction &a) {
+                                if (!ip.alive)
+                                    return;
 
-                        for (const auto &sub_action: a.actions) {
-                            if (std::holds_alternative<SplitAction>(sub_action)) {
+                                for (const auto &sub_action: a.actions) {
+                                    if (std::holds_alternative<SplitAction>(sub_action)) {
+                                        auto new_ip = InstructionPointer(ip);
+                                        new_ip.reflect();
+
+                                        inactive_list.push_back(std::move(new_ip));
+                                    } else if (std::holds_alternative<QuitAction>(sub_action)) {
+                                        std::exit(std::get<QuitAction>(sub_action).exit_code);
+                                    }
+                                }
+
+                                inactive_list.push_back(std::move(ip));
+                            },
+                            [&](const KillAction &) {
+                                /* do nothing, ip does not live on */
+                            },
+                            [&](const MoveAction &) {
+                                inactive_list.push_back(std::move(ip));
+                            },
+                            [&](const SplitAction &) {
                                 auto new_ip = InstructionPointer(ip);
                                 new_ip.reflect();
 
                                 inactive_list.push_back(std::move(new_ip));
-                            } else if (std::holds_alternative<QuitAction>(sub_action)) {
-                                std::exit(std::get<QuitAction>(sub_action).exit_code);
-                            }
-                        }
-
-                        inactive_list.push_back(std::move(ip));
-                    },
-                    [&](const KillAction &) {
-                        /* do nothing, ip does not live on */
-                    },
-                    [&](const MoveAction &) {
-                        inactive_list.push_back(std::move(ip));
-                    },
-                    [&](const SplitAction &) {
-                        auto new_ip = InstructionPointer(ip);
-                        new_ip.reflect();
-
-                        inactive_list.push_back(std::move(new_ip));
-                        inactive_list.push_back(std::move(ip));
-                    },
-                    [&](const QuitAction &a) {
-                        std::exit(a.exit_code);
-                    }
-                },
-                action);
+                                inactive_list.push_back(std::move(ip));
+                            },
+                            [&](const QuitAction &a) {
+                                std::exit(a.exit_code);
+                            }},
+                    action);
         }
 
         std::swap(active_list, inactive_list);

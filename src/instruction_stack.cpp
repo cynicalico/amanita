@@ -1,9 +1,10 @@
 #include "instruction_stack.hpp"
-#include "instruction_pointer.hpp"
-#include "instructions.hpp"
-#include "fmt/format.h"
 #include <chrono>
 #include <utility>
+#include "fingerprints.hpp"
+#include "fmt/format.h"
+#include "instruction_pointer.hpp"
+#include "instructions.hpp"
 #include "mizu/util/rng.hpp"
 
 InstructionAction instruction_space(Fungespace &, InstructionPointer &ip);
@@ -116,109 +117,109 @@ InstructionAction InstructionStack::perform(Instruction ins, Fungespace &fungesp
 
     if (ins < Instruction::Space || ins > Instruction::InputCharacter) {
         fmt::println("Unknown instruction: {}/{}, reflecting", static_cast<std::int64_t>(ins), static_cast<char>(ins));
-        return fns_[static_cast<std::size_t>(Instruction::Reflect)].back()(fungespace, ip);
+        return fns[static_cast<std::size_t>(Instruction::Reflect)].back()(fungespace, ip);
     }
 
-    return fns_[static_cast<std::size_t>(ins)].back()(fungespace, ip);
+    return fns[static_cast<std::size_t>(ins)].back()(fungespace, ip);
 }
 
 void InstructionStack::populate_default_fns_() {
-    fns_.resize(127);
-    fns_[static_cast<std::size_t>(Instruction::Space)].push_back(instruction_space);
-    fns_[static_cast<std::size_t>(Instruction::LogicalNot)].push_back(instruction_logical_not);
-    fns_[static_cast<std::size_t>(Instruction::ToggleStringmode)].push_back(instruction_toggle_stringmode);
-    fns_[static_cast<std::size_t>(Instruction::Trampoline)].push_back(instruction_trampoline);
-    fns_[static_cast<std::size_t>(Instruction::Pop)].push_back(instruction_pop);
-    fns_[static_cast<std::size_t>(Instruction::Remainder)].push_back(instruction_remainder);
-    fns_[static_cast<std::size_t>(Instruction::InputInteger)].push_back(instruction_input_integer);
-    fns_[static_cast<std::size_t>(Instruction::FetchCharacter)].push_back(instruction_fetch_character);
-    fns_[static_cast<std::size_t>(Instruction::LoadSemantics)].push_back(instruction_load_semantics);
-    fns_[static_cast<std::size_t>(Instruction::UnloadSemantics)].push_back(instruction_unload_semantics);
-    fns_[static_cast<std::size_t>(Instruction::Multiply)].push_back(instruction_multiply);
-    fns_[static_cast<std::size_t>(Instruction::Add)].push_back(instruction_add);
-    fns_[static_cast<std::size_t>(Instruction::OutputCharacter)].push_back(instruction_output_character);
-    fns_[static_cast<std::size_t>(Instruction::Subtract)].push_back(instruction_subtract);
-    fns_[static_cast<std::size_t>(Instruction::OutputInteger)].push_back(instruction_output_integer);
-    fns_[static_cast<std::size_t>(Instruction::Divide)].push_back(instruction_divide);
-    fns_[static_cast<std::size_t>(Instruction::PushZero)].push_back(instruction_push_zero);
-    fns_[static_cast<std::size_t>(Instruction::PushOne)].push_back(instruction_push_one);
-    fns_[static_cast<std::size_t>(Instruction::PushTwo)].push_back(instruction_push_two);
-    fns_[static_cast<std::size_t>(Instruction::PushThree)].push_back(instruction_push_three);
-    fns_[static_cast<std::size_t>(Instruction::PushFour)].push_back(instruction_push_four);
-    fns_[static_cast<std::size_t>(Instruction::PushFive)].push_back(instruction_push_five);
-    fns_[static_cast<std::size_t>(Instruction::PushSix)].push_back(instruction_push_six);
-    fns_[static_cast<std::size_t>(Instruction::PushSeven)].push_back(instruction_push_seven);
-    fns_[static_cast<std::size_t>(Instruction::PushEight)].push_back(instruction_push_eight);
-    fns_[static_cast<std::size_t>(Instruction::PushNiner)].push_back(instruction_push_niner);
-    fns_[static_cast<std::size_t>(Instruction::Duplicate)].push_back(instruction_duplicate);
-    fns_[static_cast<std::size_t>(Instruction::JumpOver)].push_back(instruction_jump_over);
-    fns_[static_cast<std::size_t>(Instruction::GoWest)].push_back(instruction_go_west);
-    fns_[static_cast<std::size_t>(Instruction::Execute)].push_back(instruction_execute);
-    fns_[static_cast<std::size_t>(Instruction::GoEast)].push_back(instruction_go_east);
-    fns_[static_cast<std::size_t>(Instruction::GoAway)].push_back(instruction_go_away);
-    fns_[static_cast<std::size_t>(Instruction::Stop)].push_back(instruction_stop);
-    fns_[static_cast<std::size_t>(Instruction::A)].push_back(instruction_a);
-    fns_[static_cast<std::size_t>(Instruction::B)].push_back(instruction_b);
-    fns_[static_cast<std::size_t>(Instruction::C)].push_back(instruction_c);
-    fns_[static_cast<std::size_t>(Instruction::D)].push_back(instruction_d);
-    fns_[static_cast<std::size_t>(Instruction::E)].push_back(instruction_e);
-    fns_[static_cast<std::size_t>(Instruction::F)].push_back(instruction_f);
-    fns_[static_cast<std::size_t>(Instruction::G)].push_back(instruction_g);
-    fns_[static_cast<std::size_t>(Instruction::H)].push_back(instruction_h);
-    fns_[static_cast<std::size_t>(Instruction::I)].push_back(instruction_i);
-    fns_[static_cast<std::size_t>(Instruction::J)].push_back(instruction_j);
-    fns_[static_cast<std::size_t>(Instruction::K)].push_back(instruction_k);
-    fns_[static_cast<std::size_t>(Instruction::L)].push_back(instruction_l);
-    fns_[static_cast<std::size_t>(Instruction::M)].push_back(instruction_m);
-    fns_[static_cast<std::size_t>(Instruction::N)].push_back(instruction_n);
-    fns_[static_cast<std::size_t>(Instruction::O)].push_back(instruction_o);
-    fns_[static_cast<std::size_t>(Instruction::P)].push_back(instruction_p);
-    fns_[static_cast<std::size_t>(Instruction::Q)].push_back(instruction_q);
-    fns_[static_cast<std::size_t>(Instruction::R)].push_back(instruction_r);
-    fns_[static_cast<std::size_t>(Instruction::S)].push_back(instruction_s);
-    fns_[static_cast<std::size_t>(Instruction::T)].push_back(instruction_t);
-    fns_[static_cast<std::size_t>(Instruction::U)].push_back(instruction_u);
-    fns_[static_cast<std::size_t>(Instruction::V)].push_back(instruction_v);
-    fns_[static_cast<std::size_t>(Instruction::W)].push_back(instruction_w);
-    fns_[static_cast<std::size_t>(Instruction::X)].push_back(instruction_x);
-    fns_[static_cast<std::size_t>(Instruction::Y)].push_back(instruction_y);
-    fns_[static_cast<std::size_t>(Instruction::Z)].push_back(instruction_z);
-    fns_[static_cast<std::size_t>(Instruction::TurnLeft)].push_back(instruction_turn_left);
-    fns_[static_cast<std::size_t>(Instruction::Swap)].push_back(instruction_swap);
-    fns_[static_cast<std::size_t>(Instruction::TurnRight)].push_back(instruction_turn_right);
-    fns_[static_cast<std::size_t>(Instruction::GoNorth)].push_back(instruction_go_north);
-    fns_[static_cast<std::size_t>(Instruction::EastWestIf)].push_back(instruction_east_west_if);
-    fns_[static_cast<std::size_t>(Instruction::GreaterThan)].push_back(instruction_greater_than);
-    fns_[static_cast<std::size_t>(Instruction::PushTen)].push_back(instruction_push_ten);
-    fns_[static_cast<std::size_t>(Instruction::PushEleven)].push_back(instruction_push_eleven);
-    fns_[static_cast<std::size_t>(Instruction::PushTwelve)].push_back(instruction_push_twelve);
-    fns_[static_cast<std::size_t>(Instruction::PushThirteen)].push_back(instruction_push_thirteen);
-    fns_[static_cast<std::size_t>(Instruction::PushFourteen)].push_back(instruction_push_fourteen);
-    fns_[static_cast<std::size_t>(Instruction::PushFifteen)].push_back(instruction_push_fifteen);
-    fns_[static_cast<std::size_t>(Instruction::Get)].push_back(instruction_get);
-    fns_[static_cast<std::size_t>(Instruction::GoHigh)].push_back(instruction_go_high);
-    fns_[static_cast<std::size_t>(Instruction::InputFile)].push_back(instruction_input_file);
-    fns_[static_cast<std::size_t>(Instruction::JumpForward)].push_back(instruction_jump_forward);
-    fns_[static_cast<std::size_t>(Instruction::Iterate)].push_back(instruction_iterate);
-    fns_[static_cast<std::size_t>(Instruction::GoLow)].push_back(instruction_go_low);
-    fns_[static_cast<std::size_t>(Instruction::HighLowIf)].push_back(instruction_high_low_if);
-    fns_[static_cast<std::size_t>(Instruction::ClearStack)].push_back(instruction_clear_stack);
-    fns_[static_cast<std::size_t>(Instruction::OutputFile)].push_back(instruction_output_file);
-    fns_[static_cast<std::size_t>(Instruction::Put)].push_back(instruction_put);
-    fns_[static_cast<std::size_t>(Instruction::Quit)].push_back(instruction_quit);
-    fns_[static_cast<std::size_t>(Instruction::Reflect)].push_back(instruction_reflect);
-    fns_[static_cast<std::size_t>(Instruction::StoreCharacter)].push_back(instruction_store_character);
-    fns_[static_cast<std::size_t>(Instruction::Split)].push_back(instruction_split);
-    fns_[static_cast<std::size_t>(Instruction::StackUnderStack)].push_back(instruction_stack_under_stack);
-    fns_[static_cast<std::size_t>(Instruction::GoSouth)].push_back(instruction_go_south);
-    fns_[static_cast<std::size_t>(Instruction::Compare)].push_back(instruction_compare);
-    fns_[static_cast<std::size_t>(Instruction::AbsoluteDelta)].push_back(instruction_absolute_delta);
-    fns_[static_cast<std::size_t>(Instruction::GetSysinfo)].push_back(instruction_get_sysinfo);
-    fns_[static_cast<std::size_t>(Instruction::NoOperation)].push_back(instruction_no_operation);
-    fns_[static_cast<std::size_t>(Instruction::BeginBlock)].push_back(instruction_begin_block);
-    fns_[static_cast<std::size_t>(Instruction::NorthSouthIf)].push_back(instruction_north_south_if);
-    fns_[static_cast<std::size_t>(Instruction::EndBlock)].push_back(instruction_end_block);
-    fns_[static_cast<std::size_t>(Instruction::InputCharacter)].push_back(instruction_input_character);
+    fns.resize(127);
+    fns[static_cast<std::size_t>(Instruction::Space)].push_back(instruction_space);
+    fns[static_cast<std::size_t>(Instruction::LogicalNot)].push_back(instruction_logical_not);
+    fns[static_cast<std::size_t>(Instruction::ToggleStringmode)].push_back(instruction_toggle_stringmode);
+    fns[static_cast<std::size_t>(Instruction::Trampoline)].push_back(instruction_trampoline);
+    fns[static_cast<std::size_t>(Instruction::Pop)].push_back(instruction_pop);
+    fns[static_cast<std::size_t>(Instruction::Remainder)].push_back(instruction_remainder);
+    fns[static_cast<std::size_t>(Instruction::InputInteger)].push_back(instruction_input_integer);
+    fns[static_cast<std::size_t>(Instruction::FetchCharacter)].push_back(instruction_fetch_character);
+    fns[static_cast<std::size_t>(Instruction::LoadSemantics)].push_back(instruction_load_semantics);
+    fns[static_cast<std::size_t>(Instruction::UnloadSemantics)].push_back(instruction_unload_semantics);
+    fns[static_cast<std::size_t>(Instruction::Multiply)].push_back(instruction_multiply);
+    fns[static_cast<std::size_t>(Instruction::Add)].push_back(instruction_add);
+    fns[static_cast<std::size_t>(Instruction::OutputCharacter)].push_back(instruction_output_character);
+    fns[static_cast<std::size_t>(Instruction::Subtract)].push_back(instruction_subtract);
+    fns[static_cast<std::size_t>(Instruction::OutputInteger)].push_back(instruction_output_integer);
+    fns[static_cast<std::size_t>(Instruction::Divide)].push_back(instruction_divide);
+    fns[static_cast<std::size_t>(Instruction::PushZero)].push_back(instruction_push_zero);
+    fns[static_cast<std::size_t>(Instruction::PushOne)].push_back(instruction_push_one);
+    fns[static_cast<std::size_t>(Instruction::PushTwo)].push_back(instruction_push_two);
+    fns[static_cast<std::size_t>(Instruction::PushThree)].push_back(instruction_push_three);
+    fns[static_cast<std::size_t>(Instruction::PushFour)].push_back(instruction_push_four);
+    fns[static_cast<std::size_t>(Instruction::PushFive)].push_back(instruction_push_five);
+    fns[static_cast<std::size_t>(Instruction::PushSix)].push_back(instruction_push_six);
+    fns[static_cast<std::size_t>(Instruction::PushSeven)].push_back(instruction_push_seven);
+    fns[static_cast<std::size_t>(Instruction::PushEight)].push_back(instruction_push_eight);
+    fns[static_cast<std::size_t>(Instruction::PushNiner)].push_back(instruction_push_niner);
+    fns[static_cast<std::size_t>(Instruction::Duplicate)].push_back(instruction_duplicate);
+    fns[static_cast<std::size_t>(Instruction::JumpOver)].push_back(instruction_jump_over);
+    fns[static_cast<std::size_t>(Instruction::GoWest)].push_back(instruction_go_west);
+    fns[static_cast<std::size_t>(Instruction::Execute)].push_back(instruction_execute);
+    fns[static_cast<std::size_t>(Instruction::GoEast)].push_back(instruction_go_east);
+    fns[static_cast<std::size_t>(Instruction::GoAway)].push_back(instruction_go_away);
+    fns[static_cast<std::size_t>(Instruction::Stop)].push_back(instruction_stop);
+    fns[static_cast<std::size_t>(Instruction::A)].push_back(instruction_a);
+    fns[static_cast<std::size_t>(Instruction::B)].push_back(instruction_b);
+    fns[static_cast<std::size_t>(Instruction::C)].push_back(instruction_c);
+    fns[static_cast<std::size_t>(Instruction::D)].push_back(instruction_d);
+    fns[static_cast<std::size_t>(Instruction::E)].push_back(instruction_e);
+    fns[static_cast<std::size_t>(Instruction::F)].push_back(instruction_f);
+    fns[static_cast<std::size_t>(Instruction::G)].push_back(instruction_g);
+    fns[static_cast<std::size_t>(Instruction::H)].push_back(instruction_h);
+    fns[static_cast<std::size_t>(Instruction::I)].push_back(instruction_i);
+    fns[static_cast<std::size_t>(Instruction::J)].push_back(instruction_j);
+    fns[static_cast<std::size_t>(Instruction::K)].push_back(instruction_k);
+    fns[static_cast<std::size_t>(Instruction::L)].push_back(instruction_l);
+    fns[static_cast<std::size_t>(Instruction::M)].push_back(instruction_m);
+    fns[static_cast<std::size_t>(Instruction::N)].push_back(instruction_n);
+    fns[static_cast<std::size_t>(Instruction::O)].push_back(instruction_o);
+    fns[static_cast<std::size_t>(Instruction::P)].push_back(instruction_p);
+    fns[static_cast<std::size_t>(Instruction::Q)].push_back(instruction_q);
+    fns[static_cast<std::size_t>(Instruction::R)].push_back(instruction_r);
+    fns[static_cast<std::size_t>(Instruction::S)].push_back(instruction_s);
+    fns[static_cast<std::size_t>(Instruction::T)].push_back(instruction_t);
+    fns[static_cast<std::size_t>(Instruction::U)].push_back(instruction_u);
+    fns[static_cast<std::size_t>(Instruction::V)].push_back(instruction_v);
+    fns[static_cast<std::size_t>(Instruction::W)].push_back(instruction_w);
+    fns[static_cast<std::size_t>(Instruction::X)].push_back(instruction_x);
+    fns[static_cast<std::size_t>(Instruction::Y)].push_back(instruction_y);
+    fns[static_cast<std::size_t>(Instruction::Z)].push_back(instruction_z);
+    fns[static_cast<std::size_t>(Instruction::TurnLeft)].push_back(instruction_turn_left);
+    fns[static_cast<std::size_t>(Instruction::Swap)].push_back(instruction_swap);
+    fns[static_cast<std::size_t>(Instruction::TurnRight)].push_back(instruction_turn_right);
+    fns[static_cast<std::size_t>(Instruction::GoNorth)].push_back(instruction_go_north);
+    fns[static_cast<std::size_t>(Instruction::EastWestIf)].push_back(instruction_east_west_if);
+    fns[static_cast<std::size_t>(Instruction::GreaterThan)].push_back(instruction_greater_than);
+    fns[static_cast<std::size_t>(Instruction::PushTen)].push_back(instruction_push_ten);
+    fns[static_cast<std::size_t>(Instruction::PushEleven)].push_back(instruction_push_eleven);
+    fns[static_cast<std::size_t>(Instruction::PushTwelve)].push_back(instruction_push_twelve);
+    fns[static_cast<std::size_t>(Instruction::PushThirteen)].push_back(instruction_push_thirteen);
+    fns[static_cast<std::size_t>(Instruction::PushFourteen)].push_back(instruction_push_fourteen);
+    fns[static_cast<std::size_t>(Instruction::PushFifteen)].push_back(instruction_push_fifteen);
+    fns[static_cast<std::size_t>(Instruction::Get)].push_back(instruction_get);
+    fns[static_cast<std::size_t>(Instruction::GoHigh)].push_back(instruction_go_high);
+    fns[static_cast<std::size_t>(Instruction::InputFile)].push_back(instruction_input_file);
+    fns[static_cast<std::size_t>(Instruction::JumpForward)].push_back(instruction_jump_forward);
+    fns[static_cast<std::size_t>(Instruction::Iterate)].push_back(instruction_iterate);
+    fns[static_cast<std::size_t>(Instruction::GoLow)].push_back(instruction_go_low);
+    fns[static_cast<std::size_t>(Instruction::HighLowIf)].push_back(instruction_high_low_if);
+    fns[static_cast<std::size_t>(Instruction::ClearStack)].push_back(instruction_clear_stack);
+    fns[static_cast<std::size_t>(Instruction::OutputFile)].push_back(instruction_output_file);
+    fns[static_cast<std::size_t>(Instruction::Put)].push_back(instruction_put);
+    fns[static_cast<std::size_t>(Instruction::Quit)].push_back(instruction_quit);
+    fns[static_cast<std::size_t>(Instruction::Reflect)].push_back(instruction_reflect);
+    fns[static_cast<std::size_t>(Instruction::StoreCharacter)].push_back(instruction_store_character);
+    fns[static_cast<std::size_t>(Instruction::Split)].push_back(instruction_split);
+    fns[static_cast<std::size_t>(Instruction::StackUnderStack)].push_back(instruction_stack_under_stack);
+    fns[static_cast<std::size_t>(Instruction::GoSouth)].push_back(instruction_go_south);
+    fns[static_cast<std::size_t>(Instruction::Compare)].push_back(instruction_compare);
+    fns[static_cast<std::size_t>(Instruction::AbsoluteDelta)].push_back(instruction_absolute_delta);
+    fns[static_cast<std::size_t>(Instruction::GetSysinfo)].push_back(instruction_get_sysinfo);
+    fns[static_cast<std::size_t>(Instruction::NoOperation)].push_back(instruction_no_operation);
+    fns[static_cast<std::size_t>(Instruction::BeginBlock)].push_back(instruction_begin_block);
+    fns[static_cast<std::size_t>(Instruction::NorthSouthIf)].push_back(instruction_north_south_if);
+    fns[static_cast<std::size_t>(Instruction::EndBlock)].push_back(instruction_end_block);
+    fns[static_cast<std::size_t>(Instruction::InputCharacter)].push_back(instruction_input_character);
 }
 
 InstructionAction instruction_space(Fungespace &, InstructionPointer &) {
@@ -312,8 +313,13 @@ InstructionAction instruction_load_semantics(Fungespace &, InstructionPointer &i
         fingerprint *= 256;
         fingerprint += ip.stack.pop();
     }
-    // TODO: Try and load it
-    ip.reflect();
+
+    if (!load_fingerprint(ip.instruction_stack, fingerprint)) {
+        ip.reflect();
+    } else {
+        ip.stack.push(fingerprint);
+        ip.stack.push(1);
+    }
 
     return MoveAction{};
 }
@@ -326,8 +332,9 @@ InstructionAction instruction_unload_semantics(Fungespace &, InstructionPointer 
         fingerprint *= 256;
         fingerprint += ip.stack.pop();
     }
-    // TODO: Try and unload it
-    ip.reflect();
+
+    if (!unload_fingerprint(ip.instruction_stack, fingerprint))
+        ip.reflect();
 
     return MoveAction{};
 }
@@ -429,7 +436,7 @@ InstructionAction instruction_duplicate(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction instruction_jump_over(Fungespace &, InstructionPointer &ip) {
+InstructionAction instruction_jump_over(Fungespace &, InstructionPointer &) {
     std::unreachable();
 }
 
@@ -452,24 +459,24 @@ InstructionAction instruction_go_east(Fungespace &, InstructionPointer &ip) {
 
 InstructionAction instruction_go_away(Fungespace &, InstructionPointer &ip) {
     switch (mizu::rng::get<std::size_t>(3)) {
-        case 0:
-            ip.delta[0] = SOUTH[0];
-            ip.delta[1] = SOUTH[1];
-            break;
-        case 1:
-            ip.delta[0] = EAST[0];
-            ip.delta[1] = EAST[1];
-            break;
-        case 2:
-            ip.delta[0] = NORTH[0];
-            ip.delta[1] = NORTH[1];
-            break;
-        case 3:
-            ip.delta[0] = WEST[0];
-            ip.delta[1] = WEST[1];
-            break;
-        default:
-            std::unreachable();
+    case 0:
+        ip.delta[0] = SOUTH[0];
+        ip.delta[1] = SOUTH[1];
+        break;
+    case 1:
+        ip.delta[0] = EAST[0];
+        ip.delta[1] = EAST[1];
+        break;
+    case 2:
+        ip.delta[0] = NORTH[0];
+        ip.delta[1] = NORTH[1];
+        break;
+    case 3:
+        ip.delta[0] = WEST[0];
+        ip.delta[1] = WEST[1];
+        break;
+    default:
+        std::unreachable();
     }
     return MoveAction{};
 }
@@ -808,7 +815,7 @@ InstructionAction instruction_store_character(Fungespace &fungespace, Instructio
     return MoveAction{};
 }
 
-InstructionAction instruction_split(Fungespace &, InstructionPointer &ip) {
+InstructionAction instruction_split(Fungespace &, InstructionPointer &) {
     return SplitAction{};
 }
 
@@ -914,8 +921,8 @@ InstructionAction instruction_get_sysinfo(const Fungespace &fungespace, Instruct
 
     // current ((year - 1900) * 256 * 256) + (month * 256) + (day of month)
     sysinfo.push_back(
-        (static_cast<long long>(year) - 1900) * 256 * 256 + static_cast<long long>(month) * 256 +
-        static_cast<long long>(day));
+            (static_cast<long long>(year) - 1900) * 256 * 256 + static_cast<long long>(month) * 256 +
+            static_cast<long long>(day));
 
     // current (hour * 256 * 256) + (minute * 256) + (second)
     sysinfo.push_back(hour * 256 * 256 + minute * 256 + second);
@@ -946,7 +953,7 @@ InstructionAction instruction_get_sysinfo(const Fungespace &fungespace, Instruct
     return MoveAction{};
 }
 
-InstructionAction instruction_no_operation(Fungespace &, InstructionPointer &ip) {
+InstructionAction instruction_no_operation(Fungespace &, InstructionPointer &) {
     return MoveAction{};
 }
 
@@ -974,10 +981,9 @@ InstructionAction instruction_end_block(Fungespace &, InstructionPointer &ip) {
 
 InstructionAction instruction_input_character(Fungespace &, InstructionPointer &ip) {
     int i = std::getchar();
-    if (i == EOF) {
+    if (i == EOF)
         ip.reflect();
-    } else {
+    else
         ip.stack.push(i);
-    }
     return MoveAction{};
 }

@@ -1,15 +1,10 @@
 #ifndef AMANITA_INSTRUCTION_POINTER_HPP
 #define AMANITA_INSTRUCTION_POINTER_HPP
 
-#include <cstdint>
+#include "common.hpp"
 #include "fungespace.hpp"
 #include "instruction_stack.hpp"
 #include "stackstack.hpp"
-
-constexpr std::int64_t SOUTH[2] = {0, 1};
-constexpr std::int64_t EAST[2] = {1, 0};
-constexpr std::int64_t NORTH[2] = {0, -1};
-constexpr std::int64_t WEST[2] = {-1, 0};
 
 std::int64_t next_ip_id();
 

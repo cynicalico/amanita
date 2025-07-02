@@ -1,0 +1,20 @@
+#ifndef AMANITA_MODU_HPP
+#define AMANITA_MODU_HPP
+
+#include "common.hpp"
+
+InstructionAction modu_m(Fungespace &, InstructionPointer &ip);
+
+InstructionAction modu_u(Fungespace &, InstructionPointer &ip);
+
+InstructionAction modu_r(Fungespace &, InstructionPointer &ip);
+
+const Fingerprint MODU{
+        .id = 0x4d4f4455,
+        .fns = {
+                {Instruction::M, modu_m},
+                {Instruction::U, modu_u},
+                {Instruction::R, modu_r},
+        }};
+
+#endif // AMANITA_MODU_HPP

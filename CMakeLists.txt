@@ -19,23 +19,35 @@ CPMAddPackage(
 )
 
 add_executable(amanita
+        include/common.hpp
         include/editor.hpp
+        include/fingerprints.hpp
         include/fungespace.hpp
-        include/instruction_action.hpp
         include/instruction_pointer.hpp
         include/instruction_stack.hpp
         include/instructions.hpp
         include/interpreter.hpp
         include/sops.hpp
         include/stackstack.hpp
+
+        src/common.cpp
         src/editor.cpp
+        src/fingerprints.cpp
         src/fungespace.cpp
         src/instruction_pointer.cpp
         src/instruction_stack.cpp
         src/interpreter.cpp
         src/stackstack.cpp
+
+        include/fingerprints/modu.hpp
+        include/fingerprints/roma.hpp
+
+        src/fingerprints/modu.cpp
+        src/fingerprints/roma.cpp
+
         thirdparty/argparse.hpp
         thirdparty/utf8.h
+
         main.cpp)
 
 target_compile_features(amanita PRIVATE cxx_std_23)

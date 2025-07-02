@@ -2,10 +2,10 @@
 #define AMANITA_INSTRUCTION_STACK_HPP
 
 #include <functional>
-#include "instruction_action.hpp"
-#include "instructions.hpp"
-#include "fungespace.hpp"
 #include <vector>
+#include "common.hpp"
+#include "fungespace.hpp"
+#include "instructions.hpp"
 
 class InstructionPointer;
 
@@ -13,13 +13,13 @@ using InstructionFunc = std::function<InstructionAction(Fungespace &fungespace, 
 
 class InstructionStack {
 public:
+    std::vector<std::vector<InstructionFunc>> fns;
+
     InstructionStack();
 
     InstructionAction perform(Instruction ins, Fungespace &fungespace, InstructionPointer &ip);
 
 private:
-    std::vector<std::vector<InstructionFunc> > fns_;
-
     void populate_default_fns_();
 };
 

@@ -2,9 +2,7 @@
 #define AMANITA_INTERPRETER_HPP
 
 #include "fungespace.hpp"
-#include "instruction_action.hpp"
 #include "instruction_pointer.hpp"
-#include "instructions.hpp"
 
 class Interpreter {
 public:

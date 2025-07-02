@@ -1,7 +1,5 @@
 #include "instruction_pointer.hpp"
 
-#include "instructions.hpp"
-
 std::int64_t next_ip_id() {
     static std::int64_t next_id = 0;
     return ++next_id;
@@ -16,8 +14,7 @@ InstructionPointer::InstructionPointer(const InstructionPointer &other)
       cache_ins(other.cache_ins),
       stack(other.stack),
       storage_offset{other.storage_offset[0], other.storage_offset[1]},
-      instruction_stack(other.instruction_stack) {
-}
+      instruction_stack(other.instruction_stack) {}
 
 void InstructionPointer::step() {
     pos[0] += delta[0];
