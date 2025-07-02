@@ -4,7 +4,7 @@
 constexpr std::size_t ROWS = 25;
 constexpr std::size_t COLS = 80;
 constexpr std::size_t STACKSTACK_DIGIT_MAX = 19;
-constexpr std::size_t STACKSTACK_ENTRIES = 15;
+constexpr std::size_t STACKSTACK_ENTRIES = 10;
 
 constexpr float MARGIN = 5.0f;
 constexpr float PROGRAM_MARGIN = 5.0f;
@@ -58,12 +58,13 @@ Editor::Editor(mizu::Engine *engine, const std::filesystem::path &path)
     stackstack_size = {
             STACKSTACK_MARGIN + stackstack_char_size.x * (STACKSTACK_DIGIT_MAX + 1) + STACKSTACK_MARGIN,
             STACKSTACK_MARGIN + stackstack_char_size.y * STACKSTACK_ENTRIES + STACKSTACK_MARGIN};
-    toss_pos = {program_pos.x + program_size.x + 1 + MARGIN + 1, program_pos.y};
-    soss_pos = {toss_pos.x, toss_pos.y + stackstack_size.y + 1 + MARGIN + 1};
+    stackstack_pos = {program_pos.x + program_size.x + 1 + MARGIN + 1, program_pos.y};
 
-    window.set_size(
-            {MARGIN + 1 + program_size.x + 1 + MARGIN + 1 + stackstack_size.x + 1 + MARGIN,
-             buttons->size().y + 1 + program_size.y + 1 + MARGIN});
+    const auto window_h = std::max(
+            buttons->size().y + 1 + program_size.y + 1 + MARGIN,
+            buttons->size().y + 3 * (1 + stackstack_size.y + 1) + 2 * MARGIN + MARGIN);
+
+    window.set_size({MARGIN + 1 + program_size.x + 1 + MARGIN + 1 + stackstack_size.x + 1 + MARGIN, window_h});
 
     input.start_text_input();
 }
@@ -102,16 +103,26 @@ void Editor::draw_program() {
 }
 
 void Editor::draw_stacks() {
-    draw_rect(g2d, toss_pos - glm::vec2(1.0f), stackstack_size + glm::vec2(2.0f), BORDER_COLOR);
+    glm::vec2 pos = stackstack_pos;
+
+    draw_rect(g2d, pos - glm::vec2(1.0f), stackstack_size + glm::vec2(2.0f), BORDER_COLOR);
     stackstack_font->draw(
             fmt::format("{:>{}}", "TOSS", STACKSTACK_DIGIT_MAX + 1),
-            {toss_pos.x + STACKSTACK_MARGIN, toss_pos.y + STACKSTACK_MARGIN + stackstack_font->pen_offset()},
+            {pos.x + STACKSTACK_MARGIN, pos.y + STACKSTACK_MARGIN + stackstack_font->pen_offset()},
             mizu::rgb(0xffffff));
+    pos.y += 1 + stackstack_size.y + 1 + MARGIN;
 
-    draw_rect(g2d, soss_pos - glm::vec2(1.0f), stackstack_size + glm::vec2(2.0f), BORDER_COLOR);
+    draw_rect(g2d, pos - glm::vec2(1.0f), stackstack_size + glm::vec2(2.0f), BORDER_COLOR);
     stackstack_font->draw(
             fmt::format("{:>{}}", "SOSS", STACKSTACK_DIGIT_MAX + 1),
-            {soss_pos.x + STACKSTACK_MARGIN, soss_pos.y + STACKSTACK_MARGIN + stackstack_font->pen_offset()},
+            {pos.x + STACKSTACK_MARGIN, pos.y + STACKSTACK_MARGIN + stackstack_font->pen_offset()},
+            mizu::rgb(0xffffff));
+    pos.y += 1 + stackstack_size.y + 1 + MARGIN;
+
+    draw_rect(g2d, pos - glm::vec2(1.0f), stackstack_size + glm::vec2(2.0f), BORDER_COLOR);
+    stackstack_font->draw(
+            fmt::format("{:>{}}", "STACK N", STACKSTACK_DIGIT_MAX + 1),
+            {pos.x + STACKSTACK_MARGIN, pos.y + STACKSTACK_MARGIN + stackstack_font->pen_offset()},
             mizu::rgb(0xffffff));
 }
 

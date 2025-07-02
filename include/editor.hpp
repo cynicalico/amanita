@@ -20,14 +20,18 @@ public:
     glm::vec2 program_size{};
     glm::vec2 program_pos{};
 
+    std::unique_ptr<mizu::Font> ip_info_font;
+    glm::vec2 ip_info_char_size{};
+    glm::vec2 ip_info_size{};
+    glm::vec2 ip_info_pos{};
+
     std::unique_ptr<mizu::Font> stackstack_font;
     glm::vec2 stackstack_char_size{};
     glm::vec2 stackstack_size{};
-    glm::vec2 toss_pos{};
-    glm::vec2 soss_pos{};
+    glm::vec2 stackstack_pos{};
 
     const std::filesystem::path path;
-    Mode mode{Mode::Run};
+    Mode mode{Mode::Edit};
     std::int64_t cursor[2];
     std::int64_t cursor_delta[2];
     Interpreter interpreter{};
