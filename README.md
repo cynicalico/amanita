@@ -15,10 +15,12 @@ See output of `amanita --help`
 - [ ] Visual editor/debugger
     - Built on top of [mizu](https://github.com/cynicalico/mizu), my graphics engine (dogfooding!)
 
-## Fingerprints
+## Available Fingerprints
 
-[MODU](https://web.archive.org/web/20250523022748/https://catseye.tc/view/funge-98/library/MODU.markdown) <br>
-[ROMA](https://web.archive.org/web/20250523145159/https://catseye.tc/view/funge-98/library/ROMA.markdown)
+[MODU](https://web.archive.org/web/20250523022748/https://catseye.tc/view/funge-98/library/MODU.markdown) \
+[NULL](https://web.archive.org/web/20250124201817/https://catseye.tc/view/Funge-98/library/NULL.markdown) \
+[ROMA](https://web.archive.org/web/20250523145159/https://catseye.tc/view/funge-98/library/ROMA.markdown) \
+[TOYS](https://web.archive.org/web/20211201092300/https://catseye.tc/view/funge-98/library/TOYS.markdown)
 
 ## Notable Implementation Details
 
@@ -54,6 +56,8 @@ Checking what other interpreters do may be desirable in the future.
 
 ### Mycology UNDEFs
 
+#### Base instruction set
+
 ```
 UNDEF: # across left edge skips easternmost cell in file
 UNDEF: # across left edge hits easternmost cell on line
@@ -65,6 +69,18 @@ UNDEF: k with a negative argument executes 0 times or less often than the absolu
 UNDEF: the empty string wrapped around the edge of space contains 1 character(s) (hopefully spaces)
 UNDEF: ( with a negative count reflects and pops 0 times or less than the absolute value of the count
 UNDEF: ) with a negative count reflects and pops 0 times or less than the absolute value of the count
+
+UNDEF: IVXLCDM didn't reflect: child IP has ROMA loaded
+```
+
+#### TOYS
+
+```
+UNDEF: 12B leaves stack as [ -1 3 ] (from top to bottom)
+UNDEF: 0f-03-H is -2, meaning H did a signed right shift
+UNDEF: F pops j after i
+UNDEF: 02T goes through
+UNDEF: Z in Befunge reflects
 ```
 
 ## Dependencies
