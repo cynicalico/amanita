@@ -70,6 +70,18 @@ void InstructionPointer::step_to_next_instruction(Fungespace &fungespace, Cell p
     } while (true);
 }
 
+void InstructionPointer::turn_left() {
+    const auto tmp = delta[0];
+    delta[0] = delta[1];
+    delta[1] = -tmp;
+}
+
+void InstructionPointer::turn_right() {
+    const auto tmp = delta[0];
+    delta[0] = -delta[1];
+    delta[1] = tmp;
+}
+
 void InstructionPointer::reflect() {
     delta[0] = -delta[0];
     delta[1] = -delta[1];
@@ -95,4 +107,24 @@ void InstructionPointer::end_block() {
 void InstructionPointer::stack_under_stack() {
     if (!stack.stack_under_stack())
         reflect();
+}
+
+void InstructionPointer::save_pos() {
+    saved_pos[0] = pos[0];
+    saved_pos[1] = pos[1];
+}
+
+void InstructionPointer::save_delta() {
+    saved_delta[0] = delta[0];
+    saved_delta[1] = delta[1];
+}
+
+void InstructionPointer::restore_pos() {
+    pos[0] = saved_pos[0];
+    pos[1] = saved_pos[1];
+}
+
+void InstructionPointer::restore_delta() {
+    delta[0] = saved_delta[0];
+    delta[1] = saved_delta[1];
 }

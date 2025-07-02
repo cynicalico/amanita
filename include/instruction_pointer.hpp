@@ -33,12 +33,22 @@ public:
     void step_wrap(Fungespace &fungespace);
     void step_to_next_instruction(Fungespace &fungespace, Cell prev_ins, bool start_skipping);
 
+    void turn_left();
+    void turn_right();
     void reflect();
 
     void begin_block();
     void end_block();
-
     void stack_under_stack();
+
+    void save_pos();
+    void save_delta();
+    void restore_pos();
+    void restore_delta();
+
+private:
+    std::int64_t saved_pos[2]{0, 0};
+    std::int64_t saved_delta[2]{0, 0};
 };
 
 #endif // AMANITA_INSTRUCTION_POINTER_HPP

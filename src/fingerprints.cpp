@@ -1,16 +1,19 @@
 #include "fingerprints.hpp"
+#include <ranges>
 #include <unordered_map>
 #include "instruction_stack.hpp"
 
 #include "fingerprints/modu.hpp"
 #include "fingerprints/null.hpp"
 #include "fingerprints/roma.hpp"
+#include "fingerprints/toys.hpp"
 
 const std::unordered_map<std::int64_t, const Fingerprint &> &registry() {
     static std::unordered_map<std::int64_t, const Fingerprint &> registry{
             {FNG_MODU.id, FNG_MODU},
             {FNG_NULL.id, FNG_NULL},
             {FNG_ROMA.id, FNG_ROMA},
+            {FNG_TOYS.id, FNG_TOYS},
     };
     return registry;
 }
@@ -29,7 +32,7 @@ bool load_fingerprint(InstructionStack &instruction_stack, std::int64_t fingerpr
 bool unload_fingerprint(InstructionStack &instruction_stack, std::int64_t fingerprint) {
     const auto &r = registry();
     if (const auto it = r.find(fingerprint); it != r.end()) {
-        for (const auto &[ins, _]: it->second.fns)
+        for (const auto &ins: it->second.fns | std::views::keys)
             instruction_stack.fns[static_cast<std::int64_t>(ins)].pop_back();
         return true;
     }

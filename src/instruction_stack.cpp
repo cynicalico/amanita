@@ -617,9 +617,7 @@ InstructionAction instruction_z(Fungespace &, InstructionPointer &ip) {
 }
 
 InstructionAction instruction_turn_left(Fungespace &, InstructionPointer &ip) {
-    const auto tmp = ip.delta[0];
-    ip.delta[0] = ip.delta[1];
-    ip.delta[1] = -tmp;
+    ip.turn_left();
     return MoveAction{};
 }
 
@@ -632,9 +630,7 @@ InstructionAction instruction_swap(Fungespace &, InstructionPointer &ip) {
 }
 
 InstructionAction instruction_turn_right(Fungespace &, InstructionPointer &ip) {
-    const auto tmp = ip.delta[0];
-    ip.delta[0] = -ip.delta[1];
-    ip.delta[1] = tmp;
+    ip.turn_right();
     return MoveAction{};
 }
 
@@ -727,7 +723,7 @@ InstructionAction instruction_input_file(Fungespace &fungespace, InstructionPoin
 InstructionAction instruction_jump_forward(Fungespace &fungespace, InstructionPointer &ip) {
     auto n = ip.stack.pop();
 
-    std::int64_t saved_delta[2] = {ip.delta[0], ip.delta[1]};
+    ip.save_delta();
 
     if (n < 0) {
         ip.reflect();
@@ -736,8 +732,7 @@ InstructionAction instruction_jump_forward(Fungespace &fungespace, InstructionPo
     for (std::int64_t i = 0; i < n; ++i)
         ip.step_wrap(fungespace);
 
-    ip.delta[0] = saved_delta[0];
-    ip.delta[1] = saved_delta[1];
+    ip.restore_delta();
 
     return MoveAction{};
 }
@@ -745,15 +740,14 @@ InstructionAction instruction_jump_forward(Fungespace &fungespace, InstructionPo
 InstructionAction instruction_iterate(Fungespace &fungespace, InstructionPointer &ip) {
     const auto n = ip.stack.pop();
 
-    std::int64_t saved_pos[2] = {ip.pos[0], ip.pos[1]};
+    ip.save_pos();
     ip.step_to_next_instruction(fungespace, '\0', false);
 
     if (n == 0)
         return MoveAction{};
 
     const auto iter_ins = fungespace.get(ip.pos[0], ip.pos[1]);
-    ip.pos[0] = saved_pos[0];
-    ip.pos[1] = saved_pos[1];
+    ip.restore_pos();
 
     std::vector<InstructionAction> ret{};
     for (std::int64_t i = 0; i < n; ++i)

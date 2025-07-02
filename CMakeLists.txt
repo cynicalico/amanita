@@ -42,10 +42,12 @@ add_executable(amanita
         include/fingerprints/modu.hpp
         include/fingerprints/null.hpp
         include/fingerprints/roma.hpp
+        include/fingerprints/toys.hpp
 
         src/fingerprints/modu.cpp
         src/fingerprints/null.cpp
         src/fingerprints/roma.cpp
+        src/fingerprints/toys.cpp
 
         thirdparty/argparse.hpp
         thirdparty/utf8.h

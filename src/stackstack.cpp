@@ -39,6 +39,10 @@ std::string StackStack::pop_gnirts() {
     return ret;
 }
 
+std::size_t StackStack::size() const {
+    return stacks_[toss_].size();
+}
+
 void StackStack::clear() {
     stacks_[toss_].clear();
 }

@@ -18,6 +18,7 @@ public:
     std::int64_t peek() const;
     std::int64_t pop();
     std::string pop_gnirts();
+    std::size_t size() const;
     void clear();
 
     std::int64_t pick(std::int64_t n) const;

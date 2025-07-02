@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <functional>
+#include <unordered_map>
 #include <variant>
 #include "instructions.hpp"
 
