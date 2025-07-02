@@ -6,22 +6,25 @@
  * This can be loaded before loading a regular transparent fingerprint to make it act opaquely.
  */
 
+#include "base_instructions.hpp"
 #include "common.hpp"
-
-InstructionAction null_reflect(Fungespace &, InstructionPointer &ip);
 
 const Fingerprint FNG_NULL{
         .id = 0x4e554c4c,
         .fns = {
-                {Instruction::A, null_reflect}, {Instruction::B, null_reflect}, {Instruction::C, null_reflect},
-                {Instruction::D, null_reflect}, {Instruction::E, null_reflect}, {Instruction::F, null_reflect},
-                {Instruction::G, null_reflect}, {Instruction::H, null_reflect}, {Instruction::I, null_reflect},
-                {Instruction::J, null_reflect}, {Instruction::K, null_reflect}, {Instruction::L, null_reflect},
-                {Instruction::M, null_reflect}, {Instruction::N, null_reflect}, {Instruction::O, null_reflect},
-                {Instruction::P, null_reflect}, {Instruction::Q, null_reflect}, {Instruction::R, null_reflect},
-                {Instruction::S, null_reflect}, {Instruction::T, null_reflect}, {Instruction::U, null_reflect},
-                {Instruction::V, null_reflect}, {Instruction::W, null_reflect}, {Instruction::X, null_reflect},
-                {Instruction::Y, null_reflect}, {Instruction::Z, null_reflect},
+                {Instruction::A, instruction_reflect}, {Instruction::B, instruction_reflect},
+                {Instruction::C, instruction_reflect}, {Instruction::D, instruction_reflect},
+                {Instruction::E, instruction_reflect}, {Instruction::F, instruction_reflect},
+                {Instruction::G, instruction_reflect}, {Instruction::H, instruction_reflect},
+                {Instruction::I, instruction_reflect}, {Instruction::J, instruction_reflect},
+                {Instruction::K, instruction_reflect}, {Instruction::L, instruction_reflect},
+                {Instruction::M, instruction_reflect}, {Instruction::N, instruction_reflect},
+                {Instruction::O, instruction_reflect}, {Instruction::P, instruction_reflect},
+                {Instruction::Q, instruction_reflect}, {Instruction::R, instruction_reflect},
+                {Instruction::S, instruction_reflect}, {Instruction::T, instruction_reflect},
+                {Instruction::U, instruction_reflect}, {Instruction::V, instruction_reflect},
+                {Instruction::W, instruction_reflect}, {Instruction::X, instruction_reflect},
+                {Instruction::Y, instruction_reflect}, {Instruction::Z, instruction_reflect},
         }};
 
 #endif // AMANITA_NULL_HPP

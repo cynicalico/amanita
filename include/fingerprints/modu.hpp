@@ -15,9 +15,7 @@
 #include "common.hpp"
 
 InstructionAction modu_m(Fungespace &, InstructionPointer &ip);
-
 InstructionAction modu_u(Fungespace &, InstructionPointer &ip);
-
 InstructionAction modu_r(Fungespace &, InstructionPointer &ip);
 
 const Fingerprint FNG_MODU{

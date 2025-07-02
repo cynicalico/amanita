@@ -85,55 +85,30 @@
 #include "common.hpp"
 
 InstructionAction toys_gable(Fungespace &, InstructionPointer &ip);
-
 InstructionAction toys_pair_of_shoes(Fungespace &, InstructionPointer &ip);
-
 InstructionAction toys_bracelet(Fungespace &, InstructionPointer &ip);
-
 InstructionAction toys_toilet_seat(Fungespace &, InstructionPointer &ip);
-
 InstructionAction toys_pitchfork_head(Fungespace &, InstructionPointer &ip);
-
 InstructionAction toys_calipers(Fungespace &, InstructionPointer &ip);
-
 InstructionAction toys_counterclockwise(Fungespace &, InstructionPointer &ip);
-
 InstructionAction toys_pair_of_stilts(Fungespace &, InstructionPointer &ip);
-
 InstructionAction toys_doric_column(Fungespace &, InstructionPointer &ip);
-
 InstructionAction toys_fishhook(Fungespace &, InstructionPointer &ip);
-
 InstructionAction toys_scissors(Fungespace &, InstructionPointer &ip);
-
 InstructionAction toys_corner(Fungespace &, InstructionPointer &ip);
-
 InstructionAction toys_kittycat(Fungespace &, InstructionPointer &ip);
-
 InstructionAction toys_lightning_bolt(Fungespace &, InstructionPointer &ip);
-
 InstructionAction toys_boulder(Fungespace &, InstructionPointer &ip);
-
 InstructionAction toys_mailbox(Fungespace &, InstructionPointer &ip);
-
 InstructionAction toys_necklace(Fungespace &, InstructionPointer &ip);
-
 InstructionAction toys_can_opener(Fungespace &, InstructionPointer &ip);
-
 InstructionAction toys_chicane(Fungespace &, InstructionPointer &ip);
-
 InstructionAction toys_barstool(Fungespace &, InstructionPointer &ip);
-
 InstructionAction toys_tumbler(Fungespace &, InstructionPointer &ip);
-
 InstructionAction toys_dixiecup(Fungespace &, InstructionPointer &ip);
-
 InstructionAction toys_television_antenna(Fungespace &, InstructionPointer &ip);
-
 InstructionAction toys_buried_treasure(Fungespace &, InstructionPointer &ip);
-
 InstructionAction toys_slingshot(Fungespace &, InstructionPointer &ip);
-
 InstructionAction toys_barn_door(Fungespace &, InstructionPointer &ip);
 
 const Fingerprint FNG_TOYS{

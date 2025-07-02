@@ -17,6 +17,7 @@ See output of `amanita --help`
 
 ## Available Fingerprints
 
+[HRTI](https://web.archive.org/web/20250124201720/https://catseye.tc/view/Funge-98/library/HRTI.markdown) \
 [MODU](https://web.archive.org/web/20250523022748/https://catseye.tc/view/funge-98/library/MODU.markdown) \
 [NULL](https://web.archive.org/web/20250124201817/https://catseye.tc/view/Funge-98/library/NULL.markdown) \
 [ROMA](https://web.archive.org/web/20250523145159/https://catseye.tc/view/funge-98/library/ROMA.markdown) \
@@ -71,6 +72,12 @@ UNDEF: ( with a negative count reflects and pops 0 times or less than the absolu
 UNDEF: ) with a negative count reflects and pops 0 times or less than the absolute value of the count
 
 UNDEF: IVXLCDM didn't reflect: child IP has ROMA loaded
+```
+
+#### HRTI
+
+```
+UNDEF: E without M did not reflect
 ```
 
 #### TOYS

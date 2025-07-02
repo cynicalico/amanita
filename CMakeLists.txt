@@ -19,6 +19,7 @@ CPMAddPackage(
 )
 
 add_executable(amanita
+        include/base_instructions.hpp
         include/common.hpp
         include/editor.hpp
         include/fingerprints.hpp
@@ -30,6 +31,7 @@ add_executable(amanita
         include/sops.hpp
         include/stackstack.hpp
 
+        src/base_instructions.cpp
         src/common.cpp
         src/editor.cpp
         src/fingerprints.cpp
@@ -39,13 +41,14 @@ add_executable(amanita
         src/interpreter.cpp
         src/stackstack.cpp
 
+        include/fingerprints/hrti.hpp
         include/fingerprints/modu.hpp
         include/fingerprints/null.hpp
         include/fingerprints/roma.hpp
         include/fingerprints/toys.hpp
 
+        src/fingerprints/hrti.cpp
         src/fingerprints/modu.cpp
-        src/fingerprints/null.cpp
         src/fingerprints/roma.cpp
         src/fingerprints/toys.cpp
 

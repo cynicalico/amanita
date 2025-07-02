@@ -18,17 +18,11 @@
 #include "common.hpp"
 
 InstructionAction roma_c(Fungespace &, InstructionPointer &ip);
-
 InstructionAction roma_d(Fungespace &, InstructionPointer &ip);
-
 InstructionAction roma_i(Fungespace &, InstructionPointer &ip);
-
 InstructionAction roma_l(Fungespace &, InstructionPointer &ip);
-
 InstructionAction roma_m(Fungespace &, InstructionPointer &ip);
-
 InstructionAction roma_v(Fungespace &, InstructionPointer &ip);
-
 InstructionAction roma_x(Fungespace &, InstructionPointer &ip);
 
 const static Fingerprint FNG_ROMA{
