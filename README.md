@@ -2,11 +2,11 @@
 
 amanita is a [Mycology](https://github.com/Deewiant/Mycology) [compliant](mycology_result.txt) (be)Funge-98 interpreter.
 
-### Usage
+## Usage
 
 See output of `amanita --help`
 
-### TODO
+## TODO
 
 - [ ] CLI arguments and ENV variables (`y`)
 - [x] User input (`&` and `~`)
@@ -15,13 +15,13 @@ See output of `amanita --help`
 - [ ] Visual editor/debugger
     - Built on top of [mizu](https://github.com/cynicalico/mizu), my graphics engine (dogfooding!)
 
-### Fingerprints
+## Fingerprints
 
 TODO
 
-### Notable Implementation Details
+## Notable Implementation Details
 
-#### Decimal input (`&`)
+### Input Decimal (`&`)
 
 The Funge-98 specification reads:
 
@@ -66,7 +66,7 @@ UNDEF: ( with a negative count reflects and pops 0 times or less than the absolu
 UNDEF: ) with a negative count reflects and pops 0 times or less than the absolute value of the count
 ```
 
-### Dependencies
+## Dependencies
 
 - [argparse](https://github.com/p-ranav/argparse)
 - [mizu](https://github.com/cynicalico/mizu)
