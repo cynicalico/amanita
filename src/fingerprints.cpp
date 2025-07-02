@@ -1,13 +1,16 @@
 #include "fingerprints.hpp"
 #include <unordered_map>
-#include "fingerprints/modu.hpp"
-#include "fingerprints/roma.hpp"
 #include "instruction_stack.hpp"
+
+#include "fingerprints/modu.hpp"
+#include "fingerprints/null.hpp"
+#include "fingerprints/roma.hpp"
 
 const std::unordered_map<std::int64_t, const Fingerprint &> &registry() {
     static std::unordered_map<std::int64_t, const Fingerprint &> registry{
-            {MODU.id, MODU},
-            {ROMA.id, ROMA},
+            {FNG_MODU.id, FNG_MODU},
+            {FNG_NULL.id, FNG_NULL},
+            {FNG_ROMA.id, FNG_ROMA},
     };
     return registry;
 }

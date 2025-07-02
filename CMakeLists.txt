@@ -40,9 +40,11 @@ add_executable(amanita
         src/stackstack.cpp
 
         include/fingerprints/modu.hpp
+        include/fingerprints/null.hpp
         include/fingerprints/roma.hpp
 
         src/fingerprints/modu.cpp
+        src/fingerprints/null.cpp
         src/fingerprints/roma.cpp
 
         thirdparty/argparse.hpp
