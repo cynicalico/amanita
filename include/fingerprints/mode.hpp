@@ -27,6 +27,7 @@ InstructionAction mode_toggle_queuemode(Fungespace &, InstructionPointer &ip);
 InstructionAction mode_toggle_switchmode(Fungespace &, InstructionPointer &ip);
 
 const Fingerprint FNG_MODE{
+        .name = "MODE",
         .id = 0x4d4f4445,
         .fns = {
                 {Instruction::H, mode_toggle_hovermode},

@@ -31,8 +31,10 @@ const std::unordered_map<std::int64_t, const Fingerprint &> &registry() {
 bool load_fingerprint(InstructionStack &instruction_stack, std::int64_t fingerprint) {
     const auto &r = registry();
     if (const auto it = r.find(fingerprint); it != r.end()) {
-        for (const auto &[ins, fn]: it->second.fns)
+        for (const auto &[ins, fn]: it->second.fns) {
             instruction_stack.fns[static_cast<std::int64_t>(ins)].push_back(fn);
+            instruction_stack.loaded_fingerprints[static_cast<std::size_t>(ins) - 65].push_back(it->second.name);
+        }
         return true;
     }
 
@@ -42,8 +44,10 @@ bool load_fingerprint(InstructionStack &instruction_stack, std::int64_t fingerpr
 bool unload_fingerprint(InstructionStack &instruction_stack, std::int64_t fingerprint) {
     const auto &r = registry();
     if (const auto it = r.find(fingerprint); it != r.end()) {
-        for (const auto &ins: it->second.fns | std::views::keys)
+        for (const auto &ins: it->second.fns | std::views::keys) {
             instruction_stack.fns[static_cast<std::int64_t>(ins)].pop_back();
+            instruction_stack.loaded_fingerprints[static_cast<std::size_t>(ins) - 65].pop_back();
+        }
         return true;
     }
 

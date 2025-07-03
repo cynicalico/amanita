@@ -14,6 +14,7 @@ using InstructionFunc = std::function<InstructionAction(Fungespace &fungespace, 
 class InstructionStack {
 public:
     std::vector<std::vector<InstructionFunc>> fns;
+    std::vector<const char *> loaded_fingerprints[26];
 
     InstructionStack();
 

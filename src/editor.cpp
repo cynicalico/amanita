@@ -115,15 +115,21 @@ void Editor::draw_program() {
             program_char_size,
             CURSOR_COLOR);
 
+
+    glm::vec2 pos = {program_pos.x + PROGRAM_MARGIN, program_pos.y + PROGRAM_MARGIN};
     for (std::int64_t y = viewport_pos[1]; y < viewport_pos[1] + ROWS; ++y) {
         std::string s = "";
-        for (std::int64_t x = viewport_pos[0]; x < viewport_pos[0] + COLS; ++x)
-            s += static_cast<char>(interpreter.fungespace.get(x, y));
+        for (std::int64_t x = viewport_pos[0]; x < viewport_pos[0] + COLS; ++x) {
+            const auto v = interpreter.fungespace.get(x, y);
+            // TODO: Display something other than a space
+            if (v == '\0' || v == '\r' || v == '\n')
+                s += ' ';
+            else
+                s += static_cast<char>(v);
+        }
 
-        const glm::vec2 pos = {
-                program_pos.x + PROGRAM_MARGIN,
-                program_pos.y + PROGRAM_MARGIN + (y - viewport_pos[1]) * program_font->line_height()};
         program_font->draw(s, {pos.x, pos.y + program_font->pen_offset()}, PROGRAM_COLOR);
+        pos.y += program_font->line_height();
     }
 }
 
@@ -185,6 +191,14 @@ void Editor::draw_ip_info() {
         add_line("Switchmode", false);
         pos.y -= ip_info_char_size.y;
         add_line(active_list[0].hovermode ? "true" : "false", true);
+
+        pos.y += ip_info_char_size.y;
+        add_line("Fingerprint Semantics", false);
+        for (std::size_t i = 0; i < 26; ++i) {
+            add_line(fmt::format("{}", static_cast<char>('A' + i)), false);
+            pos.y -= ip_info_char_size.y;
+            add_line(fmt::format("{}", active_list[0].instruction_stack.loaded_fingerprints[i].back()), true);
+        }
     }
 }
 

@@ -10,6 +10,7 @@
 #include "common.hpp"
 
 const Fingerprint FNG_NULL{
+        .name = "NULL",
         .id = 0x4e554c4c,
         .fns = {
                 {Instruction::A, instruction_reflect}, {Instruction::B, instruction_reflect},

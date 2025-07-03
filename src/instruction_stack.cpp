@@ -6,6 +6,8 @@
 
 InstructionStack::InstructionStack() {
     populate_default_fns_();
+    for (std::size_t i = 0; i < 26; ++i)
+        loaded_fingerprints[i] = std::vector<const char *>{"none"};
 }
 
 InstructionAction InstructionStack::perform(Instruction ins, Fungespace &fungespace, InstructionPointer &ip) {

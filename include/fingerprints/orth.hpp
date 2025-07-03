@@ -59,6 +59,7 @@ InstructionAction orth_ramp_if_zero(Fungespace &, InstructionPointer &ip);
 InstructionAction orth_output_string(Fungespace &, InstructionPointer &ip);
 
 const Fingerprint FNG_ORTH{
+        .name = "ORTH",
         .id = 0x4f525448,
         .fns = {
                 {Instruction::A, orth_bitwise_and},

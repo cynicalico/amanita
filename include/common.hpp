@@ -40,6 +40,7 @@ class InstructionPointer;
 using InstructionFunc = std::function<InstructionAction(Fungespace &fungespace, InstructionPointer &)>;
 
 struct Fingerprint {
+    const char *name;
     std::int64_t id;
     std::unordered_map<Instruction, InstructionFunc> fns;
 };

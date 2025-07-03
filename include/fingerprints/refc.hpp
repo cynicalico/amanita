@@ -20,6 +20,7 @@ InstructionAction refc_reference(Fungespace &, InstructionPointer &ip);
 InstructionAction refc_dereference(Fungespace &, InstructionPointer &ip);
 
 const Fingerprint FNG_REFC{
+        .name = "REFC",
         .id = 0x52454643,
         .fns = {
                 {Instruction::R, refc_reference},

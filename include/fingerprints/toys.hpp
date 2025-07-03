@@ -112,6 +112,7 @@ InstructionAction toys_slingshot(Fungespace &, InstructionPointer &ip);
 InstructionAction toys_barn_door(Fungespace &, InstructionPointer &ip);
 
 const Fingerprint FNG_TOYS{
+        .name = "TOYS",
         .id = 0x544f5953,
         .fns = {
                 {Instruction::A, toys_gable},

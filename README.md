@@ -27,7 +27,7 @@ See output of `amanita --help`
       - [ ] Show stacks beyond SOSS
       - [ ] GUI controls (currently all keyboard)
       - [ ] Controllable tick speed
-      - [ ] Display loaded fingerprint(s)
+      - [x] Display loaded fingerprint(s)
       - [ ] Colorize instructions
       - [ ] Editing
 

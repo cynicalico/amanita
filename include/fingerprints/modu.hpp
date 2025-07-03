@@ -19,6 +19,7 @@ InstructionAction modu_u(Fungespace &, InstructionPointer &ip);
 InstructionAction modu_r(Fungespace &, InstructionPointer &ip);
 
 const Fingerprint FNG_MODU{
+        .name = "MODU",
         .id = 0x4d4f4455,
         .fns = {
                 {Instruction::M, modu_m},

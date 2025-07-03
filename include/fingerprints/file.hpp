@@ -39,6 +39,7 @@ InstructionAction file_seek(Fungespace &, InstructionPointer &ip);
 InstructionAction file_write_bytes(Fungespace &, InstructionPointer &ip);
 
 const Fingerprint FNG_FILE{
+        .name = "FILE",
         .id = 0x46494C45,
         .fns = {
                 {Instruction::C, file_close},

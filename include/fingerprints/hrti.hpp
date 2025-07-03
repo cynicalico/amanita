@@ -29,6 +29,7 @@ InstructionAction hrti_erase_mark(Fungespace &, InstructionPointer &ip);
 InstructionAction hrti_second(Fungespace &, InstructionPointer &ip);
 
 const Fingerprint FNG_HRTI{
+        .name = "HRTI",
         .id = 0x48525449,
         .fns = {
                 {Instruction::G, hrti_granularity},

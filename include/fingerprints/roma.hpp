@@ -26,6 +26,7 @@ InstructionAction roma_v(Fungespace &, InstructionPointer &ip);
 InstructionAction roma_x(Fungespace &, InstructionPointer &ip);
 
 const static Fingerprint FNG_ROMA{
+        .name = "ROMA",
         .id = 0x524f4d41,
         .fns = {
                 {Instruction::C, roma_c},
