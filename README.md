@@ -1,6 +1,9 @@
 # amanita
 
-amanita is a [Mycology](https://github.com/Deewiant/Mycology) [compliant](mycology_result.txt) (be)Funge-98 interpreter.
+amanita is a [Mycology](https://github.com/Deewiant/Mycology) [compliant](mycology_result.txt) Funge-98 interpreter.
+
+Currently, only Befunge (2D) is supported. I have never seen a program written for Unefunge or Trefunge before (nor do I
+know what a source file for Trefunge would even look like), so these may or may not ever exist.
 
 This interpreter's handprint is `0x4e495441` ("NITA")
 
@@ -17,20 +20,30 @@ See output of `amanita --help`
 - [x] Fingerprints
 - [ ] Visual editor/debugger
     - Built on top of [mizu](https://github.com/cynicalico/mizu), my graphics engine (dogfooding!)
+    - TODO
+      - [ ] Don't close debugger on q instruction
+      - [ ] Reset and re-run
+      - [ ] Follow IPs other than first
+      - [ ] Show stacks beyond SOSS
+      - [ ] GUI controls (currently all keyboard)
+      - [ ] Controllable tick speed
+      - [ ] Display loaded fingerprint(s)
+      - [ ] Colorize instructions
+      - [ ] Editing
 
 ## Available Fingerprints
 
-| Name                                                                                                          | ID               | Description                                                                           |
-|---------------------------------------------------------------------------------------------------------------|------------------|---------------------------------------------------------------------------------------|
-| [`FILE`](https://web.archive.org/web/20230617132045/https://rcfunge98.com/rcsfingers.html#FILE)                 | `0x46494C45`     | File I/O functions                                                                    |
-| [`HRTI`](https://web.archive.org/web/20250124201720/https://catseye.tc/view/Funge-98/library/HRTI.markdown)     | `0x48525449`     | High-Resolution Timer Interface                                                       |
-| ~~[`MODE`](https://web.archive.org/web/20250525000331/https://catseye.tc/view/funge-98/library/MODE.markdown)~~ | ~~`0x4d4f4445`~~ | ~~Funge-98 Standard Modes~~ <br> Disabled until `{}u` fixed, need debugger functional |
-| [`MODU`](https://web.archive.org/web/20250523022748/https://catseye.tc/view/funge-98/library/MODU.markdown)     | `0x4d4f4455`     | Modulo Arithmetic Extension                                                           |
-| [`NULL`](https://web.archive.org/web/20250124201817/https://catseye.tc/view/Funge-98/library/NULL.markdown)     | `0x4e554c4c`     | Funge-98 Null Fingerprint                                                             |
-| [`ORTH`](https://web.archive.org/web/20250124201940/https://catseye.tc/view/funge-98/library/ORTH.markdown)     | `0x4f525448`     | Orthogonal Easement Library                                                           |
-| [`REFC`](https://web.archive.org/web/20250124201827/https://catseye.tc/view/Funge-98/library/REFC.markdown)     | `0x52454643`     | Referenced Cells Extension                                                            |
-| [`ROMA`](https://web.archive.org/web/20250523145159/https://catseye.tc/view/funge-98/library/ROMA.markdown)     | `0x524f4d41`     | Funge-98 Roman Numerals                                                               |
-| [`TOYS`](https://web.archive.org/web/20211201092300/https://catseye.tc/view/funge-98/library/TOYS.markdown)     | `0x544f5953`     | Funge-98 Standard Toys                                                                |
+| Name                                                                                                        | ID           | Description                     |
+|-------------------------------------------------------------------------------------------------------------|--------------|---------------------------------|
+| [`FILE`](https://web.archive.org/web/20230617132045/https://rcfunge98.com/rcsfingers.html#FILE)             | `0x46494C45` | File I/O functions              |
+| [`HRTI`](https://web.archive.org/web/20250124201720/https://catseye.tc/view/Funge-98/library/HRTI.markdown) | `0x48525449` | High-Resolution Timer Interface |
+| [`MODE`](https://web.archive.org/web/20250525000331/https://catseye.tc/view/funge-98/library/MODE.markdown) | `0x4d4f4445` | Funge-98 Standard Modes         |
+| [`MODU`](https://web.archive.org/web/20250523022748/https://catseye.tc/view/funge-98/library/MODU.markdown) | `0x4d4f4455` | Modulo Arithmetic Extension     |
+| [`NULL`](https://web.archive.org/web/20250124201817/https://catseye.tc/view/Funge-98/library/NULL.markdown) | `0x4e554c4c` | Funge-98 Null Fingerprint       |
+| [`ORTH`](https://web.archive.org/web/20250124201940/https://catseye.tc/view/funge-98/library/ORTH.markdown) | `0x4f525448` | Orthogonal Easement Library     |
+| [`REFC`](https://web.archive.org/web/20250124201827/https://catseye.tc/view/Funge-98/library/REFC.markdown) | `0x52454643` | Referenced Cells Extension      |
+| [`ROMA`](https://web.archive.org/web/20250523145159/https://catseye.tc/view/funge-98/library/ROMA.markdown) | `0x524f4d41` | Funge-98 Roman Numerals         |
+| [`TOYS`](https://web.archive.org/web/20211201092300/https://catseye.tc/view/funge-98/library/TOYS.markdown) | `0x544f5953` | Funge-98 Standard Toys          |
 
 ## Notable Implementation Details
 

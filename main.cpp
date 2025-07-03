@@ -10,6 +10,11 @@ int main(const int argc, char *argv[]) {
 
     program.add_argument("--gui").help("Open GUI debugger").flag();
 
+    program.add_argument("--skip")
+            .help("Skip forward n ticks at start")
+            .default_value(static_cast<std::int64_t>(0))
+            .scan<'i', std::int64_t>();
+
     program.add_argument("args").help("Arguments passed to program").remaining();
 
     try {
@@ -29,7 +34,8 @@ int main(const int argc, char *argv[]) {
     }
 
     if (program["--gui"] == true) {
-        mizu::Engine("amanita", {500, 500}, [](auto &) {}).mainloop<Editor>(args[0], args);
+        mizu::Engine("amanita", {500, 500}, [](auto &) {
+        }).mainloop<Editor>(args[0], args, program.get<std::int64_t>("--skip"));
     } else {
         try {
             auto i = Interpreter(args[0]);

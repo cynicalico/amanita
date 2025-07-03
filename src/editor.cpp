@@ -19,7 +19,8 @@ const mizu::Rgba CURSOR_COLOR = mizu::rgb(0x0037da);
 
 void draw_rect(mizu::G2d &g2d, glm::vec2 pos, glm::vec2 size, const mizu::Color &color);
 
-Editor::Editor(mizu::Engine *engine, const std::filesystem::path &path, std::vector<std::string> args)
+Editor::Editor(
+        mizu::Engine *engine, const std::filesystem::path &path, std::vector<std::string> args, std::int64_t skip_ticks)
     : Application(engine),
       g2d(*engine->g2d),
       window(*engine->window),
@@ -67,13 +68,27 @@ Editor::Editor(mizu::Engine *engine, const std::filesystem::path &path, std::vec
     input.start_text_input();
 
     ticker = mizu::Ticker(std::chrono::milliseconds(2));
+    slow_ticker = mizu::Ticker(std::chrono::milliseconds(50));
     interpreter.args = std::move(args);
     active_list.emplace_back(&interpreter);
+
+    if (skip_ticks > 0) {
+        for (std::int64_t i = 0; i < skip_ticks; i++) {
+            do_single_tick();
+            check_move_viewport();
+        }
+    }
 }
 
 void Editor::update(double dt) {
     if (!paused) {
         const auto tick_count = ticker.tick();
+        for (std::uint64_t i = 0; i < tick_count; ++i) {
+            do_single_tick();
+            check_move_viewport();
+        }
+    } else if (slow_ticking) {
+        const auto tick_count = slow_ticker.tick();
         for (std::uint64_t i = 0; i < tick_count; ++i) {
             do_single_tick();
             check_move_viewport();
@@ -93,10 +108,10 @@ void Editor::draw() {
 void Editor::draw_program() {
     draw_rect(g2d, program_pos - glm::vec2(1.0f), program_size + glm::vec2(2.0f), BORDER_COLOR);
 
-    glm::vec2 cursor_pos = {active_list[0].pos[0] - viewport_pos[0], active_list[0].pos[1] - viewport_pos[1]};
+    int64_t cursor_pos[2] = {active_list[0].pos[0] - viewport_pos[0], active_list[0].pos[1] - viewport_pos[1]};
     g2d.fill_rect(
-            {program_pos.x + PROGRAM_MARGIN + cursor_pos.x * program_char_size.x,
-             program_pos.y + PROGRAM_MARGIN + cursor_pos.y * program_char_size.y},
+            {program_pos.x + PROGRAM_MARGIN + cursor_pos[0] * program_char_size.x,
+             program_pos.y + PROGRAM_MARGIN + cursor_pos[1] * program_char_size.y},
             program_char_size,
             CURSOR_COLOR);
 
@@ -243,6 +258,22 @@ void Editor::draw_status() {
     }
 }
 
+void Editor::key_press_callback(mizu::Key key, mizu::Mod mods) {
+    if (key == mizu::Key::S && paused && !slow_ticking) {
+        slow_ticking = true;
+        slow_ticker.reset();
+    }
+
+    if (key == mizu::Key::Left)
+        viewport_pos[0]--;
+    if (key == mizu::Key::Right)
+        viewport_pos[0]++;
+    if (key == mizu::Key::Up)
+        viewport_pos[1]--;
+    if (key == mizu::Key::Down)
+        viewport_pos[1]++;
+}
+
 void Editor::key_release_callback(mizu::Key key, mizu::Mod mods) {
     if (key == mizu::Key::Escape)
         engine->shutdown();
@@ -260,6 +291,9 @@ void Editor::key_release_callback(mizu::Key key, mizu::Mod mods) {
         do_single_tick();
         check_move_viewport();
     }
+
+    if (key == mizu::Key::S)
+        slow_ticking = false;
 }
 
 void Editor::text_input_callback(const char *text) {}

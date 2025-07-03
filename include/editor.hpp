@@ -38,12 +38,17 @@ public:
     std::int64_t tick{0};
     bool paused{true};
     mizu::Ticker<> ticker;
+    bool slow_ticking{false};
+    mizu::Ticker<> slow_ticker;
     std::int64_t viewport_pos[2];
     std::vector<InstructionPointer> active_list{};
     std::vector<InstructionPointer> inactive_list{};
     Interpreter interpreter{};
 
-    Editor(mizu::Engine *engine, const std::filesystem::path &path, std::vector<std::string> args);
+    Editor(mizu::Engine *engine,
+           const std::filesystem::path &path,
+           std::vector<std::string> args,
+           std::int64_t skip_ticks);
 
     void update(double dt) override;
 
@@ -53,6 +58,7 @@ public:
     void draw_stacks();
     void draw_status();
 
+    void key_press_callback(mizu::Key key, mizu::Mod mods) override;
     void key_release_callback(mizu::Key key, mizu::Mod mods) override;
     void text_input_callback(const char *text) override;
 

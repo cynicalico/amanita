@@ -108,7 +108,7 @@ bool StackStack::end_block(std::int64_t out_storage_offset[2]) {
 
     stacks.pop_back();
     toss--;
-    soss = (toss > 1) ? toss - 1 : toss;
+    soss = (toss > 0) ? toss - 1 : toss;
 
     return true;
 }
