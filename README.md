@@ -2,7 +2,7 @@
 
 amanita is a [Mycology](https://github.com/Deewiant/Mycology) [compliant](mycology_result.txt) (be)Funge-98 interpreter.
 
-This interpreter's handprint is 0x4e495441 ("NITA")
+This interpreter's handprint is `0x4e495441` ("NITA")
 
 ## Usage
 
