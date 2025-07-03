@@ -10,6 +10,8 @@
 #include "interpreter.hpp"
 #include "mizu/util/rng.hpp"
 
+extern char **environ;
+
 InstructionAction instruction_space(Fungespace &, InstructionPointer &) {
     std::unreachable();
 }

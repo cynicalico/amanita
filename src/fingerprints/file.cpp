@@ -2,6 +2,7 @@
 #include <fmt/format.h>
 #include <fstream>
 #include "instruction_pointer.hpp"
+#include "mizu/util/platform.hpp"
 
 #define MAX_STRING_READ 1024
 
@@ -135,7 +136,12 @@ InstructionAction file_open(Fungespace &, InstructionPointer &ip) {
 
     if (const auto *mode = get_funge_file_mode(m); mode) {
         FILE *file;
+#if defined(MIZU_PLATFORM_WINDOWS)
         if (const auto err = fopen_s(&file, filepath.c_str(), mode); err != 0) {
+#else
+        file = fopen(filepath.c_str(), mode);
+        if (!file) {
+#endif
             ip.reflect();
             ip.stack.push(0);
         } else {

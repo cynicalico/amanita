@@ -80,15 +80,15 @@ y claims all of the following:
 	That the offset of the IP was ( 0 0 )
 	That the least point containing a non-space cell is ( -3 -2 )
 	That the greatest point, relative to that point, is ( 183 911 )
-	That the day of the month is 2 
+	That the day of the month is 3 
 	That the month is 7 
 	That the year is 2025 
-	That the time is 21 : 24 : 59 
+	That the time is 12 : 55 : 01 
 	That the size of the stack stack is 1 
 	That the stack sizes are [ 0 ] from top to bottom
-	That the command-line arguments were: [ ".\mycology.b98" ]
+	That the command-line arguments were: [ "mycology.b98" ]
 	That the environment variables are:
-		[snip]
+	    [snip]
 Best that the above claims are manually verified to be correct.
 GOOD: 1y works
 GOOD: 5y works
@@ -102,20 +102,24 @@ GOOD: i pushed correct Va (60, 119)
 GOOD: i pushed correct Vb (90, 16)
 Entering MycoRand...
 
-The directions were generated in the order v^<>
-? was met 12 times
+The directions were generated in the order v<^>
+? was met 4 times
 
 Successfully exited MycoRand. Rerun a few times to ensure ? works.
 GOOD: i works in text mode
-Opening mycotmp0.tmp... failed.
+Opening mycotmp0.tmp... succeeded. Won't overwrite...
+Opening mycotmp1.tmp... succeeded. Won't overwrite...
+Opening mycotmp2.tmp... succeeded. Won't overwrite...
+Opening mycotmp3.tmp... succeeded. Won't overwrite...
+Opening mycotmp4.tmp... failed.
 Trying to write to it with o...
-Wrote to mycotmp0.tmp with o.
+Wrote to mycotmp4.tmp with o.
 Reading back with i...
 GOOD: read written data to (-10, -10)
 GOOD: (-8, -9) is @
 GOOD: read data in binary mode to (-10, -10)
 GOOD: (0, -10) is 13 
-Wrote to mycotmp0.tmp with o in linear text mode.
+Wrote to mycotmp4.tmp with o in linear text mode.
 GOOD: o removed space prior to newline
 UNDEF: o doesn't remove spaces prior to newline-valued cells
 UNDEF: o didn't write EOL to EOF
@@ -173,8 +177,8 @@ GOOD: all of A-Z reflected
 Testing fingerprint HRTI... loaded.
 UNDEF: G gives clock granularity as 1 microseconds
 GOOD: T reflected when called before M
-UNDEF: S pushed 232783 
-UNDEF: T after M pushed 7 and a second T, after 675 ys, pushed 216287 
+UNDEF: S pushed 670465 
+UNDEF: T after M pushed 0 and a second T, after 675 ys, pushed 3180 
 GOOD: ET reflected
 UNDEF: E without M did not reflect
 
@@ -186,7 +190,20 @@ GOOD: a04-R pushes 2
 GOOD: 0a-04-R pushes -2
 GOOD: 0a-04-U pushes 2
 
-Testing fingerprint ORTH... not loaded.
+Testing fingerprint ORTH... loaded.
+GOOD: 56A pushes 4
+GOOD: 56E pushes 3
+GOOD: 56O pushes 7
+GOOD: G works
+GOOD: P works
+GOOD: Cannot test S reliably. If this line begins with "GOOD: ", it worked.
+GOOD: X seems to work
+GOOD: Y seems to work
+GOOD: V changes dx correctly
+GOOD: W changes dy correctly
+GOOD: 0Z ramps
+GOOD: 1Z doesn't ramp
+
 Testing fingerprint PERL... not loaded.
 Testing fingerprint REFC... loaded.
 UNDEF: 12R34R56R pushed the scalars [ 0 1 2 ]
@@ -253,7 +270,32 @@ Testing fingerprint CPLI... not loaded.
 Testing fingerprint DATE... not loaded.
 Testing fingerprint DIRF... not loaded.
 Testing fingerprint EVAR... not loaded.
-Testing fingerprint FILE... not loaded.
+Testing fingerprint FILE... loaded.
+GOOD: couldn't open 'mycotemp.tmp' for reading with O
+GOOD: opened mycotemp.tmp' for writing with O
+GOOD: L pushed 0
+Put foo\nbar\nbaz with P.
+GOOD: L pushed 11
+GOOD: closed file with C
+GOOD: reopened file in append+read mode
+Sought to beginning of file with 00S.
+GOOD: G pushed correct line length
+GOOD: G read 'foo\n'
+GOOD: 7R read bar\nbaz
+GOOD: closed file with C
+GOOD: reopened file in truncate+read mode
+Wrote bar\nbaz with W.
+Sought to beginning of file with 20S107-S.
+GOOD: G pushed correct line length
+GOOD: G read 'bar\n'
+GOOD: G pushed correct line length
+GOOD: G read 'baz'
+GOOD: G pushed 2 zeroes
+GOOD: 1R reflected
+GOOD: closed file with C
+GOOD: deleted mycotemp.tmp with D
+GOOD: deleted mycotmp4.tmp with D
+
 Testing fingerprint FING... not loaded.
 Testing fingerprint FIXP... not loaded.
 Testing fingerprint FPSP... not loaded.
