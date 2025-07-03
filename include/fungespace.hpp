@@ -39,11 +39,9 @@ public:
             std::int64_t h);
 
     void save_bak();
-
     void reset();
 
     Cell get(std::int64_t x, std::int64_t y) const;
-
     void put(std::int64_t x, std::int64_t y, Cell v);
 
     bool in_bounds(std::int64_t x, std::int64_t y) const;

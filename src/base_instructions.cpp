@@ -1,10 +1,13 @@
 #include "base_instructions.hpp"
 #include <chrono>
+#include <cstdlib>
+#include <ranges>
 #include <utility>
 #include "fingerprints.hpp"
 #include "fmt/format.h"
 #include "fungespace.hpp"
 #include "instruction_pointer.hpp"
+#include "interpreter.hpp"
 #include "mizu/util/rng.hpp"
 
 InstructionAction instruction_space(Fungespace &, InstructionPointer &) {
@@ -512,11 +515,11 @@ InstructionAction instruction_get_sysinfo(const Fungespace &fungespace, Instruct
     // number of bytes per cell
     sysinfo.push_back(8);
 
-    // implementation's handprint
-    sysinfo.push_back(0);
+    // implementation's handprint ("NITA")
+    sysinfo.push_back(0x4e495441);
 
-    // implementation's version number
-    sysinfo.push_back(1);
+    // implementation's version number (1.0.0)
+    sysinfo.push_back(100);
 
     // id code for the operating paradigm
     // 0 = unavailable
@@ -581,14 +584,24 @@ InstructionAction instruction_get_sysinfo(const Fungespace &fungespace, Instruct
 
     // size of each stack in stackstack (from TOSS to BOSS)
     const auto sizes = ip.stack.sizes();
-    for (std::size_t i = 0; i < sizes.size(); i++)
-        sysinfo.push_back(static_cast<std::int64_t>(sizes[i]));
+    for (const auto &size: sizes)
+        sysinfo.push_back(static_cast<std::int64_t>(size));
 
-    // TODO: command line arguments followed by double null
+    // command line arguments followed by double null
+    for (const auto &arg: ip.interpreter->args) {
+        for (const auto &c: arg)
+            sysinfo.push_back(c);
+        sysinfo.push_back('\0');
+    }
     sysinfo.push_back('\0');
     sysinfo.push_back('\0');
 
-    // TODO: env variables followed by null
+    // env variables followed by null
+    for (char **current = environ; *current; ++current) {
+        for (char *c = *current; *c; ++c)
+            sysinfo.push_back(*c);
+        sysinfo.push_back('\0');
+    }
     sysinfo.push_back('\0');
 
     if (n <= 0)

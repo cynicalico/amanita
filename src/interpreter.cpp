@@ -6,8 +6,10 @@ Interpreter::Interpreter() = default;
 Interpreter::Interpreter(const std::filesystem::path &path)
     : fungespace(path) {}
 
-void Interpreter::run() {
-    active_list.emplace_back();
+void Interpreter::run(std::vector<std::string> args) {
+    this->args = std::move(args);
+
+    active_list.emplace_back(this);
 
     while (!active_list.empty()) {
         inactive_list.clear();

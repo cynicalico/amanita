@@ -1,12 +1,17 @@
 #include "instruction_pointer.hpp"
+#include "interpreter.hpp"
 
 std::int64_t next_ip_id() {
     static std::int64_t next_id = 0;
     return ++next_id;
 }
 
+InstructionPointer::InstructionPointer(Interpreter *interpreter)
+    : interpreter(interpreter) {}
+
 InstructionPointer::InstructionPointer(const InstructionPointer &other)
-    : id(next_ip_id()), // Redundant, but it makes the intent clearer
+    : interpreter(other.interpreter),
+      id(next_ip_id()), // Redundant, but it makes the intent clearer
       alive(other.alive),
       pos{other.pos[0], other.pos[1]},
       delta{other.delta[0], other.delta[1]},

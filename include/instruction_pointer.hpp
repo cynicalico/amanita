@@ -8,19 +8,26 @@
 
 std::int64_t next_ip_id();
 
+class Interpreter;
+
 class InstructionPointer {
 public:
+    Interpreter *interpreter{nullptr};
     std::int64_t id{next_ip_id()};
+
     bool alive{true};
     std::int64_t pos[2]{0, 0};
     std::int64_t delta[2]{EAST[0], EAST[1]};
+
     bool stringmode{false};
     Cell cache_ins{'\0'};
+
     StackStack stack{};
     std::int64_t storage_offset[2]{0, 0};
+
     InstructionStack instruction_stack{};
 
-    InstructionPointer() = default;
+    InstructionPointer(Interpreter *interpreter);
     ~InstructionPointer() = default;
 
     InstructionPointer(const InstructionPointer &other);
