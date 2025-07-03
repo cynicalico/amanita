@@ -29,7 +29,7 @@ int main(const int argc, char *argv[]) {
     }
 
     if (program["--gui"] == true) {
-        mizu::Engine("amanita", {500, 500}, [](auto &) {}).mainloop<Editor>(args[0]);
+        mizu::Engine("amanita", {500, 500}, [](auto &) {}).mainloop<Editor>(args[0], args);
     } else {
         try {
             auto i = Interpreter(args[0]);

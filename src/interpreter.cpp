@@ -9,6 +9,9 @@ Interpreter::Interpreter(const std::filesystem::path &path)
 void Interpreter::run(std::vector<std::string> args) {
     this->args = std::move(args);
 
+    std::vector<InstructionPointer> active_list{};
+    std::vector<InstructionPointer> inactive_list{};
+
     active_list.emplace_back(this);
 
     while (!active_list.empty()) {

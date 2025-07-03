@@ -1,33 +1,33 @@
 #include "stackstack.hpp"
 
 StackStack::StackStack()
-    : stacks_(1), toss_(0), soss_(0) {}
+    : stacks(1), toss(0), soss(0) {}
 
 std::size_t StackStack::count() const {
-    return stacks_.size();
+    return stacks.size();
 }
 
 std::vector<std::size_t> StackStack::sizes() const {
     std::vector<std::size_t> sizes{};
-    for (const auto &stack: stacks_)
+    for (const auto &stack: stacks)
         sizes.emplace_back(stack.size());
     return sizes;
 }
 
 void StackStack::push(std::int64_t value) {
-    push_(value, toss_);
+    push_(value, toss);
 }
 
 std::int64_t StackStack::peek() const {
-    if (stacks_[toss_].empty())
+    if (stacks[toss].empty())
         return 0;
     if (queuemode)
-        return stacks_[toss_].front();
-    return stacks_[toss_].back();
+        return stacks[toss].front();
+    return stacks[toss].back();
 }
 
 std::int64_t StackStack::pop() {
-    return pop_(toss_);
+    return pop_(toss);
 }
 
 std::string StackStack::pop_0gnirts() {
@@ -42,29 +42,29 @@ std::string StackStack::pop_0gnirts() {
 }
 
 std::size_t StackStack::size() const {
-    return stacks_[toss_].size();
+    return stacks[toss].size();
 }
 
 void StackStack::clear() {
-    stacks_[toss_].clear();
+    stacks[toss].clear();
 }
 
 std::int64_t StackStack::pick(std::int64_t n) const {
-    n = stacks_[toss_].size() - n;
+    n = stacks[toss].size() - n;
     if (n >= 0)
-        return stacks_[toss_][static_cast<std::size_t>(n)];
+        return stacks[toss][static_cast<std::size_t>(n)];
     return 0;
 }
 
 void StackStack::begin_block(std::int64_t storage_offset[2]) {
     auto n = pop();
 
-    stacks_.emplace_back();
-    toss_++;
-    soss_ = toss_ - 1;
+    stacks.emplace_back();
+    toss++;
+    soss = toss - 1;
 
     if (n > 0) {
-        const auto soss_len = static_cast<std::int64_t>(stacks_[soss_].size());
+        const auto soss_len = static_cast<std::int64_t>(stacks[soss].size());
         const auto zero_fill = n - soss_len;
         if (zero_fill > 0) {
             for (std::int64_t i = 0; i < zero_fill; i++)
@@ -74,25 +74,25 @@ void StackStack::begin_block(std::int64_t storage_offset[2]) {
         std::vector<std::int64_t> buffer{};
         buffer.reserve(n);
         for (std::int64_t i = 0; i < n; i++)
-            buffer.push_back(pop_(soss_));
+            buffer.push_back(pop_(soss));
         for (std::size_t i = 0; i < buffer.size(); i++)
             push(buffer[buffer.size() - 1 - i]);
     } else {
         for (std::int64_t i = 0; i < std::abs(n); i++)
-            push_(0, soss_);
+            push_(0, soss);
     }
 
-    push_(storage_offset[0], soss_);
-    push_(storage_offset[1], soss_);
+    push_(storage_offset[0], soss);
+    push_(storage_offset[1], soss);
 }
 
 bool StackStack::end_block(std::int64_t out_storage_offset[2]) {
-    if (toss_ == soss_)
+    if (toss == soss)
         return false;
 
     const auto n = pop();
-    out_storage_offset[1] = pop_(soss_);
-    out_storage_offset[0] = pop_(soss_);
+    out_storage_offset[1] = pop_(soss);
+    out_storage_offset[0] = pop_(soss);
 
     if (n > 0) {
         std::vector<std::int64_t> buffer{};
@@ -100,26 +100,26 @@ bool StackStack::end_block(std::int64_t out_storage_offset[2]) {
         for (std::int64_t i = 0; i < n && size() > 0; i++)
             buffer.push_back(pop());
         for (std::size_t i = 0; i < buffer.size(); i++)
-            push_(buffer[buffer.size() - 1 - i], soss_);
+            push_(buffer[buffer.size() - 1 - i], soss);
     } else {
         for (std::int64_t i = 0; i < std::abs(n); i++)
-            pop_(soss_);
+            pop_(soss);
     }
 
-    stacks_.pop_back();
-    toss_--;
-    soss_ = (toss_ > 1) ? toss_ - 1 : toss_;
+    stacks.pop_back();
+    toss--;
+    soss = (toss > 1) ? toss - 1 : toss;
 
     return true;
 }
 
 bool StackStack::stack_under_stack() {
-    if (toss_ == soss_)
+    if (toss == soss)
         return false;
 
     const auto n = pop();
-    const auto src = n > 0 ? soss_ : toss_;
-    const auto dst = n > 0 ? toss_ : soss_;
+    const auto src = n > 0 ? soss : toss;
+    const auto dst = n > 0 ? toss : soss;
 
     for (std::int64_t i = 0; i < std::abs(n); i++)
         push_(pop_(src), dst);
@@ -129,22 +129,22 @@ bool StackStack::stack_under_stack() {
 
 void StackStack::push_(std::int64_t value, std::size_t stack_idx) {
     if (invertmode)
-        stacks_[stack_idx].push_front(value);
+        stacks[stack_idx].push_front(value);
     else
-        stacks_[stack_idx].push_back(value);
+        stacks[stack_idx].push_back(value);
 }
 
 std::int64_t StackStack::pop_(std::size_t stack_idx) {
-    if (stacks_[stack_idx].empty())
+    if (stacks[stack_idx].empty())
         return 0;
 
     std::int64_t v;
     if (queuemode) {
-        v = stacks_[stack_idx].front();
-        stacks_[stack_idx].pop_front();
+        v = stacks[stack_idx].front();
+        stacks[stack_idx].pop_front();
     } else {
-        v = stacks_[stack_idx].back();
-        stacks_[stack_idx].pop_back();
+        v = stacks[stack_idx].back();
+        stacks[stack_idx].pop_back();
     }
     return v;
 }

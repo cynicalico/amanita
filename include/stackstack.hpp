@@ -10,6 +10,10 @@ using Stack = std::deque<std::int64_t>;
 
 class StackStack {
 public:
+    std::vector<Stack> stacks;
+    std::size_t toss;
+    std::size_t soss;
+
     bool invertmode{false};
     bool queuemode{false};
 
@@ -34,10 +38,6 @@ public:
     bool stack_under_stack();
 
 private:
-    std::vector<Stack> stacks_;
-    std::size_t toss_;
-    std::size_t soss_;
-
     void push_(std::int64_t value, std::size_t stack_idx);
     std::int64_t pop_(std::size_t stack_idx);
 };
