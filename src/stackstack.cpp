@@ -57,11 +57,6 @@ std::int64_t StackStack::pick(std::int64_t n) const {
 }
 
 void StackStack::begin_block(std::int64_t storage_offset[2]) {
-    bool saved_invertmode = invertmode;
-    bool saved_queuemode = queuemode;
-    invertmode = false;
-    queuemode = false;
-
     auto n = pop();
 
     stacks_.emplace_back();
@@ -89,29 +84,23 @@ void StackStack::begin_block(std::int64_t storage_offset[2]) {
 
     push_(storage_offset[0], soss_);
     push_(storage_offset[1], soss_);
-
-    invertmode = saved_invertmode;
-    queuemode = saved_queuemode;
 }
 
 bool StackStack::end_block(std::int64_t out_storage_offset[2]) {
     if (toss_ == soss_)
         return false;
 
-    bool saved_invertmode = invertmode;
-    bool saved_queuemode = queuemode;
-    invertmode = false;
-    queuemode = false;
-
     const auto n = pop();
     out_storage_offset[0] = pop_(soss_);
     out_storage_offset[1] = pop_(soss_);
 
     if (n > 0) {
-        const auto toss_len = static_cast<std::int64_t>(size());
-        const auto transfer_start = std::max(std::int64_t(0), toss_len - n);
-        for (std::int64_t i = transfer_start; i < toss_len; i++)
-            push_(stacks_[toss_][i], soss_);
+        std::vector<std::int64_t> buffer{};
+        buffer.reserve(n);
+        for (std::int64_t i = 0; i < n && size() > 0; i++)
+            buffer.push_back(pop());
+        for (std::size_t i = 0; i < buffer.size(); i++)
+            push_(buffer[buffer.size() - 1 - i], soss_);
     } else {
         for (std::int64_t i = 0; i < std::abs(n); i++)
             pop_(soss_);
@@ -121,9 +110,6 @@ bool StackStack::end_block(std::int64_t out_storage_offset[2]) {
     toss_--;
     soss_ = (toss_ > 1) ? toss_ - 1 : toss_;
 
-    invertmode = saved_invertmode;
-    queuemode = saved_queuemode;
-
     return true;
 }
 
@@ -131,20 +117,12 @@ bool StackStack::stack_under_stack() {
     if (toss_ == soss_)
         return false;
 
-    bool saved_invertmode = invertmode;
-    bool saved_queuemode = queuemode;
-    invertmode = false;
-    queuemode = false;
-
     const auto n = pop();
     const auto src = n > 0 ? soss_ : toss_;
     const auto dst = n > 0 ? toss_ : soss_;
 
     for (std::int64_t i = 0; i < std::abs(n); i++)
         push_(pop_(src), dst);
-
-    invertmode = saved_invertmode;
-    queuemode = saved_queuemode;
 
     return true;
 }
