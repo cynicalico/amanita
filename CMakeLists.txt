@@ -43,6 +43,7 @@ add_executable(amanita
 
         include/fingerprints/hrti.hpp
         include/fingerprints/modu.hpp
+        include/fingerprints/orth.hpp
         include/fingerprints/null.hpp
         include/fingerprints/refc.hpp
         include/fingerprints/roma.hpp
@@ -50,6 +51,7 @@ add_executable(amanita
 
         src/fingerprints/hrti.cpp
         src/fingerprints/modu.cpp
+        src/fingerprints/orth.cpp
         src/fingerprints/refc.cpp
         src/fingerprints/roma.cpp
         src/fingerprints/toys.cpp

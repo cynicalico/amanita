@@ -2,6 +2,8 @@
 
 amanita is a [Mycology](https://github.com/Deewiant/Mycology) [compliant](mycology_result.txt) (be)Funge-98 interpreter.
 
+This interpreter's handprint is 0x4e495441 ("NITA")
+
 ## Usage
 
 See output of `amanita --help`
@@ -16,18 +18,17 @@ See output of `amanita --help`
 - [ ] Visual editor/debugger
     - Built on top of [mizu](https://github.com/cynicalico/mizu), my graphics engine (dogfooding!)
 
-## Handprint
-
-"NITA" (0x4e495441)
-
 ## Available Fingerprints
 
-[HRTI](https://web.archive.org/web/20250124201720/https://catseye.tc/view/Funge-98/library/HRTI.markdown) \
-[MODU](https://web.archive.org/web/20250523022748/https://catseye.tc/view/funge-98/library/MODU.markdown) \
-[NULL](https://web.archive.org/web/20250124201817/https://catseye.tc/view/Funge-98/library/NULL.markdown) \
-[REFC](https://web.archive.org/web/20250124201827/https://catseye.tc/view/Funge-98/library/REFC.markdown) \
-[ROMA](https://web.archive.org/web/20250523145159/https://catseye.tc/view/funge-98/library/ROMA.markdown) \
-[TOYS](https://web.archive.org/web/20211201092300/https://catseye.tc/view/funge-98/library/TOYS.markdown)
+| Name                                                                                                      | ID         | Description                     |
+|-----------------------------------------------------------------------------------------------------------|------------|---------------------------------|
+| [HRTI](https://web.archive.org/web/20250124201720/https://catseye.tc/view/Funge-98/library/HRTI.markdown) | 0x48525449 | High-Resolution Timer Interface |
+| [MODU](https://web.archive.org/web/20250523022748/https://catseye.tc/view/funge-98/library/MODU.markdown) | 0x4d4f4455 | Modulo Arithmetic Extension     |
+| [NULL](https://web.archive.org/web/20250124201817/https://catseye.tc/view/Funge-98/library/NULL.markdown) | 0x4e554c4c | Funge-98 Null Fingerprint       |
+| [ORTH](https://web.archive.org/web/20250124201940/https://catseye.tc/view/funge-98/library/ORTH.markdown) | 0x4f525448 | Orthogonal Easement Library     |
+| [REFC](https://web.archive.org/web/20250124201827/https://catseye.tc/view/Funge-98/library/REFC.markdown) | 0x52454643 | Referenced Cells Extension      |
+| [ROMA](https://web.archive.org/web/20250523145159/https://catseye.tc/view/funge-98/library/ROMA.markdown) | 0x524f4d41 | Funge-98 Roman Numerals         |
+| [TOYS](https://web.archive.org/web/20211201092300/https://catseye.tc/view/funge-98/library/TOYS.markdown) | 0x544f5953 | Funge-98 Standard Toys          |
 
 ## Notable Implementation Details
 
