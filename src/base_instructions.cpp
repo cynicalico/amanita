@@ -93,7 +93,10 @@ InstructionAction instruction_fetch_character(Fungespace &fungespace, Instructio
     return MoveAction{};
 }
 
-InstructionAction instruction_load_semantics(Fungespace &, InstructionPointer &ip) {
+InstructionAction instruction_load_semantics(Fungespace &fungespace, InstructionPointer &ip) {
+    if (ip.switchmode)
+        fungespace.put(ip.pos[0], ip.pos[1], static_cast<Cell>(Instruction::UnloadSemantics));
+
     const auto n = ip.stack.pop();
 
     std::int64_t fingerprint = 0;
@@ -112,7 +115,10 @@ InstructionAction instruction_load_semantics(Fungespace &, InstructionPointer &i
     return MoveAction{};
 }
 
-InstructionAction instruction_unload_semantics(Fungespace &, InstructionPointer &ip) {
+InstructionAction instruction_unload_semantics(Fungespace &fungespace, InstructionPointer &ip) {
+    if (ip.switchmode)
+        fungespace.put(ip.pos[0], ip.pos[1], static_cast<Cell>(Instruction::LoadSemantics));
+
     const auto n = ip.stack.pop();
 
     std::int64_t fingerprint = 0;
@@ -229,8 +235,7 @@ InstructionAction instruction_jump_over(Fungespace &, InstructionPointer &) {
 }
 
 InstructionAction instruction_go_west(Fungespace &, InstructionPointer &ip) {
-    ip.delta[0] = WEST[0];
-    ip.delta[1] = WEST[1];
+    ip.go_west();
     return MoveAction{};
 }
 
@@ -240,8 +245,7 @@ InstructionAction instruction_execute(Fungespace &, InstructionPointer &ip) {
 }
 
 InstructionAction instruction_go_east(Fungespace &, InstructionPointer &ip) {
-    ip.delta[0] = EAST[0];
-    ip.delta[1] = EAST[1];
+    ip.go_east();
     return MoveAction{};
 }
 
@@ -274,7 +278,9 @@ InstructionAction instruction_stop(Fungespace &, InstructionPointer &ip) {
     return KillAction{};
 }
 
-InstructionAction instruction_turn_left(Fungespace &, InstructionPointer &ip) {
+InstructionAction instruction_turn_left(Fungespace &fungespace, InstructionPointer &ip) {
+    if (ip.switchmode)
+        fungespace.put(ip.pos[0], ip.pos[1], static_cast<Cell>(Instruction::TurnRight));
     ip.turn_left();
     return MoveAction{};
 }
@@ -287,26 +293,24 @@ InstructionAction instruction_swap(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction instruction_turn_right(Fungespace &, InstructionPointer &ip) {
+InstructionAction instruction_turn_right(Fungespace &fungespace, InstructionPointer &ip) {
+    if (ip.switchmode)
+        fungespace.put(ip.pos[0], ip.pos[1], static_cast<Cell>(Instruction::TurnLeft));
     ip.turn_right();
     return MoveAction{};
 }
 
 InstructionAction instruction_go_north(Fungespace &, InstructionPointer &ip) {
-    ip.delta[0] = NORTH[0];
-    ip.delta[1] = NORTH[1];
+    ip.go_north();
     return MoveAction{};
 }
 
 InstructionAction instruction_east_west_if(Fungespace &, InstructionPointer &ip) {
     const auto v = ip.stack.pop();
-    if (v == 0) {
-        ip.delta[0] = EAST[0];
-        ip.delta[1] = EAST[1];
-    } else {
-        ip.delta[0] = WEST[0];
-        ip.delta[1] = WEST[1];
-    }
+    if (v == 0)
+        ip.go_east();
+    else
+        ip.go_west();
     return MoveAction{};
 }
 
@@ -477,8 +481,7 @@ InstructionAction instruction_stack_under_stack(Fungespace &, InstructionPointer
 }
 
 InstructionAction instruction_go_south(Fungespace &, InstructionPointer &ip) {
-    ip.delta[0] = SOUTH[0];
-    ip.delta[1] = SOUTH[1];
+    ip.go_south();
     return MoveAction{};
 }
 
@@ -619,24 +622,25 @@ InstructionAction instruction_no_operation(Fungespace &, InstructionPointer &) {
     return MoveAction{};
 }
 
-InstructionAction instruction_begin_block(Fungespace &, InstructionPointer &ip) {
+InstructionAction instruction_begin_block(Fungespace &fungespace, InstructionPointer &ip) {
+    if (ip.switchmode)
+        fungespace.put(ip.pos[0], ip.pos[1], static_cast<Cell>(Instruction::EndBlock));
     ip.begin_block();
     return MoveAction{};
 }
 
 InstructionAction instruction_north_south_if(Fungespace &, InstructionPointer &ip) {
     const auto v = ip.stack.pop();
-    if (v == 0) {
-        ip.delta[0] = SOUTH[0];
-        ip.delta[1] = SOUTH[1];
-    } else {
-        ip.delta[0] = NORTH[0];
-        ip.delta[1] = NORTH[1];
-    }
+    if (v == 0)
+        ip.go_south();
+    else
+        ip.go_north();
     return MoveAction{};
 }
 
-InstructionAction instruction_end_block(Fungespace &, InstructionPointer &ip) {
+InstructionAction instruction_end_block(Fungespace &fungespace, InstructionPointer &ip) {
+    if (ip.switchmode)
+        fungespace.put(ip.pos[0], ip.pos[1], static_cast<Cell>(Instruction::BeginBlock));
     ip.end_block();
     return MoveAction{};
 }

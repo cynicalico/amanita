@@ -75,6 +75,42 @@ void InstructionPointer::step_to_next_instruction(Fungespace &fungespace, Cell p
     } while (true);
 }
 
+void InstructionPointer::go_south() {
+    if (hovermode) {
+        delta[1] += 1;
+    } else {
+        delta[0] = SOUTH[0];
+        delta[1] = SOUTH[1];
+    }
+}
+
+void InstructionPointer::go_east() {
+    if (hovermode) {
+        delta[0] += 1;
+    } else {
+        delta[0] = EAST[0];
+        delta[1] = EAST[1];
+    }
+}
+
+void InstructionPointer::go_north() {
+    if (hovermode) {
+        delta[1] -= 1;
+    } else {
+        delta[0] = NORTH[0];
+        delta[1] = NORTH[1];
+    }
+}
+
+void InstructionPointer::go_west() {
+    if (hovermode) {
+        delta[0] -= 1;
+    } else {
+        delta[0] = WEST[0];
+        delta[1] = WEST[1];
+    }
+}
+
 void InstructionPointer::turn_left() {
     const auto tmp = delta[0];
     delta[0] = delta[1];

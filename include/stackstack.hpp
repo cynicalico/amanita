@@ -2,13 +2,17 @@
 #define AMANITA_STACKSTACK_HPP
 
 #include <cstdint>
+#include <deque>
 #include <string>
 #include <vector>
 
-using Stack = std::vector<std::int64_t>;
+using Stack = std::deque<std::int64_t>;
 
 class StackStack {
 public:
+    bool invertmode{false};
+    bool queuemode{false};
+
     StackStack();
 
     std::size_t count() const;
@@ -18,6 +22,7 @@ public:
     std::int64_t peek() const;
     std::int64_t pop();
     std::string pop_gnirts();
+
     std::size_t size() const;
     void clear();
 

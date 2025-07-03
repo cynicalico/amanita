@@ -22,6 +22,9 @@ public:
     bool stringmode{false};
     Cell cache_ins{'\0'};
 
+    bool hovermode{false};
+    bool switchmode{false};
+
     StackStack stack{};
     std::int64_t storage_offset[2]{0, 0};
 
@@ -40,6 +43,10 @@ public:
     void step_wrap(Fungespace &fungespace);
     void step_to_next_instruction(Fungespace &fungespace, Cell prev_ins, bool start_skipping);
 
+    void go_south();
+    void go_east();
+    void go_north();
+    void go_west();
     void turn_left();
     void turn_right();
     void reflect();
