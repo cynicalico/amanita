@@ -21,7 +21,7 @@ public:
     void push(std::int64_t value);
     std::int64_t peek() const;
     std::int64_t pop();
-    std::string pop_gnirts();
+    std::string pop_0gnirts();
 
     std::size_t size() const;
     void clear();

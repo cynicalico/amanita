@@ -364,7 +364,7 @@ InstructionAction instruction_go_high(Fungespace &, InstructionPointer &ip) {
 }
 
 InstructionAction instruction_input_file(Fungespace &fungespace, InstructionPointer &ip) {
-    const auto filename = ip.stack.pop_gnirts();
+    const auto filename = ip.stack.pop_0gnirts();
     const auto flags = ip.stack.pop();
     const auto y = ip.stack.pop() + ip.storage_offset[1];
     const auto x = ip.stack.pop() + ip.storage_offset[0];
@@ -434,7 +434,7 @@ InstructionAction instruction_clear_stack(Fungespace &, InstructionPointer &ip) 
 }
 
 InstructionAction instruction_output_file(Fungespace &fungespace, InstructionPointer &ip) {
-    const auto filename = ip.stack.pop_gnirts();
+    const auto filename = ip.stack.pop_0gnirts();
     const auto flags = ip.stack.pop();
     const auto y = ip.stack.pop() + ip.storage_offset[1];
     const auto x = ip.stack.pop() + ip.storage_offset[0];

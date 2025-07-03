@@ -30,7 +30,7 @@ std::int64_t StackStack::pop() {
     return pop_(toss_);
 }
 
-std::string StackStack::pop_gnirts() {
+std::string StackStack::pop_0gnirts() {
     std::string ret;
     std::int64_t c;
     do {
@@ -91,8 +91,8 @@ bool StackStack::end_block(std::int64_t out_storage_offset[2]) {
         return false;
 
     const auto n = pop();
-    out_storage_offset[0] = pop_(soss_);
     out_storage_offset[1] = pop_(soss_);
+    out_storage_offset[0] = pop_(soss_);
 
     if (n > 0) {
         std::vector<std::int64_t> buffer{};
