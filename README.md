@@ -21,20 +21,21 @@ See output of `amanita --help`
 - [ ] Visual editor/debugger
     - Built on top of [mizu](https://github.com/cynicalico/mizu), my graphics engine (dogfooding!)
     - TODO
-      - [ ] Don't close debugger on q instruction
-      - [ ] Reset and re-run
-      - [ ] Follow IPs other than first
-      - [ ] Show stacks beyond SOSS
-      - [ ] GUI controls (currently all keyboard)
-      - [ ] Controllable tick speed
-      - [x] Display loaded fingerprint(s)
-      - [ ] Colorize instructions
-      - [ ] Editing
+        - [ ] Don't close debugger on q instruction
+        - [ ] Reset and re-run
+        - [ ] Follow IPs other than first
+        - [ ] Show stacks beyond SOSS
+        - [ ] GUI controls (currently all keyboard)
+        - [ ] Controllable tick speed
+        - [x] Display loaded fingerprint(s)
+        - [ ] Colorize instructions
+        - [ ] Editing
 
-## Available Fingerprints
+## Available Fingerprints (names link to documentation)
 
 | Name                                                                                                        | ID           | Description                     |
 |-------------------------------------------------------------------------------------------------------------|--------------|---------------------------------|
+| [`DIRF`](https://web.archive.org/web/20230617132045/https://rcfunge98.com/rcsfingers.html#DIRF)             | `0x44495246` | Directory functions extension   |
 | [`FILE`](https://web.archive.org/web/20230617132045/https://rcfunge98.com/rcsfingers.html#FILE)             | `0x46494C45` | File I/O functions              |
 | [`HRTI`](https://web.archive.org/web/20250124201720/https://catseye.tc/view/Funge-98/library/HRTI.markdown) | `0x48525449` | High-Resolution Timer Interface |
 | [`MODE`](https://web.archive.org/web/20250525000331/https://catseye.tc/view/funge-98/library/MODE.markdown) | `0x4d4f4445` | Funge-98 Standard Modes         |
@@ -94,6 +95,14 @@ UNDEF: ( with a negative count reflects and pops 0 times or less than the absolu
 UNDEF: ) with a negative count reflects and pops 0 times or less than the absolute value of the count
 
 UNDEF: IVXLCDM didn't reflect: child IP has ROMA loaded
+```
+
+#### MODE
+
+```
+UNDEF: IQ{ moves cells from SOSS to TOSS by popping and pushing according to the modes
+UNDEF: stack stack seems unaffected by invertmode
+UNDEF: stack stack seems unaffected by queuemode
 ```
 
 #### HRTI
