@@ -1,4 +1,4 @@
-#include "fingerprints/roma.hpp"
+#include "fingerprints/catseye/roma.hpp"
 #include "instruction_pointer.hpp"
 
 InstructionAction roma::push_100(Fungespace &, InstructionPointer &ip) {

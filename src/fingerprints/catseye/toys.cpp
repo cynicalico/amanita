@@ -1,4 +1,4 @@
-#include "fingerprints/toys.hpp"
+#include "fingerprints/catseye/toys.hpp"
 #include "instruction_pointer.hpp"
 #include "mizu/util/rng.hpp"
 

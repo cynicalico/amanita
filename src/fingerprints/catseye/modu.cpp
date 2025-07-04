@@ -1,4 +1,4 @@
-#include "fingerprints/modu.hpp"
+#include "fingerprints/catseye/modu.hpp"
 #include "instruction_pointer.hpp"
 
 InstructionAction modu::signed_result_modulo(Fungespace &, InstructionPointer &ip) {

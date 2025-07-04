@@ -1,4 +1,4 @@
-#include "fingerprints/hrti.hpp"
+#include "fingerprints/catseye/hrti.hpp"
 #include <chrono>
 #include <unordered_map>
 #include "instruction_pointer.hpp"

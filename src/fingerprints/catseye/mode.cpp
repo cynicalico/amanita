@@ -1,4 +1,4 @@
-#include "fingerprints/mode.hpp"
+#include "fingerprints/catseye/mode.hpp"
 #include "instruction_pointer.hpp"
 
 InstructionAction mode::toggle_hovermode(Fungespace &, InstructionPointer &ip) {

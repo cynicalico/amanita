@@ -1,4 +1,4 @@
-#include "fingerprints/orth.hpp"
+#include "fingerprints/catseye/orth.hpp"
 #include <fmt/format.h>
 #include "instruction_pointer.hpp"
 

@@ -41,30 +41,33 @@ add_executable(amanita
         src/interpreter.cpp
         src/stackstack.cpp
 
-        include/fingerprints/dirf.hpp
-        include/fingerprints/evar.hpp
-        include/fingerprints/file.hpp
-        include/fingerprints/hrti.hpp
-        include/fingerprints/mode.hpp
-        include/fingerprints/modu.hpp
-        include/fingerprints/orth.hpp
-        include/fingerprints/null.hpp
-        include/fingerprints/refc.hpp
-        include/fingerprints/roma.hpp
-        include/fingerprints/toys.hpp
+        include/fingerprints/catseye/hrti.hpp
+        include/fingerprints/catseye/mode.hpp
+        include/fingerprints/catseye/modu.hpp
+        include/fingerprints/catseye/orth.hpp
+        include/fingerprints/catseye/perl.hpp
+        include/fingerprints/catseye/null.hpp
+        include/fingerprints/catseye/refc.hpp
+        include/fingerprints/catseye/roma.hpp
+        include/fingerprints/catseye/toys.hpp
+        include/fingerprints/rcs/dirf.hpp
+        include/fingerprints/rcs/evar.hpp
+        include/fingerprints/rcs/file.hpp
 
-        src/fingerprints/dirf.cpp
-        src/fingerprints/evar.cpp
-        src/fingerprints/file.cpp
-        src/fingerprints/hrti.cpp
-        src/fingerprints/mode.cpp
-        src/fingerprints/modu.cpp
-        src/fingerprints/orth.cpp
-        src/fingerprints/refc.cpp
-        src/fingerprints/roma.cpp
-        src/fingerprints/toys.cpp
+        src/fingerprints/catseye/hrti.cpp
+        src/fingerprints/catseye/mode.cpp
+        src/fingerprints/catseye/modu.cpp
+        src/fingerprints/catseye/orth.cpp
+        src/fingerprints/catseye/perl.cpp
+        src/fingerprints/catseye/refc.cpp
+        src/fingerprints/catseye/roma.cpp
+        src/fingerprints/catseye/toys.cpp
+        src/fingerprints/rcs/dirf.cpp
+        src/fingerprints/rcs/evar.cpp
+        src/fingerprints/rcs/file.cpp
 
         thirdparty/argparse.hpp
+        thirdparty/subprocess.h
         thirdparty/utf8.h
 
         main.cpp)
