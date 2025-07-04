@@ -28,29 +28,31 @@
 
 #include "common.hpp"
 
-InstructionAction file_close(Fungespace &, InstructionPointer &ip);
-InstructionAction file_delete(Fungespace &, InstructionPointer &ip);
-InstructionAction file_read_string(Fungespace &, InstructionPointer &ip);
-InstructionAction file_location(Fungespace &, InstructionPointer &ip);
-InstructionAction file_open(Fungespace &, InstructionPointer &ip);
-InstructionAction file_write_string(Fungespace &, InstructionPointer &ip);
-InstructionAction file_read_bytes(Fungespace &, InstructionPointer &ip);
-InstructionAction file_seek(Fungespace &, InstructionPointer &ip);
-InstructionAction file_write_bytes(Fungespace &, InstructionPointer &ip);
+namespace file {
+InstructionAction close(Fungespace &, InstructionPointer &ip);
+InstructionAction delete_(Fungespace &, InstructionPointer &ip);
+InstructionAction read_string(Fungespace &, InstructionPointer &ip);
+InstructionAction location(Fungespace &, InstructionPointer &ip);
+InstructionAction open(Fungespace &, InstructionPointer &ip);
+InstructionAction write_string(Fungespace &, InstructionPointer &ip);
+InstructionAction read_bytes(Fungespace &, InstructionPointer &ip);
+InstructionAction seek(Fungespace &, InstructionPointer &ip);
+InstructionAction write_bytes(Fungespace &, InstructionPointer &ip);
 
-const Fingerprint FNG_FILE{
+const Fingerprint FINGERPRINT{
         .name = "FILE",
         .id = 0x46494C45,
         .fns = {
-                {Instruction::C, file_close},
-                {Instruction::D, file_delete},
-                {Instruction::G, file_read_string},
-                {Instruction::L, file_location},
-                {Instruction::O, file_open},
-                {Instruction::P, file_write_string},
-                {Instruction::R, file_read_bytes},
-                {Instruction::S, file_seek},
-                {Instruction::W, file_write_bytes},
+                {Instruction::C, close},
+                {Instruction::D, delete_},
+                {Instruction::G, read_string},
+                {Instruction::L, location},
+                {Instruction::O, open},
+                {Instruction::P, write_string},
+                {Instruction::R, read_bytes},
+                {Instruction::S, seek},
+                {Instruction::W, write_bytes},
         }};
+} // namespace file
 
 #endif // AMANITA_FILE_HPP

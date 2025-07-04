@@ -16,15 +16,17 @@
 
 #include "common.hpp"
 
-InstructionAction refc_reference(Fungespace &, InstructionPointer &ip);
-InstructionAction refc_dereference(Fungespace &, InstructionPointer &ip);
+namespace refc {
+InstructionAction reference(Fungespace &, InstructionPointer &ip);
+InstructionAction dereference(Fungespace &, InstructionPointer &ip);
 
-const Fingerprint FNG_REFC{
+const Fingerprint FINGERPRINT{
         .name = "REFC",
         .id = 0x52454643,
         .fns = {
-                {Instruction::R, refc_reference},
-                {Instruction::D, refc_dereference},
+                {Instruction::R, reference},
+                {Instruction::D, dereference},
         }};
+} // namespace refc
 
 #endif // AMANITA_REFC_HPP

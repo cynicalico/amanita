@@ -46,33 +46,35 @@
 
 #include "common.hpp"
 
-InstructionAction orth_bitwise_and(Fungespace &, InstructionPointer &ip);
-InstructionAction orth_bitwise_or(Fungespace &, InstructionPointer &ip);
-InstructionAction orth_bitwise_exor(Fungespace &, InstructionPointer &ip);
-InstructionAction orth_change_x(Fungespace &, InstructionPointer &ip);
-InstructionAction orth_change_y(Fungespace &, InstructionPointer &ip);
-InstructionAction orth_change_dx(Fungespace &, InstructionPointer &ip);
-InstructionAction orth_change_dy(Fungespace &, InstructionPointer &ip);
-InstructionAction orth_ortho_get(Fungespace &, InstructionPointer &ip);
-InstructionAction orth_ortho_put(Fungespace &, InstructionPointer &ip);
-InstructionAction orth_ramp_if_zero(Fungespace &, InstructionPointer &ip);
-InstructionAction orth_output_string(Fungespace &, InstructionPointer &ip);
+namespace orth {
+InstructionAction bitwise_and(Fungespace &, InstructionPointer &ip);
+InstructionAction bitwise_or(Fungespace &, InstructionPointer &ip);
+InstructionAction bitwise_exor(Fungespace &, InstructionPointer &ip);
+InstructionAction change_x(Fungespace &, InstructionPointer &ip);
+InstructionAction change_y(Fungespace &, InstructionPointer &ip);
+InstructionAction change_dx(Fungespace &, InstructionPointer &ip);
+InstructionAction change_dy(Fungespace &, InstructionPointer &ip);
+InstructionAction ortho_get(Fungespace &, InstructionPointer &ip);
+InstructionAction ortho_put(Fungespace &, InstructionPointer &ip);
+InstructionAction ramp_if_zero(Fungespace &, InstructionPointer &ip);
+InstructionAction output_string(Fungespace &, InstructionPointer &ip);
 
-const Fingerprint FNG_ORTH{
+const Fingerprint FINGERPRINT{
         .name = "ORTH",
         .id = 0x4f525448,
         .fns = {
-                {Instruction::A, orth_bitwise_and},
-                {Instruction::O, orth_bitwise_or},
-                {Instruction::E, orth_bitwise_exor},
-                {Instruction::X, orth_change_x},
-                {Instruction::Y, orth_change_y},
-                {Instruction::V, orth_change_dx},
-                {Instruction::W, orth_change_dy},
-                {Instruction::G, orth_ortho_get},
-                {Instruction::P, orth_ortho_put},
-                {Instruction::Z, orth_ramp_if_zero},
-                {Instruction::S, orth_output_string},
+                {Instruction::A, bitwise_and},
+                {Instruction::O, bitwise_or},
+                {Instruction::E, bitwise_exor},
+                {Instruction::X, change_x},
+                {Instruction::Y, change_y},
+                {Instruction::V, change_dx},
+                {Instruction::W, change_dy},
+                {Instruction::G, ortho_get},
+                {Instruction::P, ortho_put},
+                {Instruction::Z, ramp_if_zero},
+                {Instruction::S, output_string},
         }};
+} // namespace orth
 
 #endif // AMANITA_ORTH_HPP

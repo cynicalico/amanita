@@ -22,21 +22,23 @@
 
 #include "common.hpp"
 
-InstructionAction hrti_granularity(Fungespace &, InstructionPointer &ip);
-InstructionAction hrti_mark(Fungespace &, InstructionPointer &ip);
-InstructionAction hrti_timer(Fungespace &, InstructionPointer &ip);
-InstructionAction hrti_erase_mark(Fungespace &, InstructionPointer &ip);
-InstructionAction hrti_second(Fungespace &, InstructionPointer &ip);
+namespace hrti {
+InstructionAction granularity(Fungespace &, InstructionPointer &ip);
+InstructionAction mark(Fungespace &, InstructionPointer &ip);
+InstructionAction timer(Fungespace &, InstructionPointer &ip);
+InstructionAction erase_mark(Fungespace &, InstructionPointer &ip);
+InstructionAction second(Fungespace &, InstructionPointer &ip);
 
-const Fingerprint FNG_HRTI{
+const Fingerprint FINGERPRINT{
         .name = "HRTI",
         .id = 0x48525449,
         .fns = {
-                {Instruction::G, hrti_granularity},
-                {Instruction::M, hrti_mark},
-                {Instruction::T, hrti_timer},
-                {Instruction::E, hrti_erase_mark},
-                {Instruction::S, hrti_second},
+                {Instruction::G, granularity},
+                {Instruction::M, mark},
+                {Instruction::T, timer},
+                {Instruction::E, erase_mark},
+                {Instruction::S, second},
         }};
+} // namespace hrti
 
 #endif // AMANITA_HRTI_HPP

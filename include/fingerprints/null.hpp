@@ -9,7 +9,8 @@
 #include "base_instructions.hpp"
 #include "common.hpp"
 
-const Fingerprint FNG_NULL{
+namespace null {
+const Fingerprint FINGERPRINT{
         .name = "NULL",
         .id = 0x4e554c4c,
         .fns = {
@@ -27,5 +28,6 @@ const Fingerprint FNG_NULL{
                 {Instruction::W, instruction_reflect}, {Instruction::X, instruction_reflect},
                 {Instruction::Y, instruction_reflect}, {Instruction::Z, instruction_reflect},
         }};
+} // namespace null
 
 #endif // AMANITA_NULL_HPP

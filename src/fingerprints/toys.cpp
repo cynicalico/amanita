@@ -2,7 +2,7 @@
 #include "instruction_pointer.hpp"
 #include "mizu/util/rng.hpp"
 
-InstructionAction toys_gable(Fungespace &, InstructionPointer &ip) {
+InstructionAction toys::gable(Fungespace &, InstructionPointer &ip) {
     const auto n = ip.stack.pop();
     const auto v = ip.stack.pop();
     for (std::int64_t i = 0; i < n; ++i)
@@ -10,7 +10,7 @@ InstructionAction toys_gable(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction toys_pair_of_shoes(Fungespace &, InstructionPointer &ip) {
+InstructionAction toys::pair_of_shoes(Fungespace &, InstructionPointer &ip) {
     const auto y = ip.stack.pop();
     const auto x = ip.stack.pop();
     ip.stack.push(x + y);
@@ -18,7 +18,7 @@ InstructionAction toys_pair_of_shoes(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction toys_bracelet(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction toys::bracelet(Fungespace &fungespace, InstructionPointer &ip) {
     const auto dst_y_orig = ip.stack.pop();
     const auto dst_x_orig = ip.stack.pop();
     const auto h = ip.stack.pop();
@@ -42,12 +42,12 @@ InstructionAction toys_bracelet(Fungespace &fungespace, InstructionPointer &ip) 
     return MoveAction{};
 }
 
-InstructionAction toys_toilet_seat(Fungespace &, InstructionPointer &ip) {
+InstructionAction toys::toilet_seat(Fungespace &, InstructionPointer &ip) {
     ip.stack.push(ip.stack.pop() - 1);
     return MoveAction{};
 }
 
-InstructionAction toys_pitchfork_head(Fungespace &, InstructionPointer &ip) {
+InstructionAction toys::pitchfork_head(Fungespace &, InstructionPointer &ip) {
     std::int64_t sum = 0;
     while (ip.stack.size() > 0)
         sum += ip.stack.pop();
@@ -55,7 +55,7 @@ InstructionAction toys_pitchfork_head(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction toys_calipers(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction toys::calipers(Fungespace &fungespace, InstructionPointer &ip) {
     const auto y = ip.stack.pop() + ip.storage_offset[1];
     const auto x = ip.stack.pop() + ip.storage_offset[0];
     const auto j = ip.stack.pop();
@@ -68,7 +68,7 @@ InstructionAction toys_calipers(Fungespace &fungespace, InstructionPointer &ip) 
     return MoveAction{};
 }
 
-InstructionAction toys_counterclockwise(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction toys::counterclockwise(Fungespace &fungespace, InstructionPointer &ip) {
     const auto y = ip.stack.pop() + ip.storage_offset[1];
     const auto x = ip.stack.pop() + ip.storage_offset[0];
     const auto j = ip.stack.pop();
@@ -81,7 +81,7 @@ InstructionAction toys_counterclockwise(Fungespace &fungespace, InstructionPoint
     return MoveAction{};
 }
 
-InstructionAction toys_pair_of_stilts(Fungespace &, InstructionPointer &ip) {
+InstructionAction toys::pair_of_stilts(Fungespace &, InstructionPointer &ip) {
     const auto b = ip.stack.pop();
     const auto a = ip.stack.pop();
     if (b > 0)
@@ -93,12 +93,12 @@ InstructionAction toys_pair_of_stilts(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction toys_doric_column(Fungespace &, InstructionPointer &ip) {
+InstructionAction toys::doric_column(Fungespace &, InstructionPointer &ip) {
     ip.stack.push(ip.stack.pop() + 1);
     return MoveAction{};
 }
 
-InstructionAction toys_fishhook(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction toys::fishhook(Fungespace &fungespace, InstructionPointer &ip) {
     if (const auto trans = ip.stack.pop(); trans < 0) {
         const auto y_start = fungespace.min_coord[1];
         const auto y_end = fungespace.max_coord[1];
@@ -118,7 +118,7 @@ InstructionAction toys_fishhook(Fungespace &fungespace, InstructionPointer &ip) 
     return MoveAction{};
 }
 
-InstructionAction toys_scissors(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction toys::scissors(Fungespace &fungespace, InstructionPointer &ip) {
     const auto dst_y_orig = ip.stack.pop();
     const auto dst_x_orig = ip.stack.pop();
     const auto h = ip.stack.pop();
@@ -142,7 +142,7 @@ InstructionAction toys_scissors(Fungespace &fungespace, InstructionPointer &ip) 
     return MoveAction{};
 }
 
-InstructionAction toys_corner(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction toys::corner(Fungespace &fungespace, InstructionPointer &ip) {
     ip.save_pos();
     ip.save_delta();
 
@@ -156,7 +156,7 @@ InstructionAction toys_corner(Fungespace &fungespace, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction toys_kittycat(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction toys::kittycat(Fungespace &fungespace, InstructionPointer &ip) {
     const auto dst_y_orig = ip.stack.pop();
     const auto dst_x_orig = ip.stack.pop();
     const auto h = ip.stack.pop();
@@ -181,12 +181,12 @@ InstructionAction toys_kittycat(Fungespace &fungespace, InstructionPointer &ip) 
     return MoveAction{};
 }
 
-InstructionAction toys_lightning_bolt(Fungespace &, InstructionPointer &ip) {
+InstructionAction toys::lightning_bolt(Fungespace &, InstructionPointer &ip) {
     ip.stack.push(-ip.stack.pop());
     return MoveAction{};
 }
 
-InstructionAction toys_boulder(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction toys::boulder(Fungespace &fungespace, InstructionPointer &ip) {
     if (const auto trans = ip.stack.pop(); trans < 0) {
         const auto x_start = fungespace.min_coord[1];
         const auto x_end = fungespace.max_coord[1];
@@ -206,7 +206,7 @@ InstructionAction toys_boulder(Fungespace &fungespace, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction toys_mailbox(Fungespace &, InstructionPointer &ip) {
+InstructionAction toys::mailbox(Fungespace &, InstructionPointer &ip) {
     std::int64_t prod = 1;
     while (ip.stack.size() > 0)
         prod *= ip.stack.pop();
@@ -214,7 +214,7 @@ InstructionAction toys_mailbox(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction toys_necklace(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction toys::necklace(Fungespace &fungespace, InstructionPointer &ip) {
     const auto v = ip.stack.pop();
 
     ip.save_pos();
@@ -230,7 +230,7 @@ InstructionAction toys_necklace(Fungespace &fungespace, InstructionPointer &ip) 
     return MoveAction{};
 }
 
-InstructionAction toys_can_opener(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction toys::can_opener(Fungespace &fungespace, InstructionPointer &ip) {
     ip.save_pos();
     ip.save_delta();
 
@@ -244,7 +244,7 @@ InstructionAction toys_can_opener(Fungespace &fungespace, InstructionPointer &ip
     return MoveAction{};
 }
 
-InstructionAction toys_chicane(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction toys::chicane(Fungespace &fungespace, InstructionPointer &ip) {
     const auto y = ip.stack.pop() + ip.storage_offset[1];
     const auto x = ip.stack.pop() + ip.storage_offset[0];
     const auto h = ip.stack.pop();
@@ -258,7 +258,7 @@ InstructionAction toys_chicane(Fungespace &fungespace, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction toys_barstool(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction toys::barstool(Fungespace &fungespace, InstructionPointer &ip) {
     switch (ip.stack.pop()) {
     case 0:
         return ip.instruction_stack.perform(Instruction::EastWestIf, fungespace, ip);
@@ -274,7 +274,7 @@ InstructionAction toys_barstool(Fungespace &fungespace, InstructionPointer &ip) 
     return MoveAction{};
 }
 
-InstructionAction toys_tumbler(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction toys::tumbler(Fungespace &fungespace, InstructionPointer &ip) {
     switch (mizu::rng::get<std::size_t>(3)) {
     case 0:
         fungespace.put(ip.pos[0], ip.pos[1], static_cast<std::int64_t>(Instruction::GoSouth));
@@ -298,7 +298,7 @@ InstructionAction toys_tumbler(Fungespace &fungespace, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction toys_dixiecup(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction toys::dixiecup(Fungespace &fungespace, InstructionPointer &ip) {
     const auto dst_y_orig = ip.stack.pop();
     const auto dst_x_orig = ip.stack.pop();
     const auto h = ip.stack.pop();
@@ -323,7 +323,7 @@ InstructionAction toys_dixiecup(Fungespace &fungespace, InstructionPointer &ip) 
     return MoveAction{};
 }
 
-InstructionAction toys_television_antenna(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction toys::television_antenna(Fungespace &fungespace, InstructionPointer &ip) {
     const auto y = ip.stack.pop();
     const auto x = ip.stack.pop();
     const auto v = ip.stack.pop();
@@ -342,17 +342,17 @@ InstructionAction toys_television_antenna(Fungespace &fungespace, InstructionPoi
     return MoveAction{};
 }
 
-InstructionAction toys_buried_treasure(Fungespace &, InstructionPointer &ip) {
+InstructionAction toys::buried_treasure(Fungespace &, InstructionPointer &ip) {
     ip.pos[0] += 1;
     return MoveAction{};
 }
 
-InstructionAction toys_slingshot(Fungespace &, InstructionPointer &ip) {
+InstructionAction toys::slingshot(Fungespace &, InstructionPointer &ip) {
     ip.pos[1] += 1;
     return MoveAction{};
 }
 
-InstructionAction toys_barn_door(Fungespace &, InstructionPointer &ip) {
+InstructionAction toys::barn_door(Fungespace &, InstructionPointer &ip) {
     ip.reflect();
     return MoveAction{};
 }

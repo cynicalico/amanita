@@ -3,12 +3,9 @@
 #include <vector>
 #include "instruction_pointer.hpp"
 
-std::vector<std::array<std::int64_t, 2>> &references() {
-    static std::vector<std::array<std::int64_t, 2>> references{};
-    return references;
-}
+std::vector<std::array<std::int64_t, 2>> &references();
 
-InstructionAction refc_reference(Fungespace &, InstructionPointer &ip) {
+InstructionAction refc::reference(Fungespace &, InstructionPointer &ip) {
     const auto y = ip.stack.pop();
     const auto x = ip.stack.pop();
 
@@ -19,7 +16,7 @@ InstructionAction refc_reference(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction refc_dereference(Fungespace &, InstructionPointer &ip) {
+InstructionAction refc::dereference(Fungespace &, InstructionPointer &ip) {
     if (const auto i = ip.stack.pop(); i < 0) {
         ip.reflect();
     } else if (const auto &r = references(); r.size() <= i) {
@@ -29,4 +26,9 @@ InstructionAction refc_dereference(Fungespace &, InstructionPointer &ip) {
         ip.stack.push(r[static_cast<std::size_t>(i)][1]);
     }
     return MoveAction{};
+}
+
+std::vector<std::array<std::int64_t, 2>> &references() {
+    static std::vector<std::array<std::int64_t, 2>> references{};
+    return references;
 }

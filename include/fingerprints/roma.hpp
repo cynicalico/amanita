@@ -17,26 +17,28 @@
 
 #include "common.hpp"
 
-InstructionAction roma_c(Fungespace &, InstructionPointer &ip);
-InstructionAction roma_d(Fungespace &, InstructionPointer &ip);
-InstructionAction roma_i(Fungespace &, InstructionPointer &ip);
-InstructionAction roma_l(Fungespace &, InstructionPointer &ip);
-InstructionAction roma_m(Fungespace &, InstructionPointer &ip);
-InstructionAction roma_v(Fungespace &, InstructionPointer &ip);
-InstructionAction roma_x(Fungespace &, InstructionPointer &ip);
+namespace roma {
+InstructionAction push_100(Fungespace &, InstructionPointer &ip);
+InstructionAction push_500(Fungespace &, InstructionPointer &ip);
+InstructionAction push_1(Fungespace &, InstructionPointer &ip);
+InstructionAction push_50(Fungespace &, InstructionPointer &ip);
+InstructionAction push_1000(Fungespace &, InstructionPointer &ip);
+InstructionAction push_5(Fungespace &, InstructionPointer &ip);
+InstructionAction push_10(Fungespace &, InstructionPointer &ip);
 
-const static Fingerprint FNG_ROMA{
+const static Fingerprint FINGERPRINT{
         .name = "ROMA",
         .id = 0x524f4d41,
         .fns = {
-                {Instruction::C, roma_c},
-                {Instruction::D, roma_d},
-                {Instruction::I, roma_i},
-                {Instruction::L, roma_l},
-                {Instruction::M, roma_m},
-                {Instruction::V, roma_v},
-                {Instruction::X, roma_x},
+                {Instruction::C, push_100},
+                {Instruction::D, push_500},
+                {Instruction::I, push_1},
+                {Instruction::L, push_50},
+                {Instruction::M, push_1000},
+                {Instruction::V, push_5},
+                {Instruction::X, push_10},
         }};
+} // namespace roma
 
 // constexpr std::int64_t ROMA = 0x524f4d41;
 

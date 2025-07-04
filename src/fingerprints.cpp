@@ -4,6 +4,7 @@
 #include "instruction_stack.hpp"
 
 #include "fingerprints/dirf.hpp"
+#include "fingerprints/evar.hpp"
 #include "fingerprints/file.hpp"
 #include "fingerprints/hrti.hpp"
 #include "fingerprints/mode.hpp"
@@ -16,16 +17,17 @@
 
 const std::unordered_map<std::int64_t, const Fingerprint &> &registry() {
     static std::unordered_map<std::int64_t, const Fingerprint &> registry{
-            {FNG_DIRF.id, FNG_DIRF},
-            {FNG_FILE.id, FNG_FILE},
-            {FNG_HRTI.id, FNG_HRTI},
-            {FNG_MODE.id, FNG_MODE},
-            {FNG_MODU.id, FNG_MODU},
-            {FNG_NULL.id, FNG_NULL},
-            {FNG_ORTH.id, FNG_ORTH},
-            {FNG_REFC.id, FNG_REFC},
-            {FNG_ROMA.id, FNG_ROMA},
-            {FNG_TOYS.id, FNG_TOYS},
+            {dirf::FINGERPRINT.id, dirf::FINGERPRINT},
+            {evar::FINGERPRINT.id, evar::FINGERPRINT},
+            {file::FINGERPRINT.id, file::FINGERPRINT},
+            {hrti::FINGERPRINT.id, hrti::FINGERPRINT},
+            {mode::FINGERPRINT.id, mode::FINGERPRINT},
+            {modu::FINGERPRINT.id, modu::FINGERPRINT},
+            {null::FINGERPRINT.id, null::FINGERPRINT},
+            {orth::FINGERPRINT.id, orth::FINGERPRINT},
+            {refc::FINGERPRINT.id, refc::FINGERPRINT},
+            {roma::FINGERPRINT.id, roma::FINGERPRINT},
+            {toys::FINGERPRINT.id, toys::FINGERPRINT},
     };
     return registry;
 }

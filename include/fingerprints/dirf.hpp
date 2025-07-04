@@ -10,16 +10,18 @@
 
 #include "common.hpp"
 
-InstructionAction dirf_cd(Fungespace &, InstructionPointer &ip);
-InstructionAction dirf_mkdir(Fungespace &, InstructionPointer &ip);
-InstructionAction dirf_rmdir(Fungespace &, InstructionPointer &ip);
+namespace dirf {
+InstructionAction cd(Fungespace &, InstructionPointer &ip);
+InstructionAction mkdir(Fungespace &, InstructionPointer &ip);
+InstructionAction rmdir(Fungespace &, InstructionPointer &ip);
 
-const Fingerprint FNG_DIRF{
+const Fingerprint FINGERPRINT{
         .id = 0x44495246,
         .fns = {
-                {Instruction::C, dirf_cd},
-                {Instruction::M, dirf_mkdir},
-                {Instruction::R, dirf_rmdir},
+                {Instruction::C, cd},
+                {Instruction::M, mkdir},
+                {Instruction::R, rmdir},
         }};
+} // namespace dirf
 
 #endif // AMANITA_DIRF_HPP

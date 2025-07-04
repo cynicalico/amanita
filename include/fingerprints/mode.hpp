@@ -21,19 +21,21 @@
 
 #include "common.hpp"
 
-InstructionAction mode_toggle_hovermode(Fungespace &, InstructionPointer &ip);
-InstructionAction mode_toggle_invertmode(Fungespace &, InstructionPointer &ip);
-InstructionAction mode_toggle_queuemode(Fungespace &, InstructionPointer &ip);
-InstructionAction mode_toggle_switchmode(Fungespace &, InstructionPointer &ip);
+namespace mode {
+InstructionAction toggle_hovermode(Fungespace &, InstructionPointer &ip);
+InstructionAction toggle_invertmode(Fungespace &, InstructionPointer &ip);
+InstructionAction toggle_queuemode(Fungespace &, InstructionPointer &ip);
+InstructionAction toggle_switchmode(Fungespace &, InstructionPointer &ip);
 
-const Fingerprint FNG_MODE{
+const Fingerprint FINGERPRINT{
         .name = "MODE",
         .id = 0x4d4f4445,
         .fns = {
-                {Instruction::H, mode_toggle_hovermode},
-                {Instruction::I, mode_toggle_invertmode},
-                {Instruction::Q, mode_toggle_queuemode},
-                {Instruction::S, mode_toggle_switchmode},
+                {Instruction::H, toggle_hovermode},
+                {Instruction::I, toggle_invertmode},
+                {Instruction::Q, toggle_queuemode},
+                {Instruction::S, toggle_switchmode},
         }};
+} // namespace mode
 
 #endif // AMANITA_MODE_HPP

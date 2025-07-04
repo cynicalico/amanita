@@ -84,63 +84,65 @@
 
 #include "common.hpp"
 
-InstructionAction toys_gable(Fungespace &, InstructionPointer &ip);
-InstructionAction toys_pair_of_shoes(Fungespace &, InstructionPointer &ip);
-InstructionAction toys_bracelet(Fungespace &, InstructionPointer &ip);
-InstructionAction toys_toilet_seat(Fungespace &, InstructionPointer &ip);
-InstructionAction toys_pitchfork_head(Fungespace &, InstructionPointer &ip);
-InstructionAction toys_calipers(Fungespace &, InstructionPointer &ip);
-InstructionAction toys_counterclockwise(Fungespace &, InstructionPointer &ip);
-InstructionAction toys_pair_of_stilts(Fungespace &, InstructionPointer &ip);
-InstructionAction toys_doric_column(Fungespace &, InstructionPointer &ip);
-InstructionAction toys_fishhook(Fungespace &, InstructionPointer &ip);
-InstructionAction toys_scissors(Fungespace &, InstructionPointer &ip);
-InstructionAction toys_corner(Fungespace &, InstructionPointer &ip);
-InstructionAction toys_kittycat(Fungespace &, InstructionPointer &ip);
-InstructionAction toys_lightning_bolt(Fungespace &, InstructionPointer &ip);
-InstructionAction toys_boulder(Fungespace &, InstructionPointer &ip);
-InstructionAction toys_mailbox(Fungespace &, InstructionPointer &ip);
-InstructionAction toys_necklace(Fungespace &, InstructionPointer &ip);
-InstructionAction toys_can_opener(Fungespace &, InstructionPointer &ip);
-InstructionAction toys_chicane(Fungespace &, InstructionPointer &ip);
-InstructionAction toys_barstool(Fungespace &, InstructionPointer &ip);
-InstructionAction toys_tumbler(Fungespace &, InstructionPointer &ip);
-InstructionAction toys_dixiecup(Fungespace &, InstructionPointer &ip);
-InstructionAction toys_television_antenna(Fungespace &, InstructionPointer &ip);
-InstructionAction toys_buried_treasure(Fungespace &, InstructionPointer &ip);
-InstructionAction toys_slingshot(Fungespace &, InstructionPointer &ip);
-InstructionAction toys_barn_door(Fungespace &, InstructionPointer &ip);
+namespace toys {
+InstructionAction gable(Fungespace &, InstructionPointer &ip);
+InstructionAction pair_of_shoes(Fungespace &, InstructionPointer &ip);
+InstructionAction bracelet(Fungespace &, InstructionPointer &ip);
+InstructionAction toilet_seat(Fungespace &, InstructionPointer &ip);
+InstructionAction pitchfork_head(Fungespace &, InstructionPointer &ip);
+InstructionAction calipers(Fungespace &, InstructionPointer &ip);
+InstructionAction counterclockwise(Fungespace &, InstructionPointer &ip);
+InstructionAction pair_of_stilts(Fungespace &, InstructionPointer &ip);
+InstructionAction doric_column(Fungespace &, InstructionPointer &ip);
+InstructionAction fishhook(Fungespace &, InstructionPointer &ip);
+InstructionAction scissors(Fungespace &, InstructionPointer &ip);
+InstructionAction corner(Fungespace &, InstructionPointer &ip);
+InstructionAction kittycat(Fungespace &, InstructionPointer &ip);
+InstructionAction lightning_bolt(Fungespace &, InstructionPointer &ip);
+InstructionAction boulder(Fungespace &, InstructionPointer &ip);
+InstructionAction mailbox(Fungespace &, InstructionPointer &ip);
+InstructionAction necklace(Fungespace &, InstructionPointer &ip);
+InstructionAction can_opener(Fungespace &, InstructionPointer &ip);
+InstructionAction chicane(Fungespace &, InstructionPointer &ip);
+InstructionAction barstool(Fungespace &, InstructionPointer &ip);
+InstructionAction tumbler(Fungespace &, InstructionPointer &ip);
+InstructionAction dixiecup(Fungespace &, InstructionPointer &ip);
+InstructionAction television_antenna(Fungespace &, InstructionPointer &ip);
+InstructionAction buried_treasure(Fungespace &, InstructionPointer &ip);
+InstructionAction slingshot(Fungespace &, InstructionPointer &ip);
+InstructionAction barn_door(Fungespace &, InstructionPointer &ip);
 
-const Fingerprint FNG_TOYS{
+const Fingerprint FINGERPRINT{
         .name = "TOYS",
         .id = 0x544f5953,
         .fns = {
-                {Instruction::A, toys_gable},
-                {Instruction::B, toys_pair_of_shoes},
-                {Instruction::C, toys_bracelet},
-                {Instruction::D, toys_toilet_seat},
-                {Instruction::E, toys_pitchfork_head},
-                {Instruction::F, toys_calipers},
-                {Instruction::G, toys_counterclockwise},
-                {Instruction::H, toys_pair_of_stilts},
-                {Instruction::I, toys_doric_column},
-                {Instruction::J, toys_fishhook},
-                {Instruction::K, toys_scissors},
-                {Instruction::L, toys_corner},
-                {Instruction::M, toys_kittycat},
-                {Instruction::N, toys_lightning_bolt},
-                {Instruction::O, toys_boulder},
-                {Instruction::P, toys_mailbox},
-                {Instruction::Q, toys_necklace},
-                {Instruction::R, toys_can_opener},
-                {Instruction::S, toys_chicane},
-                {Instruction::T, toys_barstool},
-                {Instruction::U, toys_tumbler},
-                {Instruction::V, toys_dixiecup},
-                {Instruction::W, toys_television_antenna},
-                {Instruction::X, toys_buried_treasure},
-                {Instruction::Y, toys_slingshot},
-                {Instruction::Z, toys_barn_door},
+                {Instruction::A, gable},
+                {Instruction::B, pair_of_shoes},
+                {Instruction::C, bracelet},
+                {Instruction::D, toilet_seat},
+                {Instruction::E, pitchfork_head},
+                {Instruction::F, calipers},
+                {Instruction::G, counterclockwise},
+                {Instruction::H, pair_of_stilts},
+                {Instruction::I, doric_column},
+                {Instruction::J, fishhook},
+                {Instruction::K, scissors},
+                {Instruction::L, corner},
+                {Instruction::M, kittycat},
+                {Instruction::N, lightning_bolt},
+                {Instruction::O, boulder},
+                {Instruction::P, mailbox},
+                {Instruction::Q, necklace},
+                {Instruction::R, can_opener},
+                {Instruction::S, chicane},
+                {Instruction::T, barstool},
+                {Instruction::U, tumbler},
+                {Instruction::V, dixiecup},
+                {Instruction::W, television_antenna},
+                {Instruction::X, buried_treasure},
+                {Instruction::Y, slingshot},
+                {Instruction::Z, barn_door},
         }};
+} // namespace toys
 
 #endif // AMANITA_TOYS_HPP
