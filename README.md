@@ -33,18 +33,27 @@ See output of `amanita --help`
 
 ## Available Fingerprints (names link to documentation)
 
-| Name                                                                                                        | ID           | Description                     |
-|-------------------------------------------------------------------------------------------------------------|--------------|---------------------------------|
-| [`DIRF`](https://web.archive.org/web/20230617132045/https://rcfunge98.com/rcsfingers.html#DIRF)             | `0x44495246` | Directory functions extension   |
-| [`FILE`](https://web.archive.org/web/20230617132045/https://rcfunge98.com/rcsfingers.html#FILE)             | `0x46494C45` | File I/O functions              |
-| [`HRTI`](https://web.archive.org/web/20250124201720/https://catseye.tc/view/Funge-98/library/HRTI.markdown) | `0x48525449` | High-Resolution Timer Interface |
-| [`MODE`](https://web.archive.org/web/20250525000331/https://catseye.tc/view/funge-98/library/MODE.markdown) | `0x4d4f4445` | Funge-98 Standard Modes         |
-| [`MODU`](https://web.archive.org/web/20250523022748/https://catseye.tc/view/funge-98/library/MODU.markdown) | `0x4d4f4455` | Modulo Arithmetic Extension     |
-| [`NULL`](https://web.archive.org/web/20250124201817/https://catseye.tc/view/Funge-98/library/NULL.markdown) | `0x4e554c4c` | Funge-98 Null Fingerprint       |
-| [`ORTH`](https://web.archive.org/web/20250124201940/https://catseye.tc/view/funge-98/library/ORTH.markdown) | `0x4f525448` | Orthogonal Easement Library     |
-| [`REFC`](https://web.archive.org/web/20250124201827/https://catseye.tc/view/Funge-98/library/REFC.markdown) | `0x52454643` | Referenced Cells Extension      |
-| [`ROMA`](https://web.archive.org/web/20250523145159/https://catseye.tc/view/funge-98/library/ROMA.markdown) | `0x524f4d41` | Funge-98 Roman Numerals         |
-| [`TOYS`](https://web.archive.org/web/20211201092300/https://catseye.tc/view/funge-98/library/TOYS.markdown) | `0x544f5953` | Funge-98 Standard Toys          |
+### Cat's Eye
+
+| Name                                                                                                        | ID           | Description                            |
+|-------------------------------------------------------------------------------------------------------------|--------------|----------------------------------------|
+| [`HRTI`](https://web.archive.org/web/20250124201720/https://catseye.tc/view/Funge-98/library/HRTI.markdown) | `0x48525449` | High-Resolution Timer Interface        |
+| [`MODE`](https://web.archive.org/web/20250525000331/https://catseye.tc/view/funge-98/library/MODE.markdown) | `0x4d4f4445` | Funge-98 Standard Modes                |
+| [`MODU`](https://web.archive.org/web/20250523022748/https://catseye.tc/view/funge-98/library/MODU.markdown) | `0x4d4f4455` | Modulo Arithmetic Extension            |
+| [`NULL`](https://web.archive.org/web/20250124201817/https://catseye.tc/view/Funge-98/library/NULL.markdown) | `0x4e554c4c` | Funge-98 Null Fingerprint              |
+| [`ORTH`](https://web.archive.org/web/20250124201940/https://catseye.tc/view/funge-98/library/ORTH.markdown) | `0x4f525448` | Orthogonal Easement Library            |
+| [`PERL`](https://web.archive.org/web/20250124201940/https://catseye.tc/view/funge-98/library/PERL.markdown) | `0x5045524c` | Generic Interface to the Perl Language |
+| [`REFC`](https://web.archive.org/web/20250124201827/https://catseye.tc/view/Funge-98/library/REFC.markdown) | `0x52454643` | Referenced Cells Extension             |
+| [`ROMA`](https://web.archive.org/web/20250523145159/https://catseye.tc/view/funge-98/library/ROMA.markdown) | `0x524f4d41` | Funge-98 Roman Numerals                |
+| [`TOYS`](https://web.archive.org/web/20211201092300/https://catseye.tc/view/funge-98/library/TOYS.markdown) | `0x544f5953` | Funge-98 Standard Toys                 |
+
+### RCS
+
+| Name                                                                                            | ID           | Description                     |
+|-------------------------------------------------------------------------------------------------|--------------|---------------------------------|
+| [`DIRF`](https://web.archive.org/web/20230617132045/https://rcfunge98.com/rcsfingers.html#DIRF) | `0x44495246` | Directory functions extension   |
+| [`EVAR`](https://web.archive.org/web/20230617132045/https://rcfunge98.com/rcsfingers.html#EVAR) | `0x45564152` | Environment variables extension |
+| [`FILE`](https://web.archive.org/web/20230617132045/https://rcfunge98.com/rcsfingers.html#FILE) | `0x46494c45` | File I/O functions              |
 
 ## Notable Implementation Details
 
