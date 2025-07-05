@@ -19,14 +19,13 @@ const mizu::Rgba CURSOR_COLOR = mizu::rgb(0x0037da);
 
 void draw_rect(mizu::G2d &g2d, glm::vec2 pos, glm::vec2 size, const mizu::Color &color);
 
-Editor::Editor(
-        mizu::Engine *engine, const std::filesystem::path &path, std::vector<std::string> args, std::int64_t skip_ticks)
+Editor::Editor(mizu::Engine *engine, const std::filesystem::path &path, CliArgs *cli_args, std::int64_t skip_ticks)
     : Application(engine),
       g2d(*engine->g2d),
       window(*engine->window),
       input(*engine->input),
       viewport_pos{0, 0},
-      interpreter(path) {
+      fungespace(path) {
     very_large_font = std::make_unique<mizu::Font>(g2d, "font/ter-u24b.bdf");
     large_font = std::make_unique<mizu::Font>(g2d, "font/ter-u18b.bdf");
     medium_font = std::make_unique<mizu::Font>(g2d, "font/ter-u14b.bdf");
@@ -69,8 +68,7 @@ Editor::Editor(
 
     ticker = mizu::Ticker(std::chrono::milliseconds(2));
     slow_ticker = mizu::Ticker(std::chrono::milliseconds(50));
-    interpreter.args = std::move(args);
-    active_list.emplace_back(&interpreter);
+    active_list.emplace_back(cli_args);
 
     if (skip_ticks > 0) {
         for (std::int64_t i = 0; i < skip_ticks; i++) {
@@ -120,7 +118,7 @@ void Editor::draw_program() {
     for (std::int64_t y = viewport_pos.y; y < viewport_pos.y + ROWS; ++y) {
         std::string s = "";
         for (std::int64_t x = viewport_pos.x; x < viewport_pos.x + COLS; ++x) {
-            const auto v = interpreter.fungespace.get(x, y);
+            const auto v = fungespace.get(x, y);
             // TODO: Display something other than a space
             if (v == '\0' || v == '\r' || v == '\n')
                 s += ' ';
@@ -318,15 +316,15 @@ void Editor::do_single_tick() {
     for (auto &ip: active_list) {
         Cell ins;
         do {
-            ins = interpreter.fungespace.get(ip.pos.x, ip.pos.y);
+            ins = fungespace.get(ip.pos.x, ip.pos.y);
             if (!ip.string_mode && (ins == Instruction::Space || ins == Instruction::JumpOver))
-                ip.step_to_next_instruction(interpreter.fungespace, '\0', ins == Instruction::JumpOver);
+                ip.step_to_next_instruction(fungespace, '\0', ins == Instruction::JumpOver);
             else
                 break;
         } while (true);
         ip.cache_ins = ins;
 
-        auto action = ip.instruction_stack.perform(static_cast<Instruction>(ins), interpreter.fungespace, ip);
+        auto action = ip.instruction_stack.perform(static_cast<Instruction>(ins), fungespace, ip);
         std::visit(
                 overloaded{
                         [&](const IterAction &a) {
@@ -367,7 +365,7 @@ void Editor::do_single_tick() {
 
     std::swap(active_list, inactive_list);
     for (auto &ip: active_list)
-        ip.step_to_next_instruction(interpreter.fungespace, ip.cache_ins, false);
+        ip.step_to_next_instruction(fungespace, ip.cache_ins, false);
 
     tick++;
 }

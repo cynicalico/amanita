@@ -1,14 +1,12 @@
 #include "base_instructions.hpp"
 #include <chrono>
 #include <cstdlib>
-#include <ranges>
+#include <fmt/format.h>
 #include <stack>
 #include <utility>
 #include "fingerprints.hpp"
-#include "fmt/format.h"
 #include "fungespace.hpp"
 #include "instruction_pointer.hpp"
-#include "interpreter.hpp"
 #include "mizu/util/rng.hpp"
 
 extern char **environ;
@@ -579,7 +577,7 @@ InstructionAction instruction_get_sysinfo(const Fungespace &fungespace, Instruct
         buf.push(static_cast<std::int64_t>(size));
 
     // command line arguments followed by double null
-    for (const auto &arg: ip.interpreter->args) {
+    for (const auto &arg: ip.cli_args->args) {
         for (const auto &c: arg)
             buf.push(c);
         buf.push('\0');

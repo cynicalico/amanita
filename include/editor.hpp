@@ -1,7 +1,8 @@
 #ifndef AMANITA_EDITOR_HPP
 #define AMANITA_EDITOR_HPP
 
-#include "interpreter.hpp"
+#include "fungespace.hpp"
+#include "instruction_pointer.hpp"
 #include "mizu/mizu.hpp"
 
 class Editor final : public mizu::Application {
@@ -43,12 +44,9 @@ public:
     Vec viewport_pos;
     std::vector<InstructionPointer> active_list{};
     std::vector<InstructionPointer> inactive_list{};
-    Interpreter interpreter{};
+    Fungespace fungespace;
 
-    Editor(mizu::Engine *engine,
-           const std::filesystem::path &path,
-           std::vector<std::string> args,
-           std::int64_t skip_ticks);
+    Editor(mizu::Engine *engine, const std::filesystem::path &path, CliArgs *cli_args, std::int64_t skip_ticks);
 
     void update(double dt) override;
 

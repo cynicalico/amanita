@@ -3,13 +3,15 @@
 
 #include <cstdint>
 #include <functional>
+#include <string>
 #include <unordered_map>
 #include <variant>
+#include <vector>
 #include "instructions.hpp"
 
-/*********
- * TYPES *
- *********/
+/*******
+ * VEC *
+ *******/
 
 struct Vec {
     std::int64_t x;
@@ -59,6 +61,17 @@ constexpr auto SOUTH = Vec(0, 1);
 constexpr auto EAST = Vec(1, 0);
 constexpr auto NORTH = Vec(0, -1);
 constexpr auto WEST = Vec(-1, 0);
+
+/************
+ * CLI ARGS *
+ ************/
+
+struct CliArgs {
+    std::vector<std::string> args;
+
+    CliArgs(std::vector<std::string> args)
+        : args(std::move(args)) {}
+};
 
 /***********************
  * INSTRUCTION ACTIONS *

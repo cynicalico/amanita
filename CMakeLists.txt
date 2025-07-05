@@ -27,7 +27,6 @@ add_executable(amanita
         include/instruction_pointer.hpp
         include/instruction_stack.hpp
         include/instructions.hpp
-        include/interpreter.hpp
         include/sops.hpp
         include/stackstack.hpp
 
@@ -38,7 +37,6 @@ add_executable(amanita
         src/fungespace.cpp
         src/instruction_pointer.cpp
         src/instruction_stack.cpp
-        src/interpreter.cpp
         src/stackstack.cpp
 
         include/fingerprints/catseye/hrti.hpp

@@ -1,17 +1,16 @@
 #include "instruction_pointer.hpp"
 #include "fungespace.hpp"
-#include "interpreter.hpp"
 
 std::int64_t next_ip_id() {
     static std::int64_t next_id = 0;
     return ++next_id;
 }
 
-InstructionPointer::InstructionPointer(Interpreter *interpreter)
-    : interpreter(interpreter) {}
+InstructionPointer::InstructionPointer(CliArgs *interpreter)
+    : cli_args(interpreter) {}
 
 InstructionPointer::InstructionPointer(const InstructionPointer &other)
-    : interpreter(other.interpreter),
+    : cli_args(other.cli_args),
       id(next_ip_id()), // Redundant, but it makes the intent clearer
       alive(other.alive),
       pos{other.pos},

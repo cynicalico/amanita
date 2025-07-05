@@ -7,11 +7,9 @@
 
 std::int64_t next_ip_id();
 
-class Interpreter;
-
 class InstructionPointer {
 public:
-    Interpreter *interpreter{nullptr};
+    CliArgs *cli_args{nullptr};
     std::int64_t id{next_ip_id()};
 
     bool alive{true};
@@ -34,7 +32,7 @@ public:
     bool relative_mode{false};
     std::vector<std::int64_t> call_stack{};
 
-    InstructionPointer(Interpreter *interpreter);
+    InstructionPointer(CliArgs *interpreter);
     ~InstructionPointer() = default;
 
     InstructionPointer(const InstructionPointer &other);
