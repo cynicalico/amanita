@@ -109,6 +109,64 @@ UNDEF: ) with a negative count reflects and pops 0 times or less than the absolu
 UNDEF: IVXLCDM didn't reflect: child IP has ROMA loaded
 ```
 
+#### FPSP
+
+```
+UNDEF: cFP outputs 12.000000 
+UNDEF: 0"1234.567890"R results in 1234.567871
+UNDEF: aFeFA results in 24.000000 (24)
+UNDEF: cF7FS results in 5.000000 (5)
+UNDEF: 6FaFM results in 60.000000 (60)
+UNDEF: ASMDF say 355/113 is 3.141593 (3.141593)
+UNDEF: D says 1/0 is inf (NaN or +infinity)
+UNDEF: D says -1/0 is -inf (NaN or -infinity)
+UNDEF: B says sin(4.2) is -0.871576 (-0.871576)
+UNDEF: C says cos(42) is -0.399985 (-0.399985)
+UNDEF: T says tan(-.42) is -0.446573 (-0.446573)
+UNDEF: E says asin(2) is -nan (actually complex: NaN)
+UNDEF: H says acos(0) is 1.570796 (1.570796)
+UNDEF: G says atan(100) is 1.560797 (1.560797)
+UNDEF: K says ln(0) is -inf (-infinity)
+UNDEF: K says ln(1) is 0.000000 (0)
+UNDEF: K says ln(2) is 0.693147 (0.693147)
+UNDEF: L says log10(20) is 1.301030 (1.301030)
+UNDEF: X says exp(3) is 20.085537 (20.085537)
+UNDEF: N says -0 is -0.000000 (-0)
+UNDEF: V says abs(-15) is 15.000000 (15)
+UNDEF: Q says sqrt(8) is 2.828427 (2.828427)
+UNDEF: Y says pow(-8, 9) is -134217728.000000 (-134217728)
+UNDEF: Y says pow(2, -7) is 0.007812 (0.007813)
+```
+
+#### FPDP
+
+```
+UNDEF: cFP outputs 12.000000 
+UNDEF: 0"1234.567890"R results in 1234.567890
+UNDEF: aFeFA results in 24.000000 (24)
+UNDEF: cF7FS results in 5.000000 (5)
+UNDEF: 6FaFM results in 60.000000 (60)
+UNDEF: ASMDF say 355/113 is 3.141593 (3.141593)
+UNDEF: D says 1/0 is inf (NaN or +infinity)
+UNDEF: D says -1/0 is -inf (NaN or -infinity)
+UNDEF: B says sin(4.2) is -0.871576 (-0.871576)
+UNDEF: C says cos(42) is -0.399985 (-0.399985)
+UNDEF: T says tan(-.42) is -0.446573 (-0.446573)
+UNDEF: E says asin(2) is -nan (actually complex: NaN)
+UNDEF: H says acos(0) is 1.570796 (1.570796)
+UNDEF: G says atan(100) is 1.560797 (1.560797)
+UNDEF: K says ln(0) is -inf (-infinity)
+UNDEF: K says ln(1) is 0.000000 (0)
+UNDEF: K says ln(2) is 0.693147 (0.693147)
+UNDEF: L says log10(20) is 1.301030 (1.301030)
+UNDEF: X says exp(3) is 20.085537 (20.085537)
+UNDEF: N says -0 is -0.000000 (-0)
+UNDEF: V says abs(-15) is 15.000000 (15)
+UNDEF: Q says sqrt(8) is 2.828427 (2.828427)
+UNDEF: Y says pow(-8, 9) is -134217728.000000 (-134217728)
+UNDEF: Y says pow(2, -7) is 0.007812 (0.007813)
+```
+
 #### MODE
 
 ```

@@ -80,15 +80,15 @@ y claims all of the following:
 	That the offset of the IP was ( 0 0 )
 	That the least point containing a non-space cell is ( -3 -2 )
 	That the greatest point, relative to that point, is ( 183 911 )
-	That the day of the month is 3 
+	That the day of the month is 5 
 	That the month is 7 
 	That the year is 2025 
-	That the time is 12 : 55 : 01 
+	That the time is 13 : 52 : 42 
 	That the size of the stack stack is 1 
 	That the stack sizes are [ 0 ] from top to bottom
-	That the command-line arguments were: [ "mycology.b98" ]
+	That the command-line arguments were: [ ".\mycology.b98" ]
 	That the environment variables are:
-	    [snip]
+		[snip]
 Best that the above claims are manually verified to be correct.
 GOOD: 1y works
 GOOD: 5y works
@@ -102,24 +102,20 @@ GOOD: i pushed correct Va (60, 119)
 GOOD: i pushed correct Vb (90, 16)
 Entering MycoRand...
 
-The directions were generated in the order v<^>
-? was met 4 times
+The directions were generated in the order ><v^
+? was met 35 times
 
 Successfully exited MycoRand. Rerun a few times to ensure ? works.
 GOOD: i works in text mode
-Opening mycotmp0.tmp... succeeded. Won't overwrite...
-Opening mycotmp1.tmp... succeeded. Won't overwrite...
-Opening mycotmp2.tmp... succeeded. Won't overwrite...
-Opening mycotmp3.tmp... succeeded. Won't overwrite...
-Opening mycotmp4.tmp... failed.
+Opening mycotmp0.tmp... failed.
 Trying to write to it with o...
-Wrote to mycotmp4.tmp with o.
+Wrote to mycotmp0.tmp with o.
 Reading back with i...
 GOOD: read written data to (-10, -10)
 GOOD: (-8, -9) is @
 GOOD: read data in binary mode to (-10, -10)
 GOOD: (0, -10) is 13 
-Wrote to mycotmp4.tmp with o in linear text mode.
+Wrote to mycotmp0.tmp with o in linear text mode.
 GOOD: o removed space prior to newline
 UNDEF: o doesn't remove spaces prior to newline-valued cells
 UNDEF: o didn't write EOL to EOF
@@ -177,12 +173,27 @@ GOOD: all of A-Z reflected
 Testing fingerprint HRTI... loaded.
 UNDEF: G gives clock granularity as 1 microseconds
 GOOD: T reflected when called before M
-UNDEF: S pushed 670465 
-UNDEF: T after M pushed 0 and a second T, after 675 ys, pushed 3180 
+UNDEF: S pushed 197638 
+UNDEF: T after M pushed 28 and a second T, after 675 ys, pushed 633342 
 GOOD: ET reflected
 UNDEF: E without M did not reflect
 
-Testing fingerprint MODE... not loaded.
+Testing fingerprint MODE... loaded.
+Hovermode:
+GOOD: ><^v seem to work in hovermode
+GOOD: |_ seem to work in hovermode
+Switchmode:
+GOOD: [] seem to work in switchmode
+GOOD: {} seem to work in switchmode
+GOOD: () seem to work in switchmode
+Invert/queuemode:
+GOOD: basic invertmode appears to work
+GOOD: basic queuemode appears to work
+GOOD: queuemode and invertmode seem to work together
+UNDEF: IQ{ moves cells from SOSS to TOSS by popping and pushing according to the modes
+UNDEF: stack stack seems unaffected by invertmode
+UNDEF: stack stack seems unaffected by queuemode
+
 Testing fingerprint MODU... loaded.
 GOOD: a04-M pushes -2
 Assuming that "C-language integer remainder" refers to C99 C, it used to be undefined...
@@ -204,7 +215,13 @@ GOOD: W changes dy correctly
 GOOD: 0Z ramps
 GOOD: 1Z doesn't ramp
 
-Testing fingerprint PERL... not loaded.
+Testing fingerprint PERL... loaded.
+UNDEF: S claims that Perl isn't already loaded
+UNDEF: 0"5-1" E pushed 52 
+Perl might not be installed, so it could be the (stringified) error code for not having found Perl, or then it should be 52, the ASCII value of 4.
+UNDEF: 0"5-1" I pushed 4 
+Again, it could be an error code or 4.
+
 Testing fingerprint REFC... loaded.
 UNDEF: 12R34R56R pushed the scalars [ 0 1 2 ]
 GOOD: D returned first vector
@@ -268,8 +285,22 @@ Testing fingerprint TURT... not loaded.
 Testing fingerprint BASE... not loaded.
 Testing fingerprint CPLI... not loaded.
 Testing fingerprint DATE... not loaded.
-Testing fingerprint DIRF... not loaded.
-Testing fingerprint EVAR... not loaded.
+Testing fingerprint DIRF... loaded.
+UNDEF: either C doesn't work or the 'mycodirf' directory doesn't exist
+GOOD: created 'mycodirf' with M
+GOOD: entered 'mycodirf' directory with C
+GOOD: left 'mycodirf' with a C to '..'
+GOOD: can't C into 'mycodirf' after R
+GOOD: created 'mycodirf' with M
+Removed 'mycodirf' with R.
+
+Testing fingerprint EVAR... loaded.
+UNDEF: "PATH"G reflected: no path or G doesn't work
+GOOD: NV failed
+GOOD: N1-V worked and pushed 1
+GOOD: put 'foo=bar' with P
+GOOD: "oof"G got "bar"
+
 Testing fingerprint FILE... loaded.
 GOOD: couldn't open 'mycotemp.tmp' for reading with O
 GOOD: opened mycotemp.tmp' for writing with O
@@ -294,12 +325,68 @@ GOOD: G pushed 2 zeroes
 GOOD: 1R reflected
 GOOD: closed file with C
 GOOD: deleted mycotemp.tmp with D
-GOOD: deleted mycotmp4.tmp with D
+GOOD: deleted mycotmp0.tmp with D
 
 Testing fingerprint FING... not loaded.
 Testing fingerprint FIXP... not loaded.
-Testing fingerprint FPSP... not loaded.
-Testing fingerprint FPDP... not loaded.
+Testing fingerprint FPSP... loaded.
+Because floating point equality is, with epsilons, too tricky, and without them, poorly defined, and because rounding with I is too inaccurate, results of calculations will be UNDEF. The precisely correct answer will follow, to 6 decimal places: the calculated result can be compared to it.
+
+UNDEF: cFP outputs 12.000000 
+UNDEF: 0"1234.567890"R results in 1234.567871 
+GOOD: 8FI is 8
+UNDEF: aFeFA results in 24.000000 (24)
+UNDEF: cF7FS results in 5.000000 (5)
+UNDEF: 6FaFM results in 60.000000 (60)
+UNDEF: ASMDF say 355/113 is 3.141593 (3.141593)
+UNDEF: D says 1/0 is inf (NaN or +infinity)
+UNDEF: D says -1/0 is -inf (NaN or -infinity)
+UNDEF: B says sin(4.2) is -0.871576 (-0.871576)
+UNDEF: C says cos(42) is -0.399985 (-0.399985)
+UNDEF: T says tan(-.42) is -0.446573 (-0.446573)
+UNDEF: E says asin(2) is -nan (actually complex: NaN)
+UNDEF: H says acos(0) is 1.570796 (1.570796)
+UNDEF: G says atan(100) is 1.560797 (1.560797)
+UNDEF: K says ln(0) is -inf (-infinity)
+UNDEF: K says ln(1) is 0.000000 (0)
+UNDEF: K says ln(2) is 0.693147 (0.693147)
+UNDEF: L says log10(20) is 1.301030 (1.301030)
+UNDEF: X says exp(3) is 20.085537 (20.085537)
+UNDEF: N says -0 is -0.000000 (-0)
+UNDEF: V says abs(-15) is 15.000000 (15)
+UNDEF: Q says sqrt(8) is 2.828427 (2.828427)
+UNDEF: Y says pow(-8, 9) is -134217728.000000 (-134217728)
+UNDEF: Y says pow(2, -7) is 0.007812 (0.007813)
+
+Testing fingerprint FPDP... loaded.
+Because floating point equality is, with epsilons, too tricky, and without them, poorly defined, and because rounding with I is too inaccurate, results of calculations will be UNDEF. The precisely correct answer will follow, to 6 decimal places: the calculated result can be compared to it.
+
+UNDEF: cFP outputs 12.000000 
+UNDEF: 0"1234.567890"R results in 1234.567890 
+GOOD: 8FI is 8
+UNDEF: aFeFA results in 24.000000 (24)
+UNDEF: cF7FS results in 5.000000 (5)
+UNDEF: 6FaFM results in 60.000000 (60)
+UNDEF: ASMDF say 355/113 is 3.141593 (3.141593)
+UNDEF: D says 1/0 is inf (NaN or +infinity)
+UNDEF: D says -1/0 is -inf (NaN or -infinity)
+UNDEF: B says sin(4.2) is -0.871576 (-0.871576)
+UNDEF: C says cos(42) is -0.399985 (-0.399985)
+UNDEF: T says tan(-.42) is -0.446573 (-0.446573)
+UNDEF: E says asin(2) is -nan (actually complex: NaN)
+UNDEF: H says acos(0) is 1.570796 (1.570796)
+UNDEF: G says atan(100) is 1.560797 (1.560797)
+UNDEF: K says ln(0) is -inf (-infinity)
+UNDEF: K says ln(1) is 0.000000 (0)
+UNDEF: K says ln(2) is 0.693147 (0.693147)
+UNDEF: L says log10(20) is 1.301030 (1.301030)
+UNDEF: X says exp(3) is 20.085537 (20.085537)
+UNDEF: N says -0 is -0.000000 (-0)
+UNDEF: V says abs(-15) is 15.000000 (15)
+UNDEF: Q says sqrt(8) is 2.828427 (2.828427)
+UNDEF: Y says pow(-8, 9) is -134217728.000000 (-134217728)
+UNDEF: Y says pow(2, -7) is 0.007812 (0.007813)
+
 Testing fingerprint 3DSP... not loaded.
 Testing fingerprint FRTH... not loaded.
 Testing fingerprint IIPC... not loaded.
@@ -308,7 +395,17 @@ Testing fingerprint INDV... not loaded.
 Testing fingerprint REXP... not loaded.
 Testing fingerprint SOCK... not loaded.
 Testing fingerprint STRN... not loaded.
-Testing fingerprint SUBR... not loaded.
+Testing fingerprint SUBR... loaded.
+GOOD: J worked
+GOOD: set mode with O
+GOOD: J workedGOOD: R worked
+GOOD: R transfers stack elements correctly
+GOOD: set mode with A
+GOOD: C worked
+GOOD: C transfers stack elements correctly
+GOOD: R worked
+GOOD: R transfers stack elements correctly
+
 Testing fingerprint TIME... not loaded.
 Testing fingerprint JSTR... not loaded.
 
