@@ -20,12 +20,12 @@ InstructionAction subr::call(Fungespace &, InstructionPointer &ip) {
     ip.stack.push(ip.pos[1]);
     ip.stack.push(ip.delta[0]);
     ip.stack.push(ip.delta[1]);
-    for (std::size_t i = saved.size(); i-- > 0;)
-        ip.stack.push(saved[i]);
+    for (std::size_t i = 0; i < saved.size(); ++i)
+        ip.stack.push(saved[saved.size() - 1 - i]);
 
     if (ip.subr_relative_mode) {
-        ip.pos[0] += x;
-        ip.pos[1] += y;
+        ip.pos[0] = x + ip.storage_offset[0];
+        ip.pos[1] = y + ip.storage_offset[1];
     } else {
         ip.pos[0] = x;
         ip.pos[1] = y;
@@ -41,8 +41,8 @@ InstructionAction subr::jump(Fungespace &, InstructionPointer &ip) {
     const auto x = ip.stack.pop();
 
     if (ip.subr_relative_mode) {
-        ip.pos[0] += x;
-        ip.pos[1] += y;
+        ip.pos[0] = x + ip.storage_offset[0];
+        ip.pos[1] = y + ip.storage_offset[1];
     } else {
         ip.pos[0] = x;
         ip.pos[1] = y;
@@ -70,8 +70,8 @@ InstructionAction subr::ret(Fungespace &, InstructionPointer &ip) {
     const auto dx = ip.stack.pop();
     const auto y = ip.stack.pop();
     const auto x = ip.stack.pop();
-    for (std::size_t i = saved.size(); i-- > 0;)
-        ip.stack.push(saved[i]);
+    for (std::size_t i = 0; i < saved.size(); ++i)
+        ip.stack.push(saved[saved.size() - 1 - i]);
 
     ip.pos[0] = x;
     ip.pos[1] = y;

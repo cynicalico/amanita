@@ -16,8 +16,8 @@
  *
  * J and C each set delta to 1,0,0 at target, R restores the delta before the call.
  *
- * When C is executed, the tos specifies how many stack entries to retrieive from the stack and then place back onto the
- * stack after the retrurn address and delta vectors are pushed on the stack.
+ * When C is executed, the tos specifies how many stack entries to retrieve from the stack and then place back onto the
+ * stack after the return address and delta vectors are pushed on the stack.
  *
  * When R is executed, the tos specifies how many stack entries to retrieve from the stack before retrieving the delta
  * and address vectors. The popped entries will be restored to the stack after the vectors are popped.
