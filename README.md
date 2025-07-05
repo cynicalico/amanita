@@ -54,6 +54,8 @@ See output of `amanita --help`
 | [`DIRF`](https://web.archive.org/web/20230617132045/https://rcfunge98.com/rcsfingers.html#DIRF) | `0x44495246` | Directory functions extension   |
 | [`EVAR`](https://web.archive.org/web/20230617132045/https://rcfunge98.com/rcsfingers.html#EVAR) | `0x45564152` | Environment variables extension |
 | [`FILE`](https://web.archive.org/web/20230617132045/https://rcfunge98.com/rcsfingers.html#FILE) | `0x46494c45` | File I/O functions              |
+| [`FPDP`](https://web.archive.org/web/20230617132045/https://rcfunge98.com/rcsfingers.html#FPDP) | `0x46504450` | Double precision floating point |
+| [`FPSP`](https://web.archive.org/web/20230617132045/https://rcfunge98.com/rcsfingers.html#FPSP) | `0x46505350` | Single precision floating point |
 | [`SUBR`](https://web.archive.org/web/20230617132045/https://rcfunge98.com/rcsfingers.html#SUBR) | `0x53554252` | Subroutine extension            |
 
 ## Notable Implementation Details

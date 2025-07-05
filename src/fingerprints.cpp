@@ -15,6 +15,8 @@
 #include "fingerprints/rcs/dirf.hpp"
 #include "fingerprints/rcs/evar.hpp"
 #include "fingerprints/rcs/file.hpp"
+#include "fingerprints/rcs/fpdp.hpp"
+#include "fingerprints/rcs/fpsp.hpp"
 #include "fingerprints/rcs/subr.hpp"
 
 const std::unordered_map<std::int64_t, const Fingerprint &> &registry() {
@@ -33,6 +35,8 @@ const std::unordered_map<std::int64_t, const Fingerprint &> &registry() {
             {dirf::FINGERPRINT.id, dirf::FINGERPRINT},
             {evar::FINGERPRINT.id, evar::FINGERPRINT},
             {file::FINGERPRINT.id, file::FINGERPRINT},
+            {fpdp::FINGERPRINT.id, fpdp::FINGERPRINT},
+            {fpsp::FINGERPRINT.id, fpsp::FINGERPRINT},
             {subr::FINGERPRINT.id, subr::FINGERPRINT},
     };
     return registry;
