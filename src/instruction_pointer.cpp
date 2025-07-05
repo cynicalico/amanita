@@ -27,7 +27,7 @@ InstructionPointer::InstructionPointer(const InstructionPointer &other)
 
 void InstructionPointer::step() { pos += delta; }
 
-void InstructionPointer::step_wrap(Fungespace &fungespace) {
+void InstructionPointer::step_wrap(const Fungespace &fungespace) {
     step();
     if (!fungespace.in_bounds(pos.x, pos.y)) {
         reflect();
@@ -39,7 +39,8 @@ void InstructionPointer::step_wrap(Fungespace &fungespace) {
     }
 }
 
-void InstructionPointer::step_to_next_instruction(Fungespace &fungespace, Cell prev_ins, bool start_skipping) {
+void InstructionPointer::step_to_next_instruction(
+        const Fungespace &fungespace, const Cell prev_ins, const bool start_skipping) {
     bool skipping = start_skipping;
     do {
         step_wrap(fungespace);

@@ -42,8 +42,8 @@ public:
     InstructionPointer &operator=(InstructionPointer &&other) = default;
 
     void step();
-    void step_wrap(Fungespace &fungespace);
-    void step_to_next_instruction(Fungespace &fungespace, Cell prev_ins, bool start_skipping);
+    void step_wrap(const Fungespace &fungespace);
+    void step_to_next_instruction(const Fungespace &fungespace, Cell prev_ins, bool start_skipping);
 
     void go_south();
     void go_east();
