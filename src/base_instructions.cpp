@@ -17,7 +17,7 @@ InstructionAction instruction_space(Fungespace &, InstructionPointer &) {
 }
 
 InstructionAction instruction_logical_not(Fungespace &, InstructionPointer &ip) {
-    ip.stack.push(ip.stack.pop() == 0 ? 1 : 0);
+    ip.push(ip.pop() == 0 ? 1 : 0);
     return MoveAction{};
 }
 
@@ -32,14 +32,14 @@ InstructionAction instruction_trampoline(Fungespace &fungespace, InstructionPoin
 }
 
 InstructionAction instruction_pop(Fungespace &, InstructionPointer &ip) {
-    ip.stack.pop();
+    ip.pop();
     return MoveAction{};
 }
 
 InstructionAction instruction_remainder(Fungespace &, InstructionPointer &ip) {
-    const auto b = ip.stack.pop();
-    const auto a = ip.stack.pop();
-    ip.stack.push(b == 0 ? 0 : a % b);
+    const auto b = ip.pop();
+    const auto a = ip.pop();
+    ip.push(b == 0 ? 0 : a % b);
     return MoveAction{};
 }
 
@@ -84,14 +84,14 @@ InstructionAction instruction_input_integer(Fungespace &, InstructionPointer &ip
         }
     } while (std::isdigit(ch));
 
-    ip.stack.push(negate_result ? -i : i);
+    ip.push(negate_result ? -i : i);
 
     return MoveAction{};
 }
 
 InstructionAction instruction_fetch_character(Fungespace &fungespace, InstructionPointer &ip) {
     ip.step_wrap(fungespace);
-    ip.stack.push(fungespace.get(ip.pos.x, ip.pos.y));
+    ip.push(fungespace.get(ip.pos.x, ip.pos.y));
     return MoveAction{};
 }
 
@@ -99,19 +99,19 @@ InstructionAction instruction_load_semantics(Fungespace &fungespace, Instruction
     if (ip.switchmode)
         fungespace.put(ip.pos.x, ip.pos.y, static_cast<Cell>(Instruction::UnloadSemantics));
 
-    const auto n = ip.stack.pop();
+    const auto n = ip.pop();
 
     std::int64_t fingerprint = 0;
     for (std::int64_t i = 0; i < n; i++) {
         fingerprint *= 256;
-        fingerprint += ip.stack.pop();
+        fingerprint += ip.pop();
     }
 
     if (!load_fingerprint(ip.instruction_stack, fingerprint)) {
         ip.reflect();
     } else {
-        ip.stack.push(fingerprint);
-        ip.stack.push(1);
+        ip.push(fingerprint);
+        ip.push(1);
     }
 
     return MoveAction{};
@@ -121,12 +121,12 @@ InstructionAction instruction_unload_semantics(Fungespace &fungespace, Instructi
     if (ip.switchmode)
         fungespace.put(ip.pos.x, ip.pos.y, static_cast<Cell>(Instruction::LoadSemantics));
 
-    const auto n = ip.stack.pop();
+    const auto n = ip.pop();
 
     std::int64_t fingerprint = 0;
     for (std::int64_t i = 0; i < n; i++) {
         fingerprint *= 256;
-        fingerprint += ip.stack.pop();
+        fingerprint += ip.pop();
     }
 
     if (!unload_fingerprint(ip.instruction_stack, fingerprint))
@@ -136,99 +136,99 @@ InstructionAction instruction_unload_semantics(Fungespace &fungespace, Instructi
 }
 
 InstructionAction instruction_multiply(Fungespace &, InstructionPointer &ip) {
-    const auto b = ip.stack.pop();
-    const auto a = ip.stack.pop();
-    ip.stack.push(a * b);
+    const auto b = ip.pop();
+    const auto a = ip.pop();
+    ip.push(a * b);
     return MoveAction{};
 }
 
 InstructionAction instruction_add(Fungespace &, InstructionPointer &ip) {
-    const auto b = ip.stack.pop();
-    const auto a = ip.stack.pop();
-    ip.stack.push(a + b);
+    const auto b = ip.pop();
+    const auto a = ip.pop();
+    ip.push(a + b);
     return MoveAction{};
 }
 
 InstructionAction instruction_output_character(Fungespace &, InstructionPointer &ip) {
-    const auto v = ip.stack.pop();
+    const auto v = ip.pop();
     fmt::print("{}", static_cast<char>(v));
     return MoveAction{};
 }
 
 InstructionAction instruction_subtract(Fungespace &, InstructionPointer &ip) {
-    const auto b = ip.stack.pop();
-    const auto a = ip.stack.pop();
-    ip.stack.push(a - b);
+    const auto b = ip.pop();
+    const auto a = ip.pop();
+    ip.push(a - b);
     return MoveAction{};
 }
 
 InstructionAction instruction_output_integer(Fungespace &, InstructionPointer &ip) {
-    const auto v = ip.stack.pop();
+    const auto v = ip.pop();
     fmt::print("{} ", v);
     return MoveAction{};
 }
 
 InstructionAction instruction_divide(Fungespace &, InstructionPointer &ip) {
-    const auto b = ip.stack.pop();
-    const auto a = ip.stack.pop();
-    ip.stack.push(b == 0 ? 0 : a / b);
+    const auto b = ip.pop();
+    const auto a = ip.pop();
+    ip.push(b == 0 ? 0 : a / b);
     return MoveAction{};
 }
 
 InstructionAction instruction_push_zero(Fungespace &, InstructionPointer &ip) {
-    ip.stack.push(0);
+    ip.push(0);
     return MoveAction{};
 }
 
 InstructionAction instruction_push_one(Fungespace &, InstructionPointer &ip) {
-    ip.stack.push(1);
+    ip.push(1);
     return MoveAction{};
 }
 
 InstructionAction instruction_push_two(Fungespace &, InstructionPointer &ip) {
-    ip.stack.push(2);
+    ip.push(2);
     return MoveAction{};
 }
 
 InstructionAction instruction_push_three(Fungespace &, InstructionPointer &ip) {
-    ip.stack.push(3);
+    ip.push(3);
     return MoveAction{};
 }
 
 InstructionAction instruction_push_four(Fungespace &, InstructionPointer &ip) {
-    ip.stack.push(4);
+    ip.push(4);
     return MoveAction{};
 }
 
 InstructionAction instruction_push_five(Fungespace &, InstructionPointer &ip) {
-    ip.stack.push(5);
+    ip.push(5);
     return MoveAction{};
 }
 
 InstructionAction instruction_push_six(Fungespace &, InstructionPointer &ip) {
-    ip.stack.push(6);
+    ip.push(6);
     return MoveAction{};
 }
 
 InstructionAction instruction_push_seven(Fungespace &, InstructionPointer &ip) {
-    ip.stack.push(7);
+    ip.push(7);
     return MoveAction{};
 }
 
 InstructionAction instruction_push_eight(Fungespace &, InstructionPointer &ip) {
-    ip.stack.push(8);
+    ip.push(8);
     return MoveAction{};
 }
 
 InstructionAction instruction_push_niner(Fungespace &, InstructionPointer &ip) {
-    ip.stack.push(9);
+    ip.push(9);
     return MoveAction{};
 }
 
 InstructionAction instruction_duplicate(Fungespace &, InstructionPointer &ip) {
-    const auto v = ip.stack.pop();
-    ip.stack.push(v);
-    ip.stack.push(v);
+    const auto v = ip.pop();
+    ip.push(v);
+    ip.push(v);
     return MoveAction{};
 }
 
@@ -284,10 +284,10 @@ InstructionAction instruction_turn_left(Fungespace &fungespace, InstructionPoint
 }
 
 InstructionAction instruction_swap(Fungespace &, InstructionPointer &ip) {
-    const auto b = ip.stack.pop();
-    const auto a = ip.stack.pop();
-    ip.stack.push(b);
-    ip.stack.push(a);
+    const auto b = ip.pop();
+    const auto a = ip.pop();
+    ip.push(b);
+    ip.push(a);
     return MoveAction{};
 }
 
@@ -304,8 +304,7 @@ InstructionAction instruction_go_north(Fungespace &, InstructionPointer &ip) {
 }
 
 InstructionAction instruction_east_west_if(Fungespace &, InstructionPointer &ip) {
-    const auto v = ip.stack.pop();
-    if (v == 0)
+    if (const auto v = ip.pop(); v == 0)
         ip.go_east();
     else
         ip.go_west();
@@ -313,46 +312,45 @@ InstructionAction instruction_east_west_if(Fungespace &, InstructionPointer &ip)
 }
 
 InstructionAction instruction_greater_than(Fungespace &, InstructionPointer &ip) {
-    const auto b = ip.stack.pop();
-    const auto a = ip.stack.pop();
-    ip.stack.push(a > b ? 1 : 0);
+    const auto b = ip.pop();
+    const auto a = ip.pop();
+    ip.push(a > b ? 1 : 0);
     return MoveAction{};
 }
 
 InstructionAction instruction_push_ten(Fungespace &, InstructionPointer &ip) {
-    ip.stack.push(10);
+    ip.push(10);
     return MoveAction{};
 }
 
 InstructionAction instruction_push_eleven(Fungespace &, InstructionPointer &ip) {
-    ip.stack.push(11);
+    ip.push(11);
     return MoveAction{};
 }
 
 InstructionAction instruction_push_twelve(Fungespace &, InstructionPointer &ip) {
-    ip.stack.push(12);
+    ip.push(12);
     return MoveAction{};
 }
 
 InstructionAction instruction_push_thirteen(Fungespace &, InstructionPointer &ip) {
-    ip.stack.push(13);
+    ip.push(13);
     return MoveAction{};
 }
 
 InstructionAction instruction_push_fourteen(Fungespace &, InstructionPointer &ip) {
-    ip.stack.push(14);
+    ip.push(14);
     return MoveAction{};
 }
 
 InstructionAction instruction_push_fifteen(Fungespace &, InstructionPointer &ip) {
-    ip.stack.push(15);
+    ip.push(15);
     return MoveAction{};
 }
 
 InstructionAction instruction_get(const Fungespace &fungespace, InstructionPointer &ip) {
-    const auto y = ip.stack.pop();
-    const auto x = ip.stack.pop();
-    ip.stack.push(fungespace.get(x + ip.storage_offset.x, y + ip.storage_offset.y));
+    const auto v = ip.pop_offset_vec();
+    ip.push(fungespace.get(v.x, v.y));
     return MoveAction{};
 }
 
@@ -363,16 +361,14 @@ InstructionAction instruction_go_high(Fungespace &, InstructionPointer &ip) {
 
 InstructionAction instruction_input_file(Fungespace &fungespace, InstructionPointer &ip) {
     const auto filename = ip.stack.pop_0gnirts();
-    const auto flags = ip.stack.pop();
-    const auto y = ip.stack.pop() + ip.storage_offset.y;
-    const auto x = ip.stack.pop() + ip.storage_offset.x;
+    const auto flags = ip.pop();
+    const auto v = ip.pop_offset_vec();
 
     std::int64_t size[2];
-    if (fungespace.input_file(filename, flags, x, y, size)) {
-        ip.stack.push(size[0]);
-        ip.stack.push(size[1]);
-        ip.stack.push(x);
-        ip.stack.push(y);
+    if (fungespace.input_file(filename, flags, v.x, v.y, size)) {
+        ip.push(size[0]);
+        ip.push(size[1]);
+        ip.push_vec(v);
     } else {
         ip.reflect();
     }
@@ -381,7 +377,7 @@ InstructionAction instruction_input_file(Fungespace &fungespace, InstructionPoin
 }
 
 InstructionAction instruction_jump_forward(Fungespace &fungespace, InstructionPointer &ip) {
-    auto n = ip.stack.pop();
+    auto n = ip.pop();
 
     ip.save_delta();
 
@@ -398,7 +394,7 @@ InstructionAction instruction_jump_forward(Fungespace &fungespace, InstructionPo
 }
 
 InstructionAction instruction_iterate(Fungespace &fungespace, InstructionPointer &ip) {
-    const auto n = ip.stack.pop();
+    const auto n = ip.pop();
 
     ip.save_pos();
     ip.step_to_next_instruction(fungespace, '\0', false);
@@ -433,28 +429,26 @@ InstructionAction instruction_clear_stack(Fungespace &, InstructionPointer &ip) 
 
 InstructionAction instruction_output_file(Fungespace &fungespace, InstructionPointer &ip) {
     const auto filename = ip.stack.pop_0gnirts();
-    const auto flags = ip.stack.pop();
-    const auto y = ip.stack.pop() + ip.storage_offset.y;
-    const auto x = ip.stack.pop() + ip.storage_offset.x;
-    const auto h = ip.stack.pop();
-    const auto w = ip.stack.pop();
+    const auto flags = ip.pop();
+    const auto v = ip.pop_offset_vec();
+    const auto h = ip.pop();
+    const auto w = ip.pop();
 
-    if (!fungespace.output_file(filename, flags, x, y, w, h))
+    if (!fungespace.output_file(filename, flags, v.x, v.y, w, h))
         ip.reflect();
 
     return MoveAction{};
 }
 
 InstructionAction instruction_put(Fungespace &fungespace, InstructionPointer &ip) {
-    const auto y = ip.stack.pop();
-    const auto x = ip.stack.pop();
-    const auto v = ip.stack.pop();
-    fungespace.put(x + ip.storage_offset.x, y + ip.storage_offset.y, v);
+    const auto p = ip.pop_offset_vec();
+    const auto v = ip.pop();
+    fungespace.put(p.x, p.y, v);
     return MoveAction{};
 }
 
 InstructionAction instruction_quit(Fungespace &, InstructionPointer &ip) {
-    return QuitAction{static_cast<int>(ip.stack.pop())};
+    return QuitAction{static_cast<int>(ip.pop())};
 }
 
 InstructionAction instruction_reflect(Fungespace &, InstructionPointer &ip) {
@@ -463,7 +457,7 @@ InstructionAction instruction_reflect(Fungespace &, InstructionPointer &ip) {
 }
 
 InstructionAction instruction_store_character(Fungespace &fungespace, InstructionPointer &ip) {
-    const auto v = ip.stack.pop();
+    const auto v = ip.pop();
     ip.step_wrap(fungespace);
     fungespace.put(ip.pos.x, ip.pos.y, v);
     return MoveAction{};
@@ -484,8 +478,8 @@ InstructionAction instruction_go_south(Fungespace &, InstructionPointer &ip) {
 }
 
 InstructionAction instruction_compare(Fungespace &fungespace, InstructionPointer &ip) {
-    const auto b = ip.stack.pop();
-    const auto a = ip.stack.pop();
+    const auto b = ip.pop();
+    const auto a = ip.pop();
     if (a > b)
         return ip.instruction_stack.perform(Instruction::TurnRight, fungespace, ip);
     if (b > a)
@@ -494,15 +488,12 @@ InstructionAction instruction_compare(Fungespace &fungespace, InstructionPointer
 }
 
 InstructionAction instruction_absolute_delta(Fungespace &, InstructionPointer &ip) {
-    const auto dy = ip.stack.pop();
-    const auto dx = ip.stack.pop();
-    ip.delta.x = dx;
-    ip.delta.y = dy;
+    ip.delta = ip.pop_vec();
     return MoveAction{};
 }
 
 InstructionAction instruction_get_sysinfo(const Fungespace &fungespace, InstructionPointer &ip) {
-    const auto n = ip.stack.pop();
+    const auto n = ip.pop();
 
     std::vector<std::int64_t> sysinfo{};
 
@@ -607,11 +598,11 @@ InstructionAction instruction_get_sysinfo(const Fungespace &fungespace, Instruct
 
     if (n <= 0)
         for (std::size_t i = 0; i < sysinfo.size(); i++)
-            ip.stack.push(sysinfo[sysinfo.size() - 1 - i]);
+            ip.push(sysinfo[sysinfo.size() - 1 - i]);
     else if (static_cast<std::size_t>(n) <= sysinfo.size())
-        ip.stack.push(sysinfo[n - 1]);
+        ip.push(sysinfo[n - 1]);
     else
-        ip.stack.push(ip.stack.pick(n - sysinfo.size()));
+        ip.push(ip.stack.pick(n - sysinfo.size()));
 
     return MoveAction{};
 }
@@ -628,8 +619,7 @@ InstructionAction instruction_begin_block(Fungespace &fungespace, InstructionPoi
 }
 
 InstructionAction instruction_north_south_if(Fungespace &, InstructionPointer &ip) {
-    const auto v = ip.stack.pop();
-    if (v == 0)
+    if (const auto v = ip.pop(); v == 0)
         ip.go_south();
     else
         ip.go_north();
@@ -644,10 +634,9 @@ InstructionAction instruction_end_block(Fungespace &fungespace, InstructionPoint
 }
 
 InstructionAction instruction_input_character(Fungespace &, InstructionPointer &ip) {
-    int i = std::getchar();
-    if (i == EOF)
+    if (int i = std::getchar(); i == EOF)
         ip.reflect();
     else
-        ip.stack.push(i);
+        ip.push(i);
     return MoveAction{};
 }

@@ -15,7 +15,7 @@ const char *get_funge_file_mode(std::int64_t m);
 int get_funge_seek_origin(std::int64_t m);
 
 InstructionAction file::close(Fungespace &, InstructionPointer &ip) {
-    const auto h = ip.stack.pop();
+    const auto h = ip.pop();
 
     auto &of = open_files();
     if (const auto it = of.find(h); it != of.end())
@@ -39,7 +39,7 @@ InstructionAction file::delete_(Fungespace &, InstructionPointer &ip) {
 }
 
 InstructionAction file::read_string(Fungespace &, InstructionPointer &ip) {
-    const auto h = ip.stack.pop();
+    const auto h = ip.pop();
 
     auto &of = open_files();
     if (const auto it = of.find(h); it != of.end()) {
@@ -48,47 +48,47 @@ InstructionAction file::read_string(Fungespace &, InstructionPointer &ip) {
 
         if (ferror(it->second.f) != 0) {
             ip.reflect();
-            ip.stack.push('\0');
-            ip.stack.push(0);
+            ip.push('\0');
+            ip.push(0);
         } else {
-            ip.stack.push(h);
+            ip.push(h);
             if (s) {
                 const auto len = strlen(s);
-                ip.stack.push('\0');
+                ip.push('\0');
                 for (std::size_t i = len; i-- > 0;)
-                    ip.stack.push(s[i]);
-                ip.stack.push(len);
+                    ip.push(s[i]);
+                ip.push(len);
             } else {
-                ip.stack.push('\0');
-                ip.stack.push(0);
+                ip.push('\0');
+                ip.push(0);
             }
         }
     } else {
         ip.reflect();
-        ip.stack.push('\0');
-        ip.stack.push(0);
+        ip.push('\0');
+        ip.push(0);
     }
 
     return MoveAction{};
 }
 
 InstructionAction file::location(Fungespace &, InstructionPointer &ip) {
-    const auto h = ip.stack.pop();
+    const auto h = ip.pop();
 
     auto &of = open_files();
     if (const auto it = of.find(h); it != of.end()) {
         if (const auto l = ftell(it->second.f); l != -1) {
-            ip.stack.push(h);
-            ip.stack.push(l);
+            ip.push(h);
+            ip.push(l);
         } else {
             ip.reflect();
-            ip.stack.push(h);
-            ip.stack.push(0);
+            ip.push(h);
+            ip.push(0);
         }
     } else {
         ip.reflect();
-        ip.stack.push(h);
-        ip.stack.push(0);
+        ip.push(h);
+        ip.push(0);
     }
 
     return MoveAction{};
@@ -96,9 +96,9 @@ InstructionAction file::location(Fungespace &, InstructionPointer &ip) {
 
 InstructionAction file::open(Fungespace &, InstructionPointer &ip) {
     const auto filepath = ip.stack.pop_0gnirts();
-    const auto m = ip.stack.pop();
-    const auto io_buffer_y = ip.stack.pop();
-    const auto io_buffer_x = ip.stack.pop();
+    const auto m = ip.pop();
+    const auto io_buffer_y = ip.pop();
+    const auto io_buffer_x = ip.pop();
 
     if (const auto *mode = get_funge_file_mode(m); mode) {
         FILE *file;
@@ -109,16 +109,16 @@ InstructionAction file::open(Fungespace &, InstructionPointer &ip) {
         if (!file) {
 #endif
             ip.reflect();
-            ip.stack.push(0);
+            ip.push(0);
         } else {
             auto &of = open_files();
             const auto h = of.size() + 1;
             of.emplace(h, File{{io_buffer_x, io_buffer_y}, file});
-            ip.stack.push(h);
+            ip.push(h);
         }
     } else {
         ip.reflect();
-        ip.stack.push(0);
+        ip.push(0);
     }
 
     return MoveAction{};
@@ -126,7 +126,7 @@ InstructionAction file::open(Fungespace &, InstructionPointer &ip) {
 
 InstructionAction file::write_string(Fungespace &, InstructionPointer &ip) {
     const auto s = ip.stack.pop_0gnirts();
-    const auto h = ip.stack.pop();
+    const auto h = ip.pop();
 
     auto &of = open_files();
     if (const auto it = of.find(h); it != of.end()) {
@@ -136,14 +136,14 @@ InstructionAction file::write_string(Fungespace &, InstructionPointer &ip) {
         ip.reflect();
     }
 
-    ip.stack.push(h);
+    ip.push(h);
 
     return MoveAction{};
 }
 
 InstructionAction file::read_bytes(Fungespace &fungespace, InstructionPointer &ip) {
-    const auto n = ip.stack.pop();
-    const auto h = ip.stack.pop();
+    const auto n = ip.pop();
+    const auto h = ip.pop();
 
     if (n < 0) {
         ip.reflect();
@@ -164,15 +164,15 @@ InstructionAction file::read_bytes(Fungespace &fungespace, InstructionPointer &i
         ip.reflect();
     }
 
-    ip.stack.push(h);
+    ip.push(h);
 
     return MoveAction{};
 }
 
 InstructionAction file::seek(Fungespace &, InstructionPointer &ip) {
-    const auto n = ip.stack.pop();
-    const auto m = ip.stack.pop();
-    const auto h = ip.stack.pop();
+    const auto n = ip.pop();
+    const auto m = ip.pop();
+    const auto h = ip.pop();
 
     if (const auto origin = get_funge_seek_origin(m); origin != std::numeric_limits<int>::max()) {
         auto &of = open_files();
@@ -186,14 +186,14 @@ InstructionAction file::seek(Fungespace &, InstructionPointer &ip) {
         ip.reflect();
     }
 
-    ip.stack.push(h);
+    ip.push(h);
 
     return MoveAction{};
 }
 
 InstructionAction file::write_bytes(Fungespace &fungespace, InstructionPointer &ip) {
-    const auto n = ip.stack.pop();
-    const auto h = ip.stack.pop();
+    const auto n = ip.pop();
+    const auto h = ip.pop();
 
     if (n < 0) {
         ip.reflect();
@@ -213,7 +213,7 @@ InstructionAction file::write_bytes(Fungespace &fungespace, InstructionPointer &
         ip.reflect();
     }
 
-    ip.stack.push(h);
+    ip.push(h);
 
     return MoveAction{};
 }

@@ -10,12 +10,12 @@ static_assert(sizeof(DpUnion) == sizeof(double), "double/std::int64_t union must
 
 DpUnion pop(InstructionPointer &ip) {
     DpUnion u;
-    u.i = ip.stack.pop();
+    u.i = ip.pop();
     return u;
 }
 
 void push(InstructionPointer &ip, DpUnion u) {
-    ip.stack.push(u.i);
+    ip.push(u.i);
 }
 
 InstructionAction fpdp::add(Fungespace &, InstructionPointer &ip) {
@@ -73,7 +73,7 @@ InstructionAction fpdp::asin(Fungespace &, InstructionPointer &ip) {
 }
 
 InstructionAction fpdp::itof(Fungespace &, InstructionPointer &ip) {
-    const auto i = ip.stack.pop();
+    const auto i = ip.pop();
 
     DpUnion u;
     u.d = static_cast<double>(i);
@@ -104,7 +104,7 @@ InstructionAction fpdp::acos(Fungespace &, InstructionPointer &ip) {
 
 InstructionAction fpdp::ftoi(Fungespace &, InstructionPointer &ip) {
     const auto u = pop(ip);
-    ip.stack.push(static_cast<std::int64_t>(std::round(u.d)));
+    ip.push(static_cast<std::int64_t>(std::round(u.d)));
 
     return MoveAction{};
 }

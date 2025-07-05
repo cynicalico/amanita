@@ -121,6 +121,33 @@ void InstructionPointer::reflect() {
     delta *= -1;
 }
 
+std::int64_t InstructionPointer::pop() {
+    return stack.pop();
+}
+
+Vec InstructionPointer::pop_vec() {
+    Vec v;
+    v.y = stack.pop();
+    v.x = stack.pop();
+    return v;
+}
+
+Vec InstructionPointer::pop_offset_vec() {
+    Vec v;
+    v.y = stack.pop();
+    v.x = stack.pop();
+    return v + storage_offset;
+}
+
+void InstructionPointer::push(std::int64_t v) {
+    stack.push(v);
+}
+
+void InstructionPointer::push_vec(Vec v) {
+    stack.push(v.x);
+    stack.push(v.y);
+}
+
 void InstructionPointer::begin_block() {
     stack.begin_block(storage_offset);
     storage_offset = pos + delta;
@@ -141,17 +168,17 @@ void InstructionPointer::stack_under_stack() {
 }
 
 void InstructionPointer::save_pos() {
-    saved_pos = pos;
+    saved_pos_ = pos;
 }
 
 void InstructionPointer::save_delta() {
-    saved_delta = delta;
+    saved_delta_ = delta;
 }
 
 void InstructionPointer::restore_pos() {
-    pos = saved_pos;
+    pos = saved_pos_;
 }
 
 void InstructionPointer::restore_delta() {
-    delta = saved_delta;
+    delta = saved_delta_;
 }

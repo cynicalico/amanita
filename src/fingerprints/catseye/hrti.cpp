@@ -9,7 +9,7 @@ using Clock = steady_clock;
 std::unordered_map<std::int64_t, Clock::time_point> &marks();
 
 InstructionAction hrti::granularity(Fungespace &, InstructionPointer &ip) {
-    ip.stack.push(1);
+    ip.push(1);
     return MoveAction{};
 }
 
@@ -22,7 +22,7 @@ InstructionAction hrti::timer(Fungespace &, InstructionPointer &ip) {
     auto m = marks();
     if (const auto it = m.find(ip.id); it != m.end()) {
         const auto elapsed = Clock::now() - it->second;
-        ip.stack.push(duration_cast<microseconds>(elapsed).count());
+        ip.push(duration_cast<microseconds>(elapsed).count());
     } else {
         ip.reflect();
     }
@@ -38,7 +38,7 @@ InstructionAction hrti::second(Fungespace &, InstructionPointer &ip) {
     const auto now = Clock::now();
     const auto last_second = std::chrono::floor<seconds>(now);
     const auto elapsed = now - last_second;
-    ip.stack.push(duration_cast<microseconds>(elapsed).count());
+    ip.push(duration_cast<microseconds>(elapsed).count());
     return MoveAction{};
 }
 

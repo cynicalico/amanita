@@ -23,7 +23,7 @@ InstructionAction evar::get(Fungespace &, InstructionPointer &ip) {
         // Read the value backwards
         const std::size_t start = strlen(c);
         for (i = start; i-- > 0;)
-            ip.stack.push(c[i]);
+            ip.push(c[i]);
 
         return MoveAction{};
     }
@@ -36,7 +36,7 @@ InstructionAction evar::count(Fungespace &, InstructionPointer &ip) {
     std::int64_t n = 0;
     for (char **current = environ; *current; ++current)
         n++;
-    ip.stack.push(n);
+    ip.push(n);
     return MoveAction{};
 }
 
@@ -48,7 +48,7 @@ InstructionAction evar::put(Fungespace &, InstructionPointer &ip) {
 }
 
 InstructionAction evar::get_nth(Fungespace &, InstructionPointer &ip) {
-    const auto nth = ip.stack.pop();
+    const auto nth = ip.pop();
 
     std::int64_t n = 0;
     for (char **current = environ; *current; ++current, ++n) {
@@ -62,7 +62,7 @@ InstructionAction evar::get_nth(Fungespace &, InstructionPointer &ip) {
             // Read the value backwards
             const std::size_t start = strlen(c);
             for (std::size_t i = start; i-- > 0;)
-                ip.stack.push(c[i]);
+                ip.push(c[i]);
 
             return MoveAction{};
         }

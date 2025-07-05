@@ -10,7 +10,7 @@ static_assert(sizeof(SpUnion) == sizeof(float), "float/std::int32_t union must b
 
 SpUnion pop(InstructionPointer &ip) {
     SpUnion u;
-    u.i = static_cast<std::int32_t>(ip.stack.pop());
+    u.i = static_cast<std::int32_t>(ip.pop());
     return u;
 }
 
@@ -73,7 +73,7 @@ InstructionAction fpsp::asin(Fungespace &, InstructionPointer &ip) {
 }
 
 InstructionAction fpsp::itof(Fungespace &, InstructionPointer &ip) {
-    const auto i = static_cast<std::int32_t>(ip.stack.pop());
+    const auto i = static_cast<std::int32_t>(ip.pop());
 
     SpUnion u;
     u.f = static_cast<float>(i);

@@ -53,6 +53,12 @@ public:
     void turn_right();
     void reflect();
 
+    std::int64_t pop();
+    Vec pop_vec();
+    Vec pop_offset_vec();
+    void push(std::int64_t v);
+    void push_vec(Vec v);
+
     void begin_block();
     void end_block();
     void stack_under_stack();
@@ -63,8 +69,8 @@ public:
     void restore_delta();
 
 private:
-    Vec saved_pos{ZERO};
-    Vec saved_delta{ZERO};
+    Vec saved_pos_{ZERO};
+    Vec saved_delta_{ZERO};
 };
 
 #endif // AMANITA_INSTRUCTION_POINTER_HPP

@@ -6,7 +6,7 @@
 #include "subprocess.h"
 
 InstructionAction perl::shelled(Fungespace &, InstructionPointer &ip) {
-    ip.stack.push(1);
+    ip.push(1);
     return MoveAction{};
 }
 
@@ -41,9 +41,9 @@ InstructionAction perl::eval(Fungespace &, InstructionPointer &ip) {
 
     subprocess_destroy(&subp);
 
-    ip.stack.push('\0');
+    ip.push('\0');
     for (const auto &c: out | std::views::reverse)
-        ip.stack.push(c);
+        ip.push(c);
 
     return MoveAction{};
 }
@@ -81,7 +81,7 @@ InstructionAction perl::int_eval(Fungespace &, InstructionPointer &ip) {
 
     try {
         const auto i = std::stoi(out);
-        ip.stack.push(i);
+        ip.push(i);
     } catch (const std::exception &e) { ip.reflect(); }
 
     return MoveAction{};

@@ -1,53 +1,40 @@
 #include "fingerprints/rcs/subr.hpp"
 #include "instruction_pointer.hpp"
 
+Vec pop_offset_vec(InstructionPointer &ip) {
+    if (ip.subr_relative_mode)
+        return ip.pop_offset_vec();
+    return ip.pop_vec();
+}
+
 InstructionAction subr::set_absolute_mode(Fungespace &, InstructionPointer &ip) {
     ip.subr_relative_mode = false;
     return MoveAction{};
 }
 
 InstructionAction subr::call(Fungespace &, InstructionPointer &ip) {
-    const auto n = ip.stack.pop();
-    const auto y = ip.stack.pop();
-    const auto x = ip.stack.pop();
+    const auto n = ip.pop();
+    const auto dst = pop_offset_vec(ip);
 
     std::vector<std::int64_t> saved{};
     saved.reserve(n);
     for (std::int64_t i = 0; i < n; ++i)
-        saved.push_back(ip.stack.pop());
+        saved.push_back(ip.pop());
 
-    ip.stack.push(ip.pos.x);
-    ip.stack.push(ip.pos.y);
-    ip.stack.push(ip.delta.x);
-    ip.stack.push(ip.delta.y);
+    ip.push_vec(ip.pos);
+    ip.push_vec(ip.delta);
     for (std::size_t i = 0; i < saved.size(); ++i)
-        ip.stack.push(saved[saved.size() - 1 - i]);
+        ip.push(saved[saved.size() - 1 - i]);
 
-    if (ip.subr_relative_mode) {
-        ip.pos.x = x + ip.storage_offset.x;
-        ip.pos.y = y + ip.storage_offset.y;
-    } else {
-        ip.pos.x = x;
-        ip.pos.y = y;
-    }
+    ip.pos = dst;
     ip.delta = EAST;
 
     return MoveAction{};
 }
 
 InstructionAction subr::jump(Fungespace &, InstructionPointer &ip) {
-    const auto y = ip.stack.pop();
-    const auto x = ip.stack.pop();
-
-    if (ip.subr_relative_mode) {
-        ip.pos.x = x + ip.storage_offset.x;
-        ip.pos.y = y + ip.storage_offset.y;
-    } else {
-        ip.pos.x = x;
-        ip.pos.y = y;
-    }
+    ip.pos = pop_offset_vec(ip);
     ip.delta = EAST;
-
     return MoveAction{};
 }
 
@@ -57,24 +44,18 @@ InstructionAction subr::set_relative_mode(Fungespace &, InstructionPointer &ip) 
 }
 
 InstructionAction subr::ret(Fungespace &, InstructionPointer &ip) {
-    const auto n = ip.stack.pop();
+    const auto n = ip.pop();
 
     std::vector<std::int64_t> saved{};
     saved.reserve(n);
     for (std::int64_t i = 0; i < n; ++i)
-        saved.push_back(ip.stack.pop());
+        saved.push_back(ip.pop());
 
-    const auto dy = ip.stack.pop();
-    const auto dx = ip.stack.pop();
-    const auto y = ip.stack.pop();
-    const auto x = ip.stack.pop();
+    ip.delta = ip.pop_vec();
+    ip.pos = ip.pop_vec();
+
     for (std::size_t i = 0; i < saved.size(); ++i)
-        ip.stack.push(saved[saved.size() - 1 - i]);
-
-    ip.pos.x = x;
-    ip.pos.y = y;
-    ip.delta.x = dx;
-    ip.delta.y = dy;
+        ip.push(saved[saved.size() - 1 - i]);
 
     return MoveAction{};
 }
