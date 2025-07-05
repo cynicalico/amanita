@@ -1,5 +1,4 @@
 #include "fingerprints/catseye/refc.hpp"
-#include <array>
 #include <vector>
 #include "instruction_pointer.hpp"
 

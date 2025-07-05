@@ -1,4 +1,5 @@
 #include "fingerprints/catseye/toys.hpp"
+#include "fungespace.hpp"
 #include "instruction_pointer.hpp"
 #include "mizu/util/rng.hpp"
 
@@ -7,7 +8,7 @@
 InstructionAction toys::gable(Fungespace &, InstructionPointer &ip) {
     const auto n = ip.pop();
     const auto v = ip.pop();
-    for (std::int64_t i = 0; i < n; ++i)
+    for (Index i = 0; i < n; ++i)
         ip.push(v);
     return MoveAction{};
 }
@@ -28,8 +29,8 @@ InstructionAction toys::bracelet(Fungespace &fungespace, InstructionPointer &ip)
     const auto y = ip.pop() + ip.storage_offset.y;
     const auto x = ip.pop() + ip.storage_offset.x;
 
-    for (std::int64_t i = 0; i < h; ++i) {
-        for (std::int64_t j = 0; j < w; ++j) {
+    for (Index i = 0; i < h; ++i) {
+        for (Index j = 0; j < w; ++j) {
             const auto src_y = y + i;
             const auto src_x = x + j;
             const auto dst_y = dst_y_orig + i;
@@ -50,7 +51,7 @@ InstructionAction toys::toilet_seat(Fungespace &, InstructionPointer &ip) {
 }
 
 InstructionAction toys::pitchfork_head(Fungespace &, InstructionPointer &ip) {
-    std::int64_t sum = 0;
+    Cell sum = 0;
     while (ip.stack.size() > 0)
         sum += ip.pop();
     ip.push(sum);
@@ -63,8 +64,8 @@ InstructionAction toys::calipers(Fungespace &fungespace, InstructionPointer &ip)
     const auto j = ip.pop();
     const auto i = ip.pop();
 
-    for (std::int64_t dy = 0; dy < j; ++dy)
-        for (std::int64_t dx = 0; dx < i; ++dx)
+    for (Index dy = 0; dy < j; ++dy)
+        for (Index dx = 0; dx < i; ++dx)
             fungespace.put(x + dx, y + dy, ip.pop());
 
     return MoveAction{};
@@ -76,8 +77,8 @@ InstructionAction toys::counterclockwise(Fungespace &fungespace, InstructionPoin
     const auto j = ip.pop();
     const auto i = ip.pop();
 
-    for (std::int64_t dy = j - 1; dy >= 0; --dy)
-        for (std::int64_t dx = i - 1; dx >= 0; --dx)
+    for (Index dy = j - 1; dy >= 0; --dy)
+        for (Index dx = i - 1; dx >= 0; --dx)
             ip.push(fungespace.get(x + dx, y + dy));
 
     return MoveAction{};
@@ -102,16 +103,16 @@ InstructionAction toys::doric_column(Fungespace &, InstructionPointer &ip) {
 
 InstructionAction toys::fishhook(Fungespace &fungespace, InstructionPointer &ip) {
     if (const auto trans = ip.pop(); trans < 0) {
-        const auto y_start = fungespace.min_coord[1];
-        const auto y_end = fungespace.max_coord[1];
-        for (std::int64_t y = y_start; y < y_end; ++y) {
+        const auto y_start = fungespace.min_coord.y;
+        const auto y_end = fungespace.max_coord.y;
+        for (Index y = y_start; y < y_end; ++y) {
             const auto v = fungespace.get(ip.pos.x, y);
             fungespace.put(ip.pos.x, y + trans, v);
         }
     } else if (trans > 0) {
-        const auto y_start = fungespace.max_coord[1] - 1;
-        const auto y_end = fungespace.min_coord[1];
-        for (std::int64_t y = y_start; y >= y_end; --y) {
+        const auto y_start = fungespace.max_coord.y - 1;
+        const auto y_end = fungespace.min_coord.y;
+        for (Index y = y_start; y >= y_end; --y) {
             const auto v = fungespace.get(ip.pos.x, y);
             fungespace.put(ip.pos.x, y + trans, v);
         }
@@ -128,8 +129,8 @@ InstructionAction toys::scissors(Fungespace &fungespace, InstructionPointer &ip)
     const auto y = ip.pop() + ip.storage_offset.y;
     const auto x = ip.pop() + ip.storage_offset.x;
 
-    for (std::int64_t i = h - 1; i >= 0; i--) {
-        for (std::int64_t j = w - 1; j >= 0; --j) {
+    for (Index i = h - 1; i >= 0; i--) {
+        for (Index j = w - 1; j >= 0; --j) {
             const auto src_y = y + i;
             const auto src_x = x + j;
             const auto dst_y = dst_y_orig + i;
@@ -166,8 +167,8 @@ InstructionAction toys::kittycat(Fungespace &fungespace, InstructionPointer &ip)
     const auto y = ip.pop() + ip.storage_offset.y;
     const auto x = ip.pop() + ip.storage_offset.x;
 
-    for (std::int64_t i = 0; i < h; ++i) {
-        for (std::int64_t j = 0; j < w; ++j) {
+    for (Index i = 0; i < h; ++i) {
+        for (Index j = 0; j < w; ++j) {
             const auto src_y = y + i;
             const auto src_x = x + j;
             const auto dst_y = dst_y_orig + i;
@@ -190,16 +191,16 @@ InstructionAction toys::lightning_bolt(Fungespace &, InstructionPointer &ip) {
 
 InstructionAction toys::boulder(Fungespace &fungespace, InstructionPointer &ip) {
     if (const auto trans = ip.pop(); trans < 0) {
-        const auto x_start = fungespace.min_coord[1];
-        const auto x_end = fungespace.max_coord[1];
-        for (std::int64_t x = x_start; x < x_end; ++x) {
+        const auto x_start = fungespace.min_coord.x;
+        const auto x_end = fungespace.max_coord.x;
+        for (Index x = x_start; x < x_end; ++x) {
             const auto v = fungespace.get(x, ip.pos.y);
             fungespace.put(x + trans, ip.pos.y, v);
         }
     } else if (trans > 0) {
-        const auto x_start = fungespace.max_coord[1];
-        const auto x_end = fungespace.min_coord[1];
-        for (std::int64_t x = x_start; x >= x_end; --x) {
+        const auto x_start = fungespace.max_coord.x;
+        const auto x_end = fungespace.min_coord.x;
+        for (Index x = x_start; x >= x_end; --x) {
             const auto v = fungespace.get(x, ip.pos.y);
             fungespace.put(x + trans, ip.pos.y, v);
         }
@@ -209,7 +210,7 @@ InstructionAction toys::boulder(Fungespace &fungespace, InstructionPointer &ip) 
 }
 
 InstructionAction toys::mailbox(Fungespace &, InstructionPointer &ip) {
-    std::int64_t prod = 1;
+    Cell prod = 1;
     while (ip.stack.size() > 0)
         prod *= ip.pop();
     ip.push(prod);
@@ -253,8 +254,8 @@ InstructionAction toys::chicane(Fungespace &fungespace, InstructionPointer &ip) 
     const auto w = ip.pop();
     const auto v = ip.pop();
 
-    for (std::int64_t dst_y = y; dst_y < y + h; ++dst_y)
-        for (std::int64_t dst_x = x; dst_x < x + w; ++dst_x)
+    for (Index dst_y = y; dst_y < y + h; ++dst_y)
+        for (Index dst_x = x; dst_x < x + w; ++dst_x)
             fungespace.put(dst_x, dst_y, v);
 
     return MoveAction{};
@@ -279,19 +280,19 @@ InstructionAction toys::barstool(Fungespace &fungespace, InstructionPointer &ip)
 InstructionAction toys::tumbler(Fungespace &fungespace, InstructionPointer &ip) {
     switch (mizu::rng::get<std::size_t>(3)) {
     case 0:
-        fungespace.put(ip.pos.x, ip.pos.y, static_cast<std::int64_t>(Instruction::GoSouth));
+        fungespace.put(ip.pos.x, ip.pos.y, static_cast<Cell>(Instruction::GoSouth));
         ip.instruction_stack.perform(Instruction::GoSouth, fungespace, ip);
         break;
     case 1:
-        fungespace.put(ip.pos.x, ip.pos.y, static_cast<std::int64_t>(Instruction::GoEast));
+        fungespace.put(ip.pos.x, ip.pos.y, static_cast<Cell>(Instruction::GoEast));
         ip.instruction_stack.perform(Instruction::GoEast, fungespace, ip);
         break;
     case 2:
-        fungespace.put(ip.pos.x, ip.pos.y, static_cast<std::int64_t>(Instruction::GoNorth));
+        fungespace.put(ip.pos.x, ip.pos.y, static_cast<Cell>(Instruction::GoNorth));
         ip.instruction_stack.perform(Instruction::GoNorth, fungespace, ip);
         break;
     case 3:
-        fungespace.put(ip.pos.x, ip.pos.y, static_cast<std::int64_t>(Instruction::GoWest));
+        fungespace.put(ip.pos.x, ip.pos.y, static_cast<Cell>(Instruction::GoWest));
         ip.instruction_stack.perform(Instruction::GoWest, fungespace, ip);
         break;
     default:
@@ -308,8 +309,8 @@ InstructionAction toys::dixiecup(Fungespace &fungespace, InstructionPointer &ip)
     const auto y = ip.pop() + ip.storage_offset.y;
     const auto x = ip.pop() + ip.storage_offset.x;
 
-    for (std::int64_t i = h - 1; i >= 0; i--) {
-        for (std::int64_t j = w - 1; j >= 0; --j) {
+    for (Index i = h - 1; i >= 0; i--) {
+        for (Index j = w - 1; j >= 0; --j) {
             const auto src_y = y + i;
             const auto src_x = x + j;
             const auto dst_y = dst_y_orig + i;

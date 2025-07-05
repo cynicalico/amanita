@@ -16,12 +16,12 @@ InstructionAction subr::call(Fungespace &, InstructionPointer &ip) {
     const auto n = ip.pop();
     const auto dst = pop_offset_vec(ip);
 
-    for (std::int64_t i = 0; i < n; ++i)
+    for (Index i = 0; i < n; ++i)
         ip.call_stack.push_back(ip.pop());
 
     ip.push_vec(ip.pos);
     ip.push_vec(ip.delta);
-    for (std::size_t i = 0; i < n; ++i) {
+    for (Index i = 0; i < n; ++i) {
         ip.push(ip.call_stack.back());
         ip.call_stack.pop_back();
     }
@@ -46,13 +46,13 @@ InstructionAction subr::set_relative_mode(Fungespace &, InstructionPointer &ip) 
 InstructionAction subr::ret(Fungespace &, InstructionPointer &ip) {
     const auto n = ip.pop();
 
-    for (std::int64_t i = 0; i < n; ++i)
+    for (Index i = 0; i < n; ++i)
         ip.call_stack.push_back(ip.pop());
 
     ip.delta = ip.pop_vec();
     ip.pos = ip.pop_vec();
 
-    for (std::size_t i = 0; i < n; ++i) {
+    for (Index i = 0; i < n; ++i) {
         ip.push(ip.call_stack.back());
         ip.call_stack.pop_back();
     }

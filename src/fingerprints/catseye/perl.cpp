@@ -1,4 +1,5 @@
 #include "fingerprints/catseye/perl.hpp"
+#include <iomanip>
 #include <ranges>
 #include <sstream>
 #include <string>
@@ -82,7 +83,7 @@ InstructionAction perl::int_eval(Fungespace &, InstructionPointer &ip) {
     try {
         const auto i = std::stoi(out);
         ip.push(i);
-    } catch (const std::exception &e) { ip.reflect(); }
+    } catch (const std::exception &) { ip.reflect(); }
 
     return MoveAction{};
 }

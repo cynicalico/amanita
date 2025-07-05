@@ -1,5 +1,6 @@
 #include "fingerprints/catseye/orth.hpp"
 #include <fmt/format.h>
+#include "fungespace.hpp"
 #include "instruction_pointer.hpp"
 
 InstructionAction orth::bitwise_and(Fungespace &, InstructionPointer &ip) {

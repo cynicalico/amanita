@@ -4,9 +4,9 @@
 
 union DpUnion {
     double d;
-    std::int64_t i;
+    Cell i;
 };
-static_assert(sizeof(DpUnion) == sizeof(double), "double/std::int64_t union must be same byte size");
+static_assert(sizeof(DpUnion) == sizeof(double), "double/Cell union must be same byte size");
 
 DpUnion pop(InstructionPointer &ip) {
     DpUnion u;
@@ -102,7 +102,7 @@ InstructionAction fpdp::acos(Fungespace &, InstructionPointer &ip) {
 
 InstructionAction fpdp::ftoi(Fungespace &, InstructionPointer &ip) {
     const auto u = pop(ip);
-    ip.push(static_cast<std::int64_t>(std::round(u.d)));
+    ip.push(static_cast<Cell>(std::round(u.d)));
 
     return MoveAction{};
 }

@@ -5,12 +5,12 @@
 #include "instruction_stack.hpp"
 #include "stackstack.hpp"
 
-std::int64_t next_ip_id();
+Cell next_ip_id();
 
 class InstructionPointer {
 public:
     CliArgs *cli_args{nullptr};
-    std::int64_t id{next_ip_id()};
+    Cell id{next_ip_id()};
 
     bool alive{true};
     Vec pos{ZERO};
@@ -30,7 +30,7 @@ public:
 
     // SUBR
     bool relative_mode{false};
-    std::vector<std::int64_t> call_stack{};
+    std::vector<Cell> call_stack{};
 
     InstructionPointer(CliArgs *interpreter);
     ~InstructionPointer() = default;
@@ -58,10 +58,10 @@ public:
     void restore_pos();
     void restore_delta();
 
-    std::int64_t pop();
+    Cell pop();
     Vec pop_vec();
     Vec pop_offset_vec();
-    void push(std::int64_t v);
+    void push(Cell v);
     void push_vec(Vec v);
 
     void begin_block();

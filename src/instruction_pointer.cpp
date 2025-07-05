@@ -1,8 +1,8 @@
 #include "instruction_pointer.hpp"
 #include "fungespace.hpp"
 
-std::int64_t next_ip_id() {
-    static std::int64_t next_id = 0;
+Cell next_ip_id() {
+    static Cell next_id = 0;
     return ++next_id;
 }
 
@@ -126,7 +126,7 @@ void InstructionPointer::restore_pos() { pos = saved_pos_; }
 
 void InstructionPointer::restore_delta() { delta = saved_delta_; }
 
-std::int64_t InstructionPointer::pop() { return stack.pop(); }
+Cell InstructionPointer::pop() { return stack.pop(); }
 
 Vec InstructionPointer::pop_vec() {
     Vec v;
@@ -142,7 +142,7 @@ Vec InstructionPointer::pop_offset_vec() {
     return v + storage_offset;
 }
 
-void InstructionPointer::push(std::int64_t v) { stack.push(v); }
+void InstructionPointer::push(Cell v) { stack.push(v); }
 
 void InstructionPointer::push_vec(Vec v) {
     stack.push(v.x);

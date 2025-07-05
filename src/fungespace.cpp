@@ -9,26 +9,22 @@ constexpr std::size_t CHUNK_SIZE = 1024;
 Fungespace::Fungespace() = default;
 
 Fungespace::Fungespace(const std::filesystem::path &path) {
-    std::int64_t unused[2];
+    Vec unused{ZERO};
     if (!input_file(path.string(), 0, 0, 0, unused))
         throw std::runtime_error(fmt::format("Failed to open file: '{}'", path));
 }
 
 bool Fungespace::input_file(
-        const std::string &filename,
-        const std::int64_t flags,
-        const std::int64_t x,
-        const std::int64_t y,
-        std::int64_t size[2]) {
+        const std::string &filename, const std::int64_t flags, const std::int64_t x, const std::int64_t y, Vec &size) {
     std::ifstream file(filename, std::ios::binary);
     if (!file.is_open())
         return false;
 
     const bool binary_mode = (flags & 0b1) == 1;
 
-    std::int64_t input_pos[2] = {x, y};
-    size[0] = 0;
-    size[1] = 0;
+    Vec input_pos(x, y);
+    size.x = 0;
+    size.y = 0;
 
     do {
         unsigned char buf[CHUNK_SIZE];
@@ -38,18 +34,18 @@ bool Fungespace::input_file(
                 continue;
 
             if (!binary_mode && buf[i] == NEWLINE) {
-                size[0] = std::max(size[0], input_pos[0] - x);
-                input_pos[0] = x;
+                size.x = std::max(size.x, input_pos.x - x);
+                input_pos.x = x;
 
-                size[1]++;
-                input_pos[1]++;
+                size.y++;
+                input_pos.y++;
 
                 continue;
             }
 
             if (buf[i] != EMPTY)
-                put(input_pos[0], input_pos[1], buf[i]);
-            input_pos[0]++;
+                put(input_pos.x, input_pos.y, buf[i]);
+            input_pos.x++;
         }
     } while (file.gcount() == CHUNK_SIZE);
 
@@ -90,10 +86,8 @@ bool Fungespace::output_file(
 }
 
 void Fungespace::save_bak() {
-    min_coord_bak_[0] = min_coord[0];
-    min_coord_bak_[1] = min_coord[1];
-    max_coord_bak_[0] = max_coord[0];
-    max_coord_bak_[1] = max_coord[1];
+    min_coord_bak_ = min_coord;
+    max_coord_bak_ = max_coord;
     px_py_bak_ = px_py_;
     // Negative quadrants can't be saved, runtime only
 }
@@ -103,13 +97,11 @@ void Fungespace::reset() {
     px_ny_.clear();
     nx_py_.clear();
     nx_ny_.clear();
-    min_coord[0] = min_coord_bak_[0];
-    min_coord[1] = min_coord_bak_[1];
-    max_coord[0] = max_coord_bak_[0];
-    max_coord[1] = max_coord_bak_[1];
+    min_coord = min_coord_bak_;
+    max_coord = max_coord_bak_;
 }
 
-Cell Fungespace::get(std::int64_t x, std::int64_t y) const {
+Cell Fungespace::get(Index x, Index y) const {
     if (!in_bounds(x, y))
         return EMPTY;
 
@@ -122,12 +114,12 @@ Cell Fungespace::get(std::int64_t x, std::int64_t y) const {
     return coord.quadrant[coord.y][coord.x];
 }
 
-void Fungespace::put(std::int64_t x, std::int64_t y, Cell v) {
+void Fungespace::put(Index x, Index y, Cell v) {
     if (v != EMPTY) {
-        min_coord[0] = std::min(min_coord[0], x);
-        min_coord[1] = std::min(min_coord[1], y);
-        max_coord[0] = std::max(max_coord[0], x + 1);
-        max_coord[1] = std::max(max_coord[1], y + 1);
+        min_coord.x = std::min(min_coord.x, x);
+        min_coord.y = std::min(min_coord.y, y);
+        max_coord.x = std::max(max_coord.x, x + 1);
+        max_coord.y = std::max(max_coord.y, y + 1);
     }
 
     const auto coord = make_fixed_coord_(x, y);
@@ -138,21 +130,21 @@ void Fungespace::put(std::int64_t x, std::int64_t y, Cell v) {
         check_shrink_bounds_(x, y);
 }
 
-bool Fungespace::in_bounds(std::int64_t x, std::int64_t y) const {
-    return x >= min_coord[0] && y >= min_coord[1] && x < max_coord[0] && y < max_coord[1];
+bool Fungespace::in_bounds(Index x, Index y) const {
+    return x >= min_coord.x && y >= min_coord.y && x < max_coord.x && y < max_coord.y;
 }
 
 void Fungespace::print() const {
-    for (std::int64_t y = min_coord[1]; y < max_coord[1]; ++y) {
-        for (std::int64_t x = min_coord[0]; x < max_coord[0]; ++x) {
-            auto c = static_cast<char>(get(x, y));
+    for (Cell y = min_coord.y; y < max_coord.y; ++y) {
+        for (Cell x = min_coord.x; x < max_coord.x; ++x) {
+            auto c = static_cast<char>(get(static_cast<Index>(x), static_cast<Index>(y)));
             fmt::print("{}", c);
         }
         fmt::println("");
     }
 }
 
-Fungespace::FixedCoord_ Fungespace::make_fixed_coord_(std::int64_t x, std::int64_t y) const {
+Fungespace::FixedCoord_ Fungespace::make_fixed_coord_(Index x, Index y) const {
     if (x < 0) {
         if (y < 0) {
             return {.x = static_cast<std::size_t>(-x - 1),
@@ -180,63 +172,63 @@ void Fungespace::check_resize_(const FixedCoord_ &coord) {
         coord.quadrant[coord.y].resize(coord.x + 1, EMPTY);
 }
 
-void Fungespace::check_shrink_bounds_(std::int64_t x, std::int64_t y) {
+void Fungespace::check_shrink_bounds_(Index x, Index y) {
     // TODO: This is more or less the most naive possible way to implement this
     //       May want to research some way to store some additional data to speed this up
 
-    if (y == min_coord[1]) {
+    if (y == min_coord.y) {
         bool all_empty = true;
-        while (min_coord[1] < max_coord[1] && all_empty) {
-            for (std::int64_t cx = min_coord[0]; cx < max_coord[0]; ++cx) {
-                if (get(cx, min_coord[1]) != EMPTY) {
+        while (min_coord.y < max_coord.y && all_empty) {
+            for (std::int64_t cx = min_coord.x; cx < max_coord.x; ++cx) {
+                if (get(cx, min_coord.y) != EMPTY) {
                     all_empty = false;
                     break;
                 }
             }
             if (all_empty)
-                min_coord[1]++;
+                min_coord.y++;
         }
     }
 
-    if (x == min_coord[0]) {
+    if (x == min_coord.x) {
         bool all_empty = true;
-        while (min_coord[0] < max_coord[0] && all_empty) {
-            for (std::int64_t cy = min_coord[1]; cy < max_coord[1]; ++cy) {
-                if (get(min_coord[0], cy) != EMPTY) {
+        while (min_coord.x < max_coord.x && all_empty) {
+            for (std::int64_t cy = min_coord.y; cy < max_coord.y; ++cy) {
+                if (get(min_coord.x, cy) != EMPTY) {
                     all_empty = false;
                     break;
                 }
             }
             if (all_empty)
-                min_coord[0]++;
+                min_coord.x++;
         }
     }
 
-    if (y == max_coord[1] - 1) {
+    if (y == max_coord.y - 1) {
         bool all_empty = true;
-        while (max_coord[1] >= min_coord[1] && all_empty) {
-            for (std::int64_t cx = min_coord[0]; cx < max_coord[0]; ++cx) {
-                if (get(cx, max_coord[1] - 1) != EMPTY) {
+        while (max_coord.y >= min_coord.y && all_empty) {
+            for (std::int64_t cx = min_coord.x; cx < max_coord.x; ++cx) {
+                if (get(cx, max_coord.y - 1) != EMPTY) {
                     all_empty = false;
                     break;
                 }
             }
             if (all_empty)
-                max_coord[1]--;
+                max_coord.y--;
         }
     }
 
-    if (x == max_coord[0] - 1) {
+    if (x == max_coord.x - 1) {
         bool all_empty = true;
-        while (max_coord[0] >= min_coord[0] && all_empty) {
-            for (std::int64_t cy = min_coord[1]; cy < max_coord[1]; ++cy) {
-                if (get(max_coord[0] - 1, cy) != EMPTY) {
+        while (max_coord.x >= min_coord.x && all_empty) {
+            for (std::int64_t cy = min_coord.y; cy < max_coord.y; ++cy) {
+                if (get(max_coord.x - 1, cy) != EMPTY) {
                     all_empty = false;
                     break;
                 }
             }
             if (all_empty)
-                max_coord[0]--;
+                max_coord.x--;
         }
     }
 }

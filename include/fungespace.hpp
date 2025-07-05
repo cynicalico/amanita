@@ -3,7 +3,9 @@
 
 #include <cstdint>
 #include <filesystem>
+#include <string>
 #include <vector>
+#include "common.hpp"
 
 /*       ^ -y
  *       |
@@ -12,23 +14,15 @@
  *       v +y
  */
 
-using Cell = std::int64_t;
-
-constexpr Cell CARRIAGE_RETURN = '\r';
-constexpr Cell NEWLINE = '\n';
-constexpr Cell FORM_FEED = '\f';
-constexpr Cell EMPTY = 32;
-
 class Fungespace {
 public:
-    std::int64_t min_coord[2]{0, 0};
-    std::int64_t max_coord[2]{0, 0};
+    Vec min_coord{ZERO};
+    Vec max_coord{ZERO};
 
     Fungespace();
     explicit Fungespace(const std::filesystem::path &path);
 
-    bool
-    input_file(const std::string &filename, std::int64_t flags, std::int64_t x, std::int64_t y, std::int64_t size[2]);
+    bool input_file(const std::string &filename, std::int64_t flags, std::int64_t x, std::int64_t y, Vec &size);
 
     bool output_file(
             const std::string &filename,
@@ -41,10 +35,10 @@ public:
     void save_bak();
     void reset();
 
-    Cell get(std::int64_t x, std::int64_t y) const;
-    void put(std::int64_t x, std::int64_t y, Cell v);
+    Cell get(Index x, Index y) const;
+    void put(Index x, Index y, Cell v);
 
-    bool in_bounds(std::int64_t x, std::int64_t y) const;
+    bool in_bounds(Index x, Index y) const;
 
     void print() const;
 
@@ -60,13 +54,13 @@ private:
     std::vector<std::vector<Cell>> nx_py_{};
     std::vector<std::vector<Cell>> nx_ny_{};
 
-    std::int64_t min_coord_bak_[2]{0, 0};
-    std::int64_t max_coord_bak_[2]{0, 0};
+    Vec min_coord_bak_{ZERO};
+    Vec max_coord_bak_{ZERO};
     std::vector<std::vector<Cell>> px_py_bak_{};
 
-    FixedCoord_ make_fixed_coord_(std::int64_t x, std::int64_t y) const;
+    FixedCoord_ make_fixed_coord_(Index x, Index y) const;
     void check_resize_(const FixedCoord_ &coord);
-    void check_shrink_bounds_(std::int64_t x, std::int64_t y);
+    void check_shrink_bounds_(Index x, Index y);
 };
 
 #endif // AMANITA_FUNGESPACE_HPP

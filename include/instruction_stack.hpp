@@ -1,15 +1,8 @@
 #ifndef AMANITA_INSTRUCTION_STACK_HPP
 #define AMANITA_INSTRUCTION_STACK_HPP
 
-#include <functional>
 #include <vector>
 #include "common.hpp"
-#include "fungespace.hpp"
-#include "instructions.hpp"
-
-class InstructionPointer;
-
-using InstructionFunc = std::function<InstructionAction(Fungespace &fungespace, InstructionPointer &)>;
 
 class InstructionStack {
 public:
@@ -19,6 +12,10 @@ public:
     InstructionStack();
 
     InstructionAction perform(Instruction ins, Fungespace &fungespace, InstructionPointer &ip);
+
+    bool load_fingerprint(std::int64_t fingerprint);
+
+    bool unload_fingerprint(std::int64_t fingerprint);
 
 private:
     void populate_default_fns_();

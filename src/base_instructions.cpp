@@ -4,7 +4,6 @@
 #include <fmt/format.h>
 #include <stack>
 #include <utility>
-#include "fingerprints.hpp"
 #include "fungespace.hpp"
 #include "instruction_pointer.hpp"
 #include "mizu/util/rng.hpp"
@@ -104,7 +103,7 @@ InstructionAction instruction_load_semantics(Fungespace &fungespace, Instruction
         fingerprint += ip.pop();
     }
 
-    if (!load_fingerprint(ip.instruction_stack, fingerprint)) {
+    if (!ip.instruction_stack.load_fingerprint(fingerprint)) {
         ip.reflect();
     } else {
         ip.push(fingerprint);
@@ -126,7 +125,7 @@ InstructionAction instruction_unload_semantics(Fungespace &fungespace, Instructi
         fingerprint += ip.pop();
     }
 
-    if (!unload_fingerprint(ip.instruction_stack, fingerprint))
+    if (!ip.instruction_stack.unload_fingerprint(fingerprint))
         ip.reflect();
 
     return MoveAction{};
@@ -359,10 +358,8 @@ InstructionAction instruction_input_file(Fungespace &fungespace, InstructionPoin
     const auto flags = ip.pop();
     const auto v = ip.pop_offset_vec();
 
-    std::int64_t size[2];
-    if (fungespace.input_file(filename, flags, v.x, v.y, size)) {
-        ip.push(size[0]);
-        ip.push(size[1]);
+    if (Vec size; fungespace.input_file(filename, flags, v.x, v.y, size)) {
+        ip.push_vec(size);
         ip.push_vec(v);
     } else {
         ip.reflect();
@@ -380,7 +377,7 @@ InstructionAction instruction_jump_forward(Fungespace &fungespace, InstructionPo
         ip.reflect();
         n = std::abs(n);
     }
-    for (std::int64_t i = 0; i < n; ++i)
+    for (Index i = 0; i < n; ++i)
         ip.step_wrap(fungespace);
 
     ip.restore_delta();
@@ -401,7 +398,7 @@ InstructionAction instruction_iterate(Fungespace &fungespace, InstructionPointer
     ip.restore_pos();
 
     std::vector<InstructionAction> ret{};
-    for (std::int64_t i = 0; i < n; ++i)
+    for (Index i = 0; i < n; ++i)
         ret.emplace_back(ip.instruction_stack.perform(static_cast<Instruction>(iter_ins), fungespace, ip));
 
     return IterAction{ret};
@@ -486,7 +483,7 @@ InstructionAction instruction_absolute_delta(Fungespace &, InstructionPointer &i
 }
 
 InstructionAction instruction_get_sysinfo(const Fungespace &fungespace, InstructionPointer &ip) {
-    static std::stack<std::int64_t> buf{};
+    static std::stack<Cell> buf{};
 
     // Clear before starting
     while (!buf.empty())
@@ -542,12 +539,12 @@ InstructionAction instruction_get_sysinfo(const Fungespace &fungespace, Instruct
     buf.push(ip.storage_offset.x);
 
     // least point which contains a non-space cell
-    buf.push(fungespace.min_coord[1]);
-    buf.push(fungespace.min_coord[0]);
+    buf.push(fungespace.min_coord.y);
+    buf.push(fungespace.min_coord.x);
 
     // greatest point which contains a non-space cell relative to the least
-    buf.push(fungespace.max_coord[1] - 1 + std::abs(fungespace.min_coord[1]));
-    buf.push(fungespace.max_coord[0] - 1 + std::abs(fungespace.min_coord[0]));
+    buf.push(fungespace.max_coord.y - 1 + std::abs(fungespace.min_coord.y));
+    buf.push(fungespace.max_coord.x - 1 + std::abs(fungespace.min_coord.x));
 
     const std::chrono::system_clock::time_point now_utc = std::chrono::system_clock::now();
     const std::chrono::time_point now = std::chrono::current_zone()->to_local(now_utc);
@@ -569,12 +566,12 @@ InstructionAction instruction_get_sysinfo(const Fungespace &fungespace, Instruct
     buf.push(hour * 256 * 256 + minute * 256 + second);
 
     // number of stacks in use by IP
-    buf.push(static_cast<std::int64_t>(ip.stack.count()));
+    buf.push(static_cast<Cell>(ip.stack.count()));
 
     // size of each stack in stackstack (from TOSS to BOSS)
     const auto sizes = ip.stack.sizes();
     for (const auto &size: sizes)
-        buf.push(static_cast<std::int64_t>(size));
+        buf.push(static_cast<Cell>(size));
 
     // command line arguments followed by double null
     for (const auto &arg: ip.cli_args->args) {

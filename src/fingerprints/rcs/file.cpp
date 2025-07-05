@@ -1,18 +1,19 @@
 #include "fingerprints/rcs/file.hpp"
 #include <cstdio>
+#include "fungespace.hpp"
 #include "instruction_pointer.hpp"
 #include "mizu/util/platform.hpp"
 
 #define MAX_STRING_READ 1024
 
 struct File {
-    std::int64_t io_buffer_pos[2];
+    Vec io_buffer_pos;
     FILE *f;
 };
 
-std::unordered_map<std::int64_t, File> &open_files();
-const char *get_funge_file_mode(std::int64_t m);
-int get_funge_seek_origin(std::int64_t m);
+std::unordered_map<Cell, File> &open_files();
+const char *get_funge_file_mode(Cell m);
+int get_funge_seek_origin(Cell m);
 
 InstructionAction file::close(Fungespace &, InstructionPointer &ip) {
     const auto h = ip.pop();
@@ -157,8 +158,8 @@ InstructionAction file::read_bytes(Fungespace &fungespace, InstructionPointer &i
             bytes_read != n || ferror(it->second.f) != 0) {
             ip.reflect();
         } else {
-            for (std::int64_t i = 0; i < n; ++i)
-                fungespace.put(it->second.io_buffer_pos[0] + i, it->second.io_buffer_pos[1], buf[i]);
+            for (Index i = 0; i < n; ++i)
+                fungespace.put(it->second.io_buffer_pos.x + i, it->second.io_buffer_pos.y, buf[i]);
         }
     } else {
         ip.reflect();
@@ -203,8 +204,8 @@ InstructionAction file::write_bytes(Fungespace &fungespace, InstructionPointer &
     auto &of = open_files();
     if (const auto it = of.find(h); it != of.end()) {
         std::vector<unsigned char> buf(n);
-        for (std::int64_t i = 0; i < n; ++i)
-            buf[i] = fungespace.get(it->second.io_buffer_pos[0] + i, it->second.io_buffer_pos[1]) & 0xff;
+        for (Index i = 0; i < n; ++i)
+            buf[i] = fungespace.get(it->second.io_buffer_pos.x + i, it->second.io_buffer_pos.y) & 0xff;
         if (const auto bytes_written = fwrite(&buf[0], sizeof(unsigned char), n, it->second.f);
             bytes_written != n || ferror(it->second.f) != 0) {
             ip.reflect();
@@ -218,12 +219,12 @@ InstructionAction file::write_bytes(Fungespace &fungespace, InstructionPointer &
     return MoveAction{};
 }
 
-std::unordered_map<std::int64_t, File> &open_files() {
-    static std::unordered_map<std::int64_t, File> open_files{};
+std::unordered_map<Cell, File> &open_files() {
+    static std::unordered_map<Cell, File> open_files{};
     return open_files;
 }
 
-const char *get_funge_file_mode(const std::int64_t m) {
+const char *get_funge_file_mode(const Cell m) {
     switch (m) {
     case 0:
         return "rb";
@@ -242,7 +243,7 @@ const char *get_funge_file_mode(const std::int64_t m) {
     }
 }
 
-int get_funge_seek_origin(const std::int64_t m) {
+int get_funge_seek_origin(const Cell m) {
     switch (m) {
     case 0:
         return SEEK_SET;

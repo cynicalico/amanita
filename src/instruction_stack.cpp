@@ -1,13 +1,55 @@
 #include "instruction_stack.hpp"
+#include <fmt/format.h>
+#include <ranges>
+#include <unordered_map>
 #include "base_instructions.hpp"
-#include "fmt/format.h"
+#include "fungespace.hpp"
 #include "instruction_pointer.hpp"
 #include "instructions.hpp"
+
+#include "fingerprints/catseye/hrti.hpp"
+#include "fingerprints/catseye/mode.hpp"
+#include "fingerprints/catseye/modu.hpp"
+#include "fingerprints/catseye/null.hpp"
+#include "fingerprints/catseye/orth.hpp"
+#include "fingerprints/catseye/perl.hpp"
+#include "fingerprints/catseye/refc.hpp"
+#include "fingerprints/catseye/roma.hpp"
+#include "fingerprints/catseye/toys.hpp"
+#include "fingerprints/rcs/dirf.hpp"
+#include "fingerprints/rcs/evar.hpp"
+#include "fingerprints/rcs/file.hpp"
+#include "fingerprints/rcs/fpdp.hpp"
+#include "fingerprints/rcs/fpsp.hpp"
+#include "fingerprints/rcs/subr.hpp"
+
+const std::unordered_map<std::int64_t, const Fingerprint &> &registry() {
+    static std::unordered_map<std::int64_t, const Fingerprint &> registry{
+            // Cat's Eye
+            {hrti::FINGERPRINT.id, hrti::FINGERPRINT},
+            {mode::FINGERPRINT.id, mode::FINGERPRINT},
+            {modu::FINGERPRINT.id, modu::FINGERPRINT},
+            {null::FINGERPRINT.id, null::FINGERPRINT},
+            {orth::FINGERPRINT.id, orth::FINGERPRINT},
+            {perl::FINGERPRINT.id, perl::FINGERPRINT},
+            {refc::FINGERPRINT.id, refc::FINGERPRINT},
+            {roma::FINGERPRINT.id, roma::FINGERPRINT},
+            {toys::FINGERPRINT.id, toys::FINGERPRINT},
+            // RCS
+            {dirf::FINGERPRINT.id, dirf::FINGERPRINT},
+            {evar::FINGERPRINT.id, evar::FINGERPRINT},
+            {file::FINGERPRINT.id, file::FINGERPRINT},
+            {fpdp::FINGERPRINT.id, fpdp::FINGERPRINT},
+            {fpsp::FINGERPRINT.id, fpsp::FINGERPRINT},
+            {subr::FINGERPRINT.id, subr::FINGERPRINT},
+    };
+    return registry;
+}
 
 InstructionStack::InstructionStack() {
     populate_default_fns_();
     for (std::size_t i = 0; i < 26; ++i)
-        loaded_fingerprints[i] = std::vector<const char *>{"none"};
+        loaded_fingerprints[i] = std::vector{"none"};
 }
 
 InstructionAction InstructionStack::perform(Instruction ins, Fungespace &fungespace, InstructionPointer &ip) {
@@ -24,6 +66,32 @@ InstructionAction InstructionStack::perform(Instruction ins, Fungespace &fungesp
     }
 
     return fns[static_cast<std::size_t>(ins)].back()(fungespace, ip);
+}
+
+bool InstructionStack::load_fingerprint(const std::int64_t fingerprint) {
+    const auto &r = registry();
+    if (const auto it = r.find(fingerprint); it != r.end()) {
+        for (const auto &[ins, fn]: it->second.fns) {
+            fns[static_cast<std::int64_t>(ins)].push_back(fn);
+            loaded_fingerprints[static_cast<std::size_t>(ins) - 65].push_back(it->second.name);
+        }
+        return true;
+    }
+
+    return false;
+}
+
+bool InstructionStack::unload_fingerprint(const std::int64_t fingerprint) {
+    const auto &r = registry();
+    if (const auto it = r.find(fingerprint); it != r.end()) {
+        for (const auto &ins: it->second.fns | std::views::keys) {
+            fns[static_cast<std::int64_t>(ins)].pop_back();
+            loaded_fingerprints[static_cast<std::size_t>(ins) - 65].pop_back();
+        }
+        return true;
+    }
+
+    return false;
 }
 
 void InstructionStack::populate_default_fns_() {

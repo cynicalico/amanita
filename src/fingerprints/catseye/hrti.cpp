@@ -6,7 +6,7 @@
 using namespace std::chrono;
 using Clock = steady_clock;
 
-std::unordered_map<std::int64_t, Clock::time_point> &marks();
+std::unordered_map<Id, Clock::time_point> &marks();
 
 InstructionAction hrti::granularity(Fungespace &, InstructionPointer &ip) {
     ip.push(1);
@@ -42,7 +42,7 @@ InstructionAction hrti::second(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-std::unordered_map<std::int64_t, Clock::time_point> &marks() {
-    static std::unordered_map<std::int64_t, Clock::time_point> marks{};
+std::unordered_map<Id, Clock::time_point> &marks() {
+    static std::unordered_map<Id, Clock::time_point> marks{};
     return marks;
 }

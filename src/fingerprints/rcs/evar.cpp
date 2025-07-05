@@ -33,7 +33,7 @@ InstructionAction evar::get(Fungespace &, InstructionPointer &ip) {
 }
 
 InstructionAction evar::count(Fungespace &, InstructionPointer &ip) {
-    std::int64_t n = 0;
+    Cell n = 0;
     for (char **current = environ; *current; ++current)
         n++;
     ip.push(n);
@@ -50,7 +50,7 @@ InstructionAction evar::put(Fungespace &, InstructionPointer &ip) {
 InstructionAction evar::get_nth(Fungespace &, InstructionPointer &ip) {
     const auto nth = ip.pop();
 
-    std::int64_t n = 0;
+    Cell n = 0;
     for (char **current = environ; *current; ++current, ++n) {
         if (n == nth) {
             char *c = *current;

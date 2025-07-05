@@ -22,7 +22,6 @@ add_executable(amanita
         include/base_instructions.hpp
         include/common.hpp
         include/editor.hpp
-        include/fingerprints.hpp
         include/fungespace.hpp
         include/instruction_pointer.hpp
         include/instruction_stack.hpp
@@ -33,7 +32,6 @@ add_executable(amanita
         src/base_instructions.cpp
         src/common.cpp
         src/editor.cpp
-        src/fingerprints.cpp
         src/fungespace.cpp
         src/instruction_pointer.cpp
         src/instruction_stack.cpp

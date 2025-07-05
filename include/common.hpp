@@ -9,24 +9,32 @@
 #include <vector>
 #include "instructions.hpp"
 
+/*********
+ * TYPES *
+ *********/
+
+using Index = std::int64_t;
+using Cell = std::int64_t;
+using Id = std::int64_t;
+
 /*******
  * VEC *
  *******/
 
 struct Vec {
-    std::int64_t x;
-    std::int64_t y;
+    Cell x;
+    Cell y;
 
     constexpr Vec()
         : x{0}, y{0} {}
 
-    constexpr Vec(const std::int64_t x, const std::int64_t y)
+    constexpr Vec(const Cell x, const Cell y)
         : x(x), y(y) {}
 
     Vec operator+(const Vec &other) const { return {x + other.x, y + other.y}; }
     Vec operator-(const Vec &other) const { return {x - other.x, y - other.y}; }
     Vec operator*(const Vec &other) const { return {x * other.x, y * other.y}; }
-    Vec operator*(const std::int64_t other) const { return {x * other, y * other}; }
+    Vec operator*(const Cell other) const { return {x * other, y * other}; }
     Vec operator/(const Vec &other) const { return {x / other.x, y / other.y}; }
 
     void operator+=(const Vec &other) {
@@ -41,7 +49,7 @@ struct Vec {
         x *= other.x;
         y *= other.y;
     }
-    void operator*=(const std::int64_t other) {
+    void operator*=(const Cell other) {
         x *= other;
         y *= other;
     }
@@ -54,6 +62,11 @@ struct Vec {
 /*************
  * CONSTANTS *
  *************/
+
+constexpr Cell CARRIAGE_RETURN = '\r';
+constexpr Cell NEWLINE = '\n';
+constexpr Cell FORM_FEED = '\f';
+constexpr Cell EMPTY = 32;
 
 constexpr auto ZERO = Vec(0, 0);
 
@@ -69,7 +82,7 @@ constexpr auto WEST = Vec(-1, 0);
 struct CliArgs {
     std::vector<std::string> args;
 
-    CliArgs(std::vector<std::string> args)
+    explicit CliArgs(std::vector<std::string> args)
         : args(std::move(args)) {}
 };
 
@@ -95,11 +108,6 @@ struct IterAction {
     std::vector<InstructionAction> actions;
 };
 
-template<class... Ts>
-struct overloaded : Ts... {
-    using Ts::operator()...;
-};
-
 /****************
  * FINGERPRINTS *
  ****************/
@@ -112,6 +120,15 @@ struct Fingerprint {
     const char *name;
     std::int64_t id;
     std::unordered_map<Instruction, InstructionFunc> fns;
+};
+
+/***********
+ * HELPERS *
+ ***********/
+
+template<class... Ts>
+struct overloaded : Ts... {
+    using Ts::operator()...;
 };
 
 #endif // AMANITA_COMMON_HPP
