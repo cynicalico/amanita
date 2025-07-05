@@ -11,7 +11,7 @@ InstructionStack::InstructionStack() {
 }
 
 InstructionAction InstructionStack::perform(Instruction ins, Fungespace &fungespace, InstructionPointer &ip) {
-    if (ip.stringmode) {
+    if (ip.string_mode) {
         if (ins != Instruction::ToggleStringmode) {
             ip.stack.push(static_cast<std::int64_t>(ins));
             return MoveAction{};

@@ -174,11 +174,11 @@ void Editor::draw_ip_info() {
         pos.y += ip_info_char_size.y;
         add_line("Stringmode", false);
         pos.y -= ip_info_char_size.y;
-        add_line(active_list[0].stringmode ? "true" : "false", true);
+        add_line(active_list[0].string_mode ? "true" : "false", true);
 
         add_line("Hovermode", false);
         pos.y -= ip_info_char_size.y;
-        add_line(active_list[0].hovermode ? "true" : "false", true);
+        add_line(active_list[0].hover_mode ? "true" : "false", true);
 
         add_line("Invertmode", false);
         pos.y -= ip_info_char_size.y;
@@ -190,7 +190,7 @@ void Editor::draw_ip_info() {
 
         add_line("Switchmode", false);
         pos.y -= ip_info_char_size.y;
-        add_line(active_list[0].hovermode ? "true" : "false", true);
+        add_line(active_list[0].hover_mode ? "true" : "false", true);
 
         pos.y += ip_info_char_size.y;
         add_line("Fingerprint Semantics", false);
@@ -319,7 +319,7 @@ void Editor::do_single_tick() {
         Cell ins;
         do {
             ins = interpreter.fungespace.get(ip.pos.x, ip.pos.y);
-            if (!ip.stringmode && (ins == Instruction::Space || ins == Instruction::JumpOver))
+            if (!ip.string_mode && (ins == Instruction::Space || ins == Instruction::JumpOver))
                 ip.step_to_next_instruction(interpreter.fungespace, '\0', ins == Instruction::JumpOver);
             else
                 break;

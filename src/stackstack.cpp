@@ -3,9 +3,7 @@
 StackStack::StackStack()
     : stacks(1), toss(0), soss(0) {}
 
-std::size_t StackStack::count() const {
-    return stacks.size();
-}
+std::size_t StackStack::count() const { return stacks.size(); }
 
 std::vector<std::size_t> StackStack::sizes() const {
     std::vector<std::size_t> sizes{};
@@ -14,9 +12,7 @@ std::vector<std::size_t> StackStack::sizes() const {
     return sizes;
 }
 
-void StackStack::push(std::int64_t value) {
-    push_(value, toss);
-}
+void StackStack::push(std::int64_t value) { push_(value, toss); }
 
 std::int64_t StackStack::peek() const {
     if (stacks[toss].empty())
@@ -26,9 +22,7 @@ std::int64_t StackStack::peek() const {
     return stacks[toss].back();
 }
 
-std::int64_t StackStack::pop() {
-    return pop_(toss);
-}
+std::int64_t StackStack::pop() { return pop_(toss); }
 
 std::string StackStack::pop_0gnirts() {
     std::string ret;
@@ -41,13 +35,9 @@ std::string StackStack::pop_0gnirts() {
     return ret;
 }
 
-std::size_t StackStack::size() const {
-    return stacks[toss].size();
-}
+std::size_t StackStack::size() const { return stacks[toss].size(); }
 
-void StackStack::clear() {
-    stacks[toss].clear();
-}
+void StackStack::clear() { stacks[toss].clear(); }
 
 std::int64_t StackStack::pick(std::int64_t n) const {
     n = stacks[toss].size() - n;

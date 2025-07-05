@@ -21,7 +21,7 @@ void Interpreter::run(std::vector<std::string> args) {
             Cell ins;
             do {
                 ins = fungespace.get(ip.pos.x, ip.pos.y);
-                if (!ip.stringmode && (ins == Instruction::Space || ins == Instruction::JumpOver))
+                if (!ip.string_mode && (ins == Instruction::Space || ins == Instruction::JumpOver))
                     ip.step_to_next_instruction(fungespace, '\0', ins == Instruction::JumpOver);
                 else
                     break;

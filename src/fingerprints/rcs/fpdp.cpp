@@ -14,9 +14,7 @@ DpUnion pop(InstructionPointer &ip) {
     return u;
 }
 
-void push(InstructionPointer &ip, DpUnion u) {
-    ip.push(u.i);
-}
+void push(InstructionPointer &ip, DpUnion u) { ip.push(u.i); }
 
 InstructionAction fpdp::add(Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);

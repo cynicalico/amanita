@@ -14,9 +14,7 @@ SpUnion pop(InstructionPointer &ip) {
     return u;
 }
 
-void push(InstructionPointer &ip, SpUnion u) {
-    ip.stack.push(u.i);
-}
+void push(InstructionPointer &ip, SpUnion u) { ip.stack.push(u.i); }
 
 InstructionAction fpsp::add(Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);

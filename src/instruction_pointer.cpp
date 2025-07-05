@@ -1,4 +1,5 @@
 #include "instruction_pointer.hpp"
+#include "fungespace.hpp"
 #include "interpreter.hpp"
 
 std::int64_t next_ip_id() {
@@ -15,18 +16,17 @@ InstructionPointer::InstructionPointer(const InstructionPointer &other)
       alive(other.alive),
       pos{other.pos},
       delta{other.delta},
-      stringmode(other.stringmode),
+      string_mode(other.string_mode),
       cache_ins(other.cache_ins),
-      hovermode(other.hovermode),
-      switchmode(other.switchmode),
-      subr_relative_mode(other.subr_relative_mode),
       stack(other.stack),
       storage_offset{other.storage_offset},
-      instruction_stack(other.instruction_stack) {}
+      instruction_stack(other.instruction_stack),
+      hover_mode(other.hover_mode),
+      switch_mode(other.switch_mode),
+      relative_mode(other.relative_mode),
+      call_stack(other.call_stack) {}
 
-void InstructionPointer::step() {
-    pos += delta;
-}
+void InstructionPointer::step() { pos += delta; }
 
 void InstructionPointer::step_wrap(Fungespace &fungespace) {
     step();
@@ -46,7 +46,7 @@ void InstructionPointer::step_to_next_instruction(Fungespace &fungespace, Cell p
         step_wrap(fungespace);
         const auto ins = fungespace.get(pos.x, pos.y);
 
-        if (stringmode) {
+        if (string_mode) {
             if (!skipping) {
                 // SFML spaces, start skipping any spaces after first
                 if (ins == Instruction::Space && prev_ins == Instruction::Space) {
@@ -78,28 +78,28 @@ void InstructionPointer::step_to_next_instruction(Fungespace &fungespace, Cell p
 }
 
 void InstructionPointer::go_south() {
-    if (hovermode)
+    if (hover_mode)
         delta.y += 1;
     else
         delta = SOUTH;
 }
 
 void InstructionPointer::go_east() {
-    if (hovermode)
+    if (hover_mode)
         delta.x += 1;
     else
         delta = EAST;
 }
 
 void InstructionPointer::go_north() {
-    if (hovermode)
+    if (hover_mode)
         delta.y -= 1;
     else
         delta = NORTH;
 }
 
 void InstructionPointer::go_west() {
-    if (hovermode)
+    if (hover_mode)
         delta.x -= 1;
     else
         delta = WEST;
@@ -117,13 +117,17 @@ void InstructionPointer::turn_right() {
     delta.y = tmp;
 }
 
-void InstructionPointer::reflect() {
-    delta *= -1;
-}
+void InstructionPointer::reflect() { delta *= -1; }
 
-std::int64_t InstructionPointer::pop() {
-    return stack.pop();
-}
+void InstructionPointer::save_pos() { saved_pos_ = pos; }
+
+void InstructionPointer::save_delta() { saved_delta_ = delta; }
+
+void InstructionPointer::restore_pos() { pos = saved_pos_; }
+
+void InstructionPointer::restore_delta() { delta = saved_delta_; }
+
+std::int64_t InstructionPointer::pop() { return stack.pop(); }
 
 Vec InstructionPointer::pop_vec() {
     Vec v;
@@ -139,9 +143,7 @@ Vec InstructionPointer::pop_offset_vec() {
     return v + storage_offset;
 }
 
-void InstructionPointer::push(std::int64_t v) {
-    stack.push(v);
-}
+void InstructionPointer::push(std::int64_t v) { stack.push(v); }
 
 void InstructionPointer::push_vec(Vec v) {
     stack.push(v.x);
@@ -155,8 +157,7 @@ void InstructionPointer::begin_block() {
 
 void InstructionPointer::end_block() {
     Vec new_storage_offset;
-    const auto success = stack.end_block(new_storage_offset);
-    if (!success)
+    if (const auto success = stack.end_block(new_storage_offset); !success)
         reflect();
     else
         storage_offset = new_storage_offset;
@@ -165,20 +166,4 @@ void InstructionPointer::end_block() {
 void InstructionPointer::stack_under_stack() {
     if (!stack.stack_under_stack())
         reflect();
-}
-
-void InstructionPointer::save_pos() {
-    saved_pos_ = pos;
-}
-
-void InstructionPointer::save_delta() {
-    saved_delta_ = delta;
-}
-
-void InstructionPointer::restore_pos() {
-    pos = saved_pos_;
-}
-
-void InstructionPointer::restore_delta() {
-    delta = saved_delta_;
 }

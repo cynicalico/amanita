@@ -2,7 +2,6 @@
 #define AMANITA_INSTRUCTION_POINTER_HPP
 
 #include "common.hpp"
-#include "fungespace.hpp"
 #include "instruction_stack.hpp"
 #include "stackstack.hpp"
 
@@ -19,18 +18,21 @@ public:
     Vec pos{ZERO};
     Vec delta{EAST};
 
-    bool stringmode{false};
+    bool string_mode{false};
     Cell cache_ins{'\0'};
-
-    bool hovermode{false};
-    bool switchmode{false};
-
-    bool subr_relative_mode{false};
 
     StackStack stack{};
     Vec storage_offset{ZERO};
 
     InstructionStack instruction_stack{};
+
+    // MODE
+    bool hover_mode{false};
+    bool switch_mode{false};
+
+    // SUBR
+    bool relative_mode{false};
+    std::vector<std::int64_t> call_stack{};
 
     InstructionPointer(Interpreter *interpreter);
     ~InstructionPointer() = default;
@@ -53,6 +55,11 @@ public:
     void turn_right();
     void reflect();
 
+    void save_pos();
+    void save_delta();
+    void restore_pos();
+    void restore_delta();
+
     std::int64_t pop();
     Vec pop_vec();
     Vec pop_offset_vec();
@@ -62,11 +69,6 @@ public:
     void begin_block();
     void end_block();
     void stack_under_stack();
-
-    void save_pos();
-    void save_delta();
-    void restore_pos();
-    void restore_delta();
 
 private:
     Vec saved_pos_{ZERO};

@@ -2,7 +2,7 @@
 #include "instruction_pointer.hpp"
 
 InstructionAction mode::toggle_hovermode(Fungespace &, InstructionPointer &ip) {
-    ip.hovermode = !ip.hovermode;
+    ip.hover_mode = !ip.hover_mode;
     return MoveAction{};
 }
 
@@ -17,6 +17,6 @@ InstructionAction mode::toggle_queuemode(Fungespace &, InstructionPointer &ip) {
 }
 
 InstructionAction mode::toggle_switchmode(Fungespace &, InstructionPointer &ip) {
-    ip.switchmode = !ip.switchmode;
+    ip.switch_mode = !ip.switch_mode;
     return MoveAction{};
 }

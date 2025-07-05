@@ -101,8 +101,6 @@ enum class Instruction : std::int64_t {
     InputCharacter = 126
 };
 
-inline bool operator==(const Instruction lhs, const std::int64_t rhs) {
-    return static_cast<std::int64_t>(lhs) == rhs;
-}
+inline bool operator==(const Instruction lhs, const std::int64_t rhs) { return static_cast<std::int64_t>(lhs) == rhs; }
 
 #endif // AMANITA_INSTRUCTIONS_HPP

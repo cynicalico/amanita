@@ -2,6 +2,7 @@
 #include <chrono>
 #include <cstdlib>
 #include <ranges>
+#include <stack>
 #include <utility>
 #include "fingerprints.hpp"
 #include "fmt/format.h"
@@ -12,9 +13,7 @@
 
 extern char **environ;
 
-InstructionAction instruction_space(Fungespace &, InstructionPointer &) {
-    std::unreachable();
-}
+InstructionAction instruction_space(Fungespace &, InstructionPointer &) { std::unreachable(); }
 
 InstructionAction instruction_logical_not(Fungespace &, InstructionPointer &ip) {
     ip.push(ip.pop() == 0 ? 1 : 0);
@@ -22,7 +21,7 @@ InstructionAction instruction_logical_not(Fungespace &, InstructionPointer &ip) 
 }
 
 InstructionAction instruction_toggle_stringmode(Fungespace &, InstructionPointer &ip) {
-    ip.stringmode = !ip.stringmode;
+    ip.string_mode = !ip.string_mode;
     return MoveAction{};
 }
 
@@ -96,7 +95,7 @@ InstructionAction instruction_fetch_character(Fungespace &fungespace, Instructio
 }
 
 InstructionAction instruction_load_semantics(Fungespace &fungespace, InstructionPointer &ip) {
-    if (ip.switchmode)
+    if (ip.switch_mode)
         fungespace.put(ip.pos.x, ip.pos.y, static_cast<Cell>(Instruction::UnloadSemantics));
 
     const auto n = ip.pop();
@@ -118,7 +117,7 @@ InstructionAction instruction_load_semantics(Fungespace &fungespace, Instruction
 }
 
 InstructionAction instruction_unload_semantics(Fungespace &fungespace, InstructionPointer &ip) {
-    if (ip.switchmode)
+    if (ip.switch_mode)
         fungespace.put(ip.pos.x, ip.pos.y, static_cast<Cell>(Instruction::LoadSemantics));
 
     const auto n = ip.pop();
@@ -232,9 +231,7 @@ InstructionAction instruction_duplicate(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction instruction_jump_over(Fungespace &, InstructionPointer &) {
-    std::unreachable();
-}
+InstructionAction instruction_jump_over(Fungespace &, InstructionPointer &) { std::unreachable(); }
 
 InstructionAction instruction_go_west(Fungespace &, InstructionPointer &ip) {
     ip.go_west();
@@ -277,7 +274,7 @@ InstructionAction instruction_stop(Fungespace &, InstructionPointer &ip) {
 }
 
 InstructionAction instruction_turn_left(Fungespace &fungespace, InstructionPointer &ip) {
-    if (ip.switchmode)
+    if (ip.switch_mode)
         fungespace.put(ip.pos.x, ip.pos.y, static_cast<Cell>(Instruction::TurnRight));
     ip.turn_left();
     return MoveAction{};
@@ -292,7 +289,7 @@ InstructionAction instruction_swap(Fungespace &, InstructionPointer &ip) {
 }
 
 InstructionAction instruction_turn_right(Fungespace &fungespace, InstructionPointer &ip) {
-    if (ip.switchmode)
+    if (ip.switch_mode)
         fungespace.put(ip.pos.x, ip.pos.y, static_cast<Cell>(Instruction::TurnLeft));
     ip.turn_right();
     return MoveAction{};
@@ -463,9 +460,7 @@ InstructionAction instruction_store_character(Fungespace &fungespace, Instructio
     return MoveAction{};
 }
 
-InstructionAction instruction_split(Fungespace &, InstructionPointer &) {
-    return SplitAction{};
-}
+InstructionAction instruction_split(Fungespace &, InstructionPointer &) { return SplitAction{}; }
 
 InstructionAction instruction_stack_under_stack(Fungespace &, InstructionPointer &ip) {
     ip.stack_under_stack();
@@ -493,64 +488,68 @@ InstructionAction instruction_absolute_delta(Fungespace &, InstructionPointer &i
 }
 
 InstructionAction instruction_get_sysinfo(const Fungespace &fungespace, InstructionPointer &ip) {
-    const auto n = ip.pop();
+    static std::stack<std::int64_t> buf{};
 
-    std::vector<std::int64_t> sysinfo{};
+    // Clear before starting
+    while (!buf.empty())
+        buf.pop();
+
+    const auto n = ip.pop();
 
     // 0x01: high if t is implemented
     // 0x02: high if i is implemented
     // 0x04: high if o is implemented
     // 0x08: high if = is implemented
     // 0x10: high if unbuffered stdio
-    sysinfo.push_back(0b00111);
+    buf.push(0b00111);
 
     // number of bytes per cell
-    sysinfo.push_back(8);
+    buf.push(8);
 
     // implementation's handprint ("NITA")
-    sysinfo.push_back(0x4e495441);
+    buf.push(0x4e495441);
 
     // implementation's version number (1.0.0)
-    sysinfo.push_back(100);
+    buf.push(100);
 
     // id code for the operating paradigm
     // 0 = unavailable
     // 1 = equivalent to C-language `system()` call behavior
     // 2 = equivalent to interpretation by a specific shell of program (document)
     // 3 = equivalent to interpretation by the same shell that started this Funge interpreter
-    sysinfo.push_back(0);
+    buf.push(0);
 
     // path separator character
-    sysinfo.push_back('/');
+    buf.push('/');
 
     // number of scalars per vector (1 for une, 2 for be, 3 for trefunge)
-    sysinfo.push_back(2);
+    buf.push(2);
 
     // unique ID for current IP
-    sysinfo.push_back(ip.id);
+    buf.push(ip.id);
 
-    // TODO: unique team number for current IP
-    sysinfo.push_back(0);
+    // unique team number for current IP -- always 0, we don't use this
+    buf.push(0);
 
     // fungespace position of current IP
-    sysinfo.push_back(ip.pos.y);
-    sysinfo.push_back(ip.pos.x);
+    buf.push(ip.pos.y);
+    buf.push(ip.pos.x);
 
     // fungespace delta of current IP
-    sysinfo.push_back(ip.delta.y);
-    sysinfo.push_back(ip.delta.x);
+    buf.push(ip.delta.y);
+    buf.push(ip.delta.x);
 
     // fungespace storage offset of current IP
-    sysinfo.push_back(ip.storage_offset.y);
-    sysinfo.push_back(ip.storage_offset.x);
+    buf.push(ip.storage_offset.y);
+    buf.push(ip.storage_offset.x);
 
     // least point which contains a non-space cell
-    sysinfo.push_back(fungespace.min_coord[1]);
-    sysinfo.push_back(fungespace.min_coord[0]);
+    buf.push(fungespace.min_coord[1]);
+    buf.push(fungespace.min_coord[0]);
 
     // greatest point which contains a non-space cell relative to the least
-    sysinfo.push_back(fungespace.max_coord[1] - 1 + std::abs(fungespace.min_coord[1]));
-    sysinfo.push_back(fungespace.max_coord[0] - 1 + std::abs(fungespace.min_coord[0]));
+    buf.push(fungespace.max_coord[1] - 1 + std::abs(fungespace.min_coord[1]));
+    buf.push(fungespace.max_coord[0] - 1 + std::abs(fungespace.min_coord[0]));
 
     const std::chrono::system_clock::time_point now_utc = std::chrono::system_clock::now();
     const std::chrono::time_point now = std::chrono::current_zone()->to_local(now_utc);
@@ -564,55 +563,58 @@ InstructionAction instruction_get_sysinfo(const Fungespace &fungespace, Instruct
     const auto second = hms.seconds().count();
 
     // current ((year - 1900) * 256 * 256) + (month * 256) + (day of month)
-    sysinfo.push_back(
+    buf.push(
             (static_cast<long long>(year) - 1900) * 256 * 256 + static_cast<long long>(month) * 256 +
             static_cast<long long>(day));
 
     // current (hour * 256 * 256) + (minute * 256) + (second)
-    sysinfo.push_back(hour * 256 * 256 + minute * 256 + second);
+    buf.push(hour * 256 * 256 + minute * 256 + second);
 
     // number of stacks in use by IP
-    sysinfo.push_back(static_cast<std::int64_t>(ip.stack.count()));
+    buf.push(static_cast<std::int64_t>(ip.stack.count()));
 
     // size of each stack in stackstack (from TOSS to BOSS)
     const auto sizes = ip.stack.sizes();
     for (const auto &size: sizes)
-        sysinfo.push_back(static_cast<std::int64_t>(size));
+        buf.push(static_cast<std::int64_t>(size));
 
     // command line arguments followed by double null
     for (const auto &arg: ip.interpreter->args) {
         for (const auto &c: arg)
-            sysinfo.push_back(c);
-        sysinfo.push_back('\0');
+            buf.push(c);
+        buf.push('\0');
     }
-    sysinfo.push_back('\0');
-    sysinfo.push_back('\0');
+    buf.push('\0');
+    buf.push('\0');
 
     // env variables followed by null
     for (char **current = environ; *current; ++current) {
         for (char *c = *current; *c; ++c)
-            sysinfo.push_back(*c);
-        sysinfo.push_back('\0');
+            buf.push(*c);
+        buf.push('\0');
     }
-    sysinfo.push_back('\0');
+    buf.push('\0');
 
-    if (n <= 0)
-        for (std::size_t i = 0; i < sysinfo.size(); i++)
-            ip.push(sysinfo[sysinfo.size() - 1 - i]);
-    else if (static_cast<std::size_t>(n) <= sysinfo.size())
-        ip.push(sysinfo[n - 1]);
-    else
-        ip.push(ip.stack.pick(n - sysinfo.size()));
+    if (n <= 0) {
+        while (!buf.empty()) {
+            ip.push(buf.top());
+            buf.pop();
+        }
+    } else if (static_cast<std::size_t>(n) <= buf.size()) {
+        while (buf.size() > n)
+            buf.pop();
+        ip.push(buf.top());
+    } else {
+        ip.push(ip.stack.pick(n - buf.size()));
+    }
 
     return MoveAction{};
 }
 
-InstructionAction instruction_no_operation(Fungespace &, InstructionPointer &) {
-    return MoveAction{};
-}
+InstructionAction instruction_no_operation(Fungespace &, InstructionPointer &) { return MoveAction{}; }
 
 InstructionAction instruction_begin_block(Fungespace &fungespace, InstructionPointer &ip) {
-    if (ip.switchmode)
+    if (ip.switch_mode)
         fungespace.put(ip.pos.x, ip.pos.y, static_cast<Cell>(Instruction::EndBlock));
     ip.begin_block();
     return MoveAction{};
@@ -627,7 +629,7 @@ InstructionAction instruction_north_south_if(Fungespace &, InstructionPointer &i
 }
 
 InstructionAction instruction_end_block(Fungespace &fungespace, InstructionPointer &ip) {
-    if (ip.switchmode)
+    if (ip.switch_mode)
         fungespace.put(ip.pos.x, ip.pos.y, static_cast<Cell>(Instruction::BeginBlock));
     ip.end_block();
     return MoveAction{};
