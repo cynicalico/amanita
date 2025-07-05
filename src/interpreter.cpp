@@ -20,7 +20,7 @@ void Interpreter::run(std::vector<std::string> args) {
         for (auto &ip: active_list) {
             Cell ins;
             do {
-                ins = fungespace.get(ip.pos[0], ip.pos[1]);
+                ins = fungespace.get(ip.pos.x, ip.pos.y);
                 if (!ip.stringmode && (ins == Instruction::Space || ins == Instruction::JumpOver))
                     ip.step_to_next_instruction(fungespace, '\0', ins == Instruction::JumpOver);
                 else

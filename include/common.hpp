@@ -7,10 +7,62 @@
 #include <variant>
 #include "instructions.hpp"
 
-constexpr std::int64_t SOUTH[2] = {0, 1};
-constexpr std::int64_t EAST[2] = {1, 0};
-constexpr std::int64_t NORTH[2] = {0, -1};
-constexpr std::int64_t WEST[2] = {-1, 0};
+/*********
+ * TYPES *
+ *********/
+
+struct Vec {
+    std::int64_t x;
+    std::int64_t y;
+
+    constexpr Vec()
+        : x{0}, y{0} {}
+
+    constexpr Vec(const std::int64_t x, const std::int64_t y)
+        : x(x), y(y) {}
+
+    Vec operator+(const Vec &other) const { return {x + other.x, y + other.y}; }
+    Vec operator-(const Vec &other) const { return {x - other.x, y - other.y}; }
+    Vec operator*(const Vec &other) const { return {x * other.x, y * other.y}; }
+    Vec operator*(const std::int64_t other) const { return {x * other, y * other}; }
+    Vec operator/(const Vec &other) const { return {x / other.x, y / other.y}; }
+
+    void operator+=(const Vec &other) {
+        x += other.x;
+        y += other.y;
+    }
+    void operator-=(const Vec &other) {
+        x -= other.x;
+        y -= other.y;
+    }
+    void operator*=(const Vec &other) {
+        x *= other.x;
+        y *= other.y;
+    }
+    void operator*=(const std::int64_t other) {
+        x *= other;
+        y *= other;
+    }
+    void operator/=(const Vec &other) {
+        x /= other.x;
+        y /= other.y;
+    }
+};
+
+/*************
+ * CONSTANTS *
+ *************/
+
+constexpr auto ZERO = Vec(0, 0);
+
+constexpr auto SOUTH = Vec(0, 1);
+constexpr auto EAST = Vec(1, 0);
+constexpr auto NORTH = Vec(0, -1);
+constexpr auto WEST = Vec(-1, 0);
+
+/***********************
+ * INSTRUCTION ACTIONS *
+ ***********************/
 
 struct IterAction;
 
@@ -34,6 +86,10 @@ template<class... Ts>
 struct overloaded : Ts... {
     using Ts::operator()...;
 };
+
+/****************
+ * FINGERPRINTS *
+ ****************/
 
 class Fungespace;
 class InstructionPointer;

@@ -23,8 +23,8 @@ InstructionAction toys::bracelet(Fungespace &fungespace, InstructionPointer &ip)
     const auto dst_x_orig = ip.stack.pop();
     const auto h = ip.stack.pop();
     const auto w = ip.stack.pop();
-    const auto y = ip.stack.pop() + ip.storage_offset[1];
-    const auto x = ip.stack.pop() + ip.storage_offset[0];
+    const auto y = ip.stack.pop() + ip.storage_offset.y;
+    const auto x = ip.stack.pop() + ip.storage_offset.x;
 
     for (std::int64_t i = 0; i < h; ++i) {
         for (std::int64_t j = 0; j < w; ++j) {
@@ -56,8 +56,8 @@ InstructionAction toys::pitchfork_head(Fungespace &, InstructionPointer &ip) {
 }
 
 InstructionAction toys::calipers(Fungespace &fungespace, InstructionPointer &ip) {
-    const auto y = ip.stack.pop() + ip.storage_offset[1];
-    const auto x = ip.stack.pop() + ip.storage_offset[0];
+    const auto y = ip.stack.pop() + ip.storage_offset.y;
+    const auto x = ip.stack.pop() + ip.storage_offset.x;
     const auto j = ip.stack.pop();
     const auto i = ip.stack.pop();
 
@@ -69,8 +69,8 @@ InstructionAction toys::calipers(Fungespace &fungespace, InstructionPointer &ip)
 }
 
 InstructionAction toys::counterclockwise(Fungespace &fungespace, InstructionPointer &ip) {
-    const auto y = ip.stack.pop() + ip.storage_offset[1];
-    const auto x = ip.stack.pop() + ip.storage_offset[0];
+    const auto y = ip.stack.pop() + ip.storage_offset.y;
+    const auto x = ip.stack.pop() + ip.storage_offset.x;
     const auto j = ip.stack.pop();
     const auto i = ip.stack.pop();
 
@@ -103,15 +103,15 @@ InstructionAction toys::fishhook(Fungespace &fungespace, InstructionPointer &ip)
         const auto y_start = fungespace.min_coord[1];
         const auto y_end = fungespace.max_coord[1];
         for (std::int64_t y = y_start; y < y_end; ++y) {
-            const auto v = fungespace.get(ip.pos[0], y);
-            fungespace.put(ip.pos[0], y + trans, v);
+            const auto v = fungespace.get(ip.pos.x, y);
+            fungespace.put(ip.pos.x, y + trans, v);
         }
     } else if (trans > 0) {
         const auto y_start = fungespace.max_coord[1] - 1;
         const auto y_end = fungespace.min_coord[1];
         for (std::int64_t y = y_start; y >= y_end; --y) {
-            const auto v = fungespace.get(ip.pos[0], y);
-            fungespace.put(ip.pos[0], y + trans, v);
+            const auto v = fungespace.get(ip.pos.x, y);
+            fungespace.put(ip.pos.x, y + trans, v);
         }
     }
 
@@ -123,8 +123,8 @@ InstructionAction toys::scissors(Fungespace &fungespace, InstructionPointer &ip)
     const auto dst_x_orig = ip.stack.pop();
     const auto h = ip.stack.pop();
     const auto w = ip.stack.pop();
-    const auto y = ip.stack.pop() + ip.storage_offset[1];
-    const auto x = ip.stack.pop() + ip.storage_offset[0];
+    const auto y = ip.stack.pop() + ip.storage_offset.y;
+    const auto x = ip.stack.pop() + ip.storage_offset.x;
 
     for (std::int64_t i = h - 1; i >= 0; i--) {
         for (std::int64_t j = w - 1; j >= 0; --j) {
@@ -148,7 +148,7 @@ InstructionAction toys::corner(Fungespace &fungespace, InstructionPointer &ip) {
 
     ip.turn_left();
     ip.step_wrap(fungespace);
-    ip.stack.push(fungespace.get(ip.pos[0], ip.pos[1]));
+    ip.stack.push(fungespace.get(ip.pos.x, ip.pos.y));
 
     ip.restore_pos();
     ip.restore_delta();
@@ -161,8 +161,8 @@ InstructionAction toys::kittycat(Fungespace &fungespace, InstructionPointer &ip)
     const auto dst_x_orig = ip.stack.pop();
     const auto h = ip.stack.pop();
     const auto w = ip.stack.pop();
-    const auto y = ip.stack.pop() + ip.storage_offset[1];
-    const auto x = ip.stack.pop() + ip.storage_offset[0];
+    const auto y = ip.stack.pop() + ip.storage_offset.y;
+    const auto x = ip.stack.pop() + ip.storage_offset.x;
 
     for (std::int64_t i = 0; i < h; ++i) {
         for (std::int64_t j = 0; j < w; ++j) {
@@ -191,15 +191,15 @@ InstructionAction toys::boulder(Fungespace &fungespace, InstructionPointer &ip) 
         const auto x_start = fungespace.min_coord[1];
         const auto x_end = fungespace.max_coord[1];
         for (std::int64_t x = x_start; x < x_end; ++x) {
-            const auto v = fungespace.get(x, ip.pos[1]);
-            fungespace.put(x + trans, ip.pos[1], v);
+            const auto v = fungespace.get(x, ip.pos.y);
+            fungespace.put(x + trans, ip.pos.y, v);
         }
     } else if (trans > 0) {
         const auto x_start = fungespace.max_coord[1];
         const auto x_end = fungespace.min_coord[1];
         for (std::int64_t x = x_start; x >= x_end; --x) {
-            const auto v = fungespace.get(x, ip.pos[1]);
-            fungespace.put(x + trans, ip.pos[1], v);
+            const auto v = fungespace.get(x, ip.pos.y);
+            fungespace.put(x + trans, ip.pos.y, v);
         }
     }
 
@@ -222,7 +222,7 @@ InstructionAction toys::necklace(Fungespace &fungespace, InstructionPointer &ip)
 
     ip.reflect();
     ip.step_wrap(fungespace);
-    fungespace.put(ip.pos[0], ip.pos[1], v);
+    fungespace.put(ip.pos.x, ip.pos.y, v);
 
     ip.restore_pos();
     ip.restore_delta();
@@ -236,7 +236,7 @@ InstructionAction toys::can_opener(Fungespace &fungespace, InstructionPointer &i
 
     ip.turn_right();
     ip.step_wrap(fungespace);
-    ip.stack.push(fungespace.get(ip.pos[0], ip.pos[1]));
+    ip.stack.push(fungespace.get(ip.pos.x, ip.pos.y));
 
     ip.restore_pos();
     ip.restore_delta();
@@ -245,8 +245,8 @@ InstructionAction toys::can_opener(Fungespace &fungespace, InstructionPointer &i
 }
 
 InstructionAction toys::chicane(Fungespace &fungespace, InstructionPointer &ip) {
-    const auto y = ip.stack.pop() + ip.storage_offset[1];
-    const auto x = ip.stack.pop() + ip.storage_offset[0];
+    const auto y = ip.stack.pop() + ip.storage_offset.y;
+    const auto x = ip.stack.pop() + ip.storage_offset.x;
     const auto h = ip.stack.pop();
     const auto w = ip.stack.pop();
     const auto v = ip.stack.pop();
@@ -277,19 +277,19 @@ InstructionAction toys::barstool(Fungespace &fungespace, InstructionPointer &ip)
 InstructionAction toys::tumbler(Fungespace &fungespace, InstructionPointer &ip) {
     switch (mizu::rng::get<std::size_t>(3)) {
     case 0:
-        fungespace.put(ip.pos[0], ip.pos[1], static_cast<std::int64_t>(Instruction::GoSouth));
+        fungespace.put(ip.pos.x, ip.pos.y, static_cast<std::int64_t>(Instruction::GoSouth));
         ip.instruction_stack.perform(Instruction::GoSouth, fungespace, ip);
         break;
     case 1:
-        fungespace.put(ip.pos[0], ip.pos[1], static_cast<std::int64_t>(Instruction::GoEast));
+        fungespace.put(ip.pos.x, ip.pos.y, static_cast<std::int64_t>(Instruction::GoEast));
         ip.instruction_stack.perform(Instruction::GoEast, fungespace, ip);
         break;
     case 2:
-        fungespace.put(ip.pos[0], ip.pos[1], static_cast<std::int64_t>(Instruction::GoNorth));
+        fungespace.put(ip.pos.x, ip.pos.y, static_cast<std::int64_t>(Instruction::GoNorth));
         ip.instruction_stack.perform(Instruction::GoNorth, fungespace, ip);
         break;
     case 3:
-        fungespace.put(ip.pos[0], ip.pos[1], static_cast<std::int64_t>(Instruction::GoWest));
+        fungespace.put(ip.pos.x, ip.pos.y, static_cast<std::int64_t>(Instruction::GoWest));
         ip.instruction_stack.perform(Instruction::GoWest, fungespace, ip);
         break;
     default:
@@ -303,8 +303,8 @@ InstructionAction toys::dixiecup(Fungespace &fungespace, InstructionPointer &ip)
     const auto dst_x_orig = ip.stack.pop();
     const auto h = ip.stack.pop();
     const auto w = ip.stack.pop();
-    const auto y = ip.stack.pop() + ip.storage_offset[1];
-    const auto x = ip.stack.pop() + ip.storage_offset[0];
+    const auto y = ip.stack.pop() + ip.storage_offset.y;
+    const auto x = ip.stack.pop() + ip.storage_offset.x;
 
     for (std::int64_t i = h - 1; i >= 0; i--) {
         for (std::int64_t j = w - 1; j >= 0; --j) {
@@ -328,7 +328,7 @@ InstructionAction toys::television_antenna(Fungespace &fungespace, InstructionPo
     const auto x = ip.stack.pop();
     const auto v = ip.stack.pop();
 
-    if (const auto check = fungespace.get(x + ip.storage_offset[0], y + ip.storage_offset[1]); check < v) {
+    if (const auto check = fungespace.get(x + ip.storage_offset.x, y + ip.storage_offset.y); check < v) {
         ip.stack.push(v);
         ip.stack.push(x);
         ip.stack.push(y);
@@ -343,12 +343,12 @@ InstructionAction toys::television_antenna(Fungespace &fungespace, InstructionPo
 }
 
 InstructionAction toys::buried_treasure(Fungespace &, InstructionPointer &ip) {
-    ip.pos[0] += 1;
+    ip.pos.x += 1;
     return MoveAction{};
 }
 
 InstructionAction toys::slingshot(Fungespace &, InstructionPointer &ip) {
-    ip.pos[1] += 1;
+    ip.pos.y += 1;
     return MoveAction{};
 }
 

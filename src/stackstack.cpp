@@ -56,7 +56,7 @@ std::int64_t StackStack::pick(std::int64_t n) const {
     return 0;
 }
 
-void StackStack::begin_block(std::int64_t storage_offset[2]) {
+void StackStack::begin_block(const Vec &storage_offset) {
     auto n = pop();
 
     stacks.emplace_back();
@@ -82,17 +82,17 @@ void StackStack::begin_block(std::int64_t storage_offset[2]) {
             push_(0, soss);
     }
 
-    push_(storage_offset[0], soss);
-    push_(storage_offset[1], soss);
+    push_(storage_offset.x, soss);
+    push_(storage_offset.y, soss);
 }
 
-bool StackStack::end_block(std::int64_t out_storage_offset[2]) {
+bool StackStack::end_block(Vec &storage_offset) {
     if (toss == soss)
         return false;
 
     const auto n = pop();
-    out_storage_offset[1] = pop_(soss);
-    out_storage_offset[0] = pop_(soss);
+    storage_offset.y = pop_(soss);
+    storage_offset.x = pop_(soss);
 
     if (n > 0) {
         std::vector<std::int64_t> buffer{};

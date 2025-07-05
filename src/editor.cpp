@@ -108,18 +108,18 @@ void Editor::draw() {
 void Editor::draw_program() {
     draw_rect(g2d, program_pos - glm::vec2(1.0f), program_size + glm::vec2(2.0f), BORDER_COLOR);
 
-    int64_t cursor_pos[2] = {active_list[0].pos[0] - viewport_pos[0], active_list[0].pos[1] - viewport_pos[1]};
+    Vec cursor_pos = active_list[0].pos - viewport_pos;
     g2d.fill_rect(
-            {program_pos.x + PROGRAM_MARGIN + cursor_pos[0] * program_char_size.x,
-             program_pos.y + PROGRAM_MARGIN + cursor_pos[1] * program_char_size.y},
+            {program_pos.x + PROGRAM_MARGIN + cursor_pos.x * program_char_size.x,
+             program_pos.y + PROGRAM_MARGIN + cursor_pos.y * program_char_size.y},
             program_char_size,
             CURSOR_COLOR);
 
 
     glm::vec2 pos = {program_pos.x + PROGRAM_MARGIN, program_pos.y + PROGRAM_MARGIN};
-    for (std::int64_t y = viewport_pos[1]; y < viewport_pos[1] + ROWS; ++y) {
+    for (std::int64_t y = viewport_pos.y; y < viewport_pos.y + ROWS; ++y) {
         std::string s = "";
-        for (std::int64_t x = viewport_pos[0]; x < viewport_pos[0] + COLS; ++x) {
+        for (std::int64_t x = viewport_pos.x; x < viewport_pos.x + COLS; ++x) {
             const auto v = interpreter.fungespace.get(x, y);
             // TODO: Display something other than a space
             if (v == '\0' || v == '\r' || v == '\n')
@@ -158,18 +158,18 @@ void Editor::draw_ip_info() {
 
         pos.y += ip_info_char_size.y;
         add_line("Pos (x, y)", false);
-        add_line(fmt::format("{}", active_list[0].pos[0]), true);
-        add_line(fmt::format("{}", active_list[0].pos[1]), true);
+        add_line(fmt::format("{}", active_list[0].pos.x), true);
+        add_line(fmt::format("{}", active_list[0].pos.y), true);
 
         pos.y += ip_info_char_size.y;
         add_line("Delta (dx, dy)", false);
-        add_line(fmt::format("{}", active_list[0].delta[0]), true);
-        add_line(fmt::format("{}", active_list[0].delta[1]), true);
+        add_line(fmt::format("{}", active_list[0].delta.x), true);
+        add_line(fmt::format("{}", active_list[0].delta.y), true);
 
         pos.y += ip_info_char_size.y;
         add_line("Storage Offset (dx, dy)", false);
-        add_line(fmt::format("{}", active_list[0].storage_offset[0]), true);
-        add_line(fmt::format("{}", active_list[0].storage_offset[1]), true);
+        add_line(fmt::format("{}", active_list[0].storage_offset.x), true);
+        add_line(fmt::format("{}", active_list[0].storage_offset.y), true);
 
         pos.y += ip_info_char_size.y;
         add_line("Stringmode", false);
@@ -279,13 +279,13 @@ void Editor::key_press_callback(mizu::Key key, mizu::Mod mods) {
     }
 
     if (key == mizu::Key::Left)
-        viewport_pos[0]--;
+        viewport_pos.x--;
     if (key == mizu::Key::Right)
-        viewport_pos[0]++;
+        viewport_pos.x++;
     if (key == mizu::Key::Up)
-        viewport_pos[1]--;
+        viewport_pos.y--;
     if (key == mizu::Key::Down)
-        viewport_pos[1]++;
+        viewport_pos.y++;
 }
 
 void Editor::key_release_callback(mizu::Key key, mizu::Mod mods) {
@@ -318,7 +318,7 @@ void Editor::do_single_tick() {
     for (auto &ip: active_list) {
         Cell ins;
         do {
-            ins = interpreter.fungespace.get(ip.pos[0], ip.pos[1]);
+            ins = interpreter.fungespace.get(ip.pos.x, ip.pos.y);
             if (!ip.stringmode && (ins == Instruction::Space || ins == Instruction::JumpOver))
                 ip.step_to_next_instruction(interpreter.fungespace, '\0', ins == Instruction::JumpOver);
             else
@@ -376,20 +376,20 @@ void Editor::check_move_viewport() {
     const auto &ip = active_list[0];
 
     // Check move x
-    if (ip.pos[0] < viewport_pos[0])
-        while (ip.pos[0] < viewport_pos[0])
-            viewport_pos[0]--;
-    else if (ip.pos[0] >= viewport_pos[0] + COLS)
-        while (ip.pos[0] >= viewport_pos[0] + COLS)
-            viewport_pos[0]++;
+    if (ip.pos.x < viewport_pos.x)
+        while (ip.pos.x < viewport_pos.x)
+            viewport_pos.x--;
+    else if (ip.pos.x >= viewport_pos.x + COLS)
+        while (ip.pos.x >= viewport_pos.x + COLS)
+            viewport_pos.x++;
 
     // Check move y
-    if (ip.pos[1] < viewport_pos[1])
-        while (ip.pos[1] < viewport_pos[1])
-            viewport_pos[1]--;
-    else if (ip.pos[1] >= viewport_pos[1] + ROWS)
-        while (ip.pos[1] >= viewport_pos[1] + ROWS)
-            viewport_pos[1]++;
+    if (ip.pos.y < viewport_pos.y)
+        while (ip.pos.y < viewport_pos.y)
+            viewport_pos.y--;
+    else if (ip.pos.y >= viewport_pos.y + ROWS)
+        while (ip.pos.y >= viewport_pos.y + ROWS)
+            viewport_pos.y++;
 }
 
 void draw_rect(mizu::G2d &g2d, const glm::vec2 pos, glm::vec2 size, const mizu::Color &color) {

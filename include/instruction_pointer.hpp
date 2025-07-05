@@ -16,8 +16,8 @@ public:
     std::int64_t id{next_ip_id()};
 
     bool alive{true};
-    std::int64_t pos[2]{0, 0};
-    std::int64_t delta[2]{EAST[0], EAST[1]};
+    Vec pos{ZERO};
+    Vec delta{EAST};
 
     bool stringmode{false};
     Cell cache_ins{'\0'};
@@ -28,7 +28,7 @@ public:
     bool subr_relative_mode{false};
 
     StackStack stack{};
-    std::int64_t storage_offset[2]{0, 0};
+    Vec storage_offset{ZERO};
 
     InstructionStack instruction_stack{};
 
@@ -63,8 +63,8 @@ public:
     void restore_delta();
 
 private:
-    std::int64_t saved_pos[2]{0, 0};
-    std::int64_t saved_delta[2]{0, 0};
+    Vec saved_pos{ZERO};
+    Vec saved_delta{ZERO};
 };
 
 #endif // AMANITA_INSTRUCTION_POINTER_HPP

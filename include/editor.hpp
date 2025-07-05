@@ -40,7 +40,7 @@ public:
     mizu::Ticker<> ticker;
     bool slow_ticking{false};
     mizu::Ticker<> slow_ticker;
-    std::int64_t viewport_pos[2];
+    Vec viewport_pos;
     std::vector<InstructionPointer> active_list{};
     std::vector<InstructionPointer> inactive_list{};
     Interpreter interpreter{};

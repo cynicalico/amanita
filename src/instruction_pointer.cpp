@@ -13,28 +13,27 @@ InstructionPointer::InstructionPointer(const InstructionPointer &other)
     : interpreter(other.interpreter),
       id(next_ip_id()), // Redundant, but it makes the intent clearer
       alive(other.alive),
-      pos{other.pos[0], other.pos[1]},
-      delta{other.delta[0], other.delta[1]},
+      pos{other.pos},
+      delta{other.delta},
       stringmode(other.stringmode),
       cache_ins(other.cache_ins),
       hovermode(other.hovermode),
       switchmode(other.switchmode),
       subr_relative_mode(other.subr_relative_mode),
       stack(other.stack),
-      storage_offset{other.storage_offset[0], other.storage_offset[1]},
+      storage_offset{other.storage_offset},
       instruction_stack(other.instruction_stack) {}
 
 void InstructionPointer::step() {
-    pos[0] += delta[0];
-    pos[1] += delta[1];
+    pos += delta;
 }
 
 void InstructionPointer::step_wrap(Fungespace &fungespace) {
     step();
-    if (!fungespace.in_bounds(pos[0], pos[1])) {
+    if (!fungespace.in_bounds(pos.x, pos.y)) {
         reflect();
         step();
-        while (fungespace.in_bounds(pos[0], pos[1]))
+        while (fungespace.in_bounds(pos.x, pos.y))
             step();
         reflect();
         step();
@@ -45,7 +44,7 @@ void InstructionPointer::step_to_next_instruction(Fungespace &fungespace, Cell p
     bool skipping = start_skipping;
     do {
         step_wrap(fungespace);
-        const auto ins = fungespace.get(pos[0], pos[1]);
+        const auto ins = fungespace.get(pos.x, pos.y);
 
         if (stringmode) {
             if (!skipping) {
@@ -79,73 +78,61 @@ void InstructionPointer::step_to_next_instruction(Fungespace &fungespace, Cell p
 }
 
 void InstructionPointer::go_south() {
-    if (hovermode) {
-        delta[1] += 1;
-    } else {
-        delta[0] = SOUTH[0];
-        delta[1] = SOUTH[1];
-    }
+    if (hovermode)
+        delta.y += 1;
+    else
+        delta = SOUTH;
 }
 
 void InstructionPointer::go_east() {
-    if (hovermode) {
-        delta[0] += 1;
-    } else {
-        delta[0] = EAST[0];
-        delta[1] = EAST[1];
-    }
+    if (hovermode)
+        delta.x += 1;
+    else
+        delta = EAST;
 }
 
 void InstructionPointer::go_north() {
-    if (hovermode) {
-        delta[1] -= 1;
-    } else {
-        delta[0] = NORTH[0];
-        delta[1] = NORTH[1];
-    }
+    if (hovermode)
+        delta.y -= 1;
+    else
+        delta = NORTH;
 }
 
 void InstructionPointer::go_west() {
-    if (hovermode) {
-        delta[0] -= 1;
-    } else {
-        delta[0] = WEST[0];
-        delta[1] = WEST[1];
-    }
+    if (hovermode)
+        delta.x -= 1;
+    else
+        delta = WEST;
 }
 
 void InstructionPointer::turn_left() {
-    const auto tmp = delta[0];
-    delta[0] = delta[1];
-    delta[1] = -tmp;
+    const auto tmp = delta.x;
+    delta.x = delta.y;
+    delta.y = -tmp;
 }
 
 void InstructionPointer::turn_right() {
-    const auto tmp = delta[0];
-    delta[0] = -delta[1];
-    delta[1] = tmp;
+    const auto tmp = delta.x;
+    delta.x = -delta.y;
+    delta.y = tmp;
 }
 
 void InstructionPointer::reflect() {
-    delta[0] = -delta[0];
-    delta[1] = -delta[1];
+    delta *= -1;
 }
 
 void InstructionPointer::begin_block() {
     stack.begin_block(storage_offset);
-    storage_offset[0] = pos[0] + delta[0];
-    storage_offset[1] = pos[1] + delta[1];
+    storage_offset = pos + delta;
 }
 
 void InstructionPointer::end_block() {
-    std::int64_t new_storage_offset[2];
+    Vec new_storage_offset;
     const auto success = stack.end_block(new_storage_offset);
-    if (!success) {
+    if (!success)
         reflect();
-    } else {
-        storage_offset[0] = new_storage_offset[0];
-        storage_offset[1] = new_storage_offset[1];
-    }
+    else
+        storage_offset = new_storage_offset;
 }
 
 void InstructionPointer::stack_under_stack() {
@@ -154,21 +141,17 @@ void InstructionPointer::stack_under_stack() {
 }
 
 void InstructionPointer::save_pos() {
-    saved_pos[0] = pos[0];
-    saved_pos[1] = pos[1];
+    saved_pos = pos;
 }
 
 void InstructionPointer::save_delta() {
-    saved_delta[0] = delta[0];
-    saved_delta[1] = delta[1];
+    saved_delta = delta;
 }
 
 void InstructionPointer::restore_pos() {
-    pos[0] = saved_pos[0];
-    pos[1] = saved_pos[1];
+    pos = saved_pos;
 }
 
 void InstructionPointer::restore_delta() {
-    delta[0] = saved_delta[0];
-    delta[1] = saved_delta[1];
+    delta = saved_delta;
 }

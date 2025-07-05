@@ -5,6 +5,7 @@
 #include <deque>
 #include <string>
 #include <vector>
+#include "common.hpp"
 
 using Stack = std::deque<std::int64_t>;
 
@@ -32,8 +33,8 @@ public:
 
     std::int64_t pick(std::int64_t n) const;
 
-    void begin_block(std::int64_t storage_offset[2]);
-    bool end_block(std::int64_t out_storage_offset[2]);
+    void begin_block(const Vec &storage_offset);
+    bool end_block(Vec &storage_offset);
 
     bool stack_under_stack();
 

@@ -91,13 +91,13 @@ InstructionAction instruction_input_integer(Fungespace &, InstructionPointer &ip
 
 InstructionAction instruction_fetch_character(Fungespace &fungespace, InstructionPointer &ip) {
     ip.step_wrap(fungespace);
-    ip.stack.push(fungespace.get(ip.pos[0], ip.pos[1]));
+    ip.stack.push(fungespace.get(ip.pos.x, ip.pos.y));
     return MoveAction{};
 }
 
 InstructionAction instruction_load_semantics(Fungespace &fungespace, InstructionPointer &ip) {
     if (ip.switchmode)
-        fungespace.put(ip.pos[0], ip.pos[1], static_cast<Cell>(Instruction::UnloadSemantics));
+        fungespace.put(ip.pos.x, ip.pos.y, static_cast<Cell>(Instruction::UnloadSemantics));
 
     const auto n = ip.stack.pop();
 
@@ -119,7 +119,7 @@ InstructionAction instruction_load_semantics(Fungespace &fungespace, Instruction
 
 InstructionAction instruction_unload_semantics(Fungespace &fungespace, InstructionPointer &ip) {
     if (ip.switchmode)
-        fungespace.put(ip.pos[0], ip.pos[1], static_cast<Cell>(Instruction::LoadSemantics));
+        fungespace.put(ip.pos.x, ip.pos.y, static_cast<Cell>(Instruction::LoadSemantics));
 
     const auto n = ip.stack.pop();
 
@@ -254,20 +254,16 @@ InstructionAction instruction_go_east(Fungespace &, InstructionPointer &ip) {
 InstructionAction instruction_go_away(Fungespace &, InstructionPointer &ip) {
     switch (mizu::rng::get<std::size_t>(3)) {
     case 0:
-        ip.delta[0] = SOUTH[0];
-        ip.delta[1] = SOUTH[1];
+        ip.delta = SOUTH;
         break;
     case 1:
-        ip.delta[0] = EAST[0];
-        ip.delta[1] = EAST[1];
+        ip.delta = EAST;
         break;
     case 2:
-        ip.delta[0] = NORTH[0];
-        ip.delta[1] = NORTH[1];
+        ip.delta = NORTH;
         break;
     case 3:
-        ip.delta[0] = WEST[0];
-        ip.delta[1] = WEST[1];
+        ip.delta = WEST;
         break;
     default:
         std::unreachable();
@@ -282,7 +278,7 @@ InstructionAction instruction_stop(Fungespace &, InstructionPointer &ip) {
 
 InstructionAction instruction_turn_left(Fungespace &fungespace, InstructionPointer &ip) {
     if (ip.switchmode)
-        fungespace.put(ip.pos[0], ip.pos[1], static_cast<Cell>(Instruction::TurnRight));
+        fungespace.put(ip.pos.x, ip.pos.y, static_cast<Cell>(Instruction::TurnRight));
     ip.turn_left();
     return MoveAction{};
 }
@@ -297,7 +293,7 @@ InstructionAction instruction_swap(Fungespace &, InstructionPointer &ip) {
 
 InstructionAction instruction_turn_right(Fungespace &fungespace, InstructionPointer &ip) {
     if (ip.switchmode)
-        fungespace.put(ip.pos[0], ip.pos[1], static_cast<Cell>(Instruction::TurnLeft));
+        fungespace.put(ip.pos.x, ip.pos.y, static_cast<Cell>(Instruction::TurnLeft));
     ip.turn_right();
     return MoveAction{};
 }
@@ -356,7 +352,7 @@ InstructionAction instruction_push_fifteen(Fungespace &, InstructionPointer &ip)
 InstructionAction instruction_get(const Fungespace &fungespace, InstructionPointer &ip) {
     const auto y = ip.stack.pop();
     const auto x = ip.stack.pop();
-    ip.stack.push(fungespace.get(x + ip.storage_offset[0], y + ip.storage_offset[1]));
+    ip.stack.push(fungespace.get(x + ip.storage_offset.x, y + ip.storage_offset.y));
     return MoveAction{};
 }
 
@@ -368,8 +364,8 @@ InstructionAction instruction_go_high(Fungespace &, InstructionPointer &ip) {
 InstructionAction instruction_input_file(Fungespace &fungespace, InstructionPointer &ip) {
     const auto filename = ip.stack.pop_0gnirts();
     const auto flags = ip.stack.pop();
-    const auto y = ip.stack.pop() + ip.storage_offset[1];
-    const auto x = ip.stack.pop() + ip.storage_offset[0];
+    const auto y = ip.stack.pop() + ip.storage_offset.y;
+    const auto x = ip.stack.pop() + ip.storage_offset.x;
 
     std::int64_t size[2];
     if (fungespace.input_file(filename, flags, x, y, size)) {
@@ -410,7 +406,7 @@ InstructionAction instruction_iterate(Fungespace &fungespace, InstructionPointer
     if (n == 0)
         return MoveAction{};
 
-    const auto iter_ins = fungespace.get(ip.pos[0], ip.pos[1]);
+    const auto iter_ins = fungespace.get(ip.pos.x, ip.pos.y);
     ip.restore_pos();
 
     std::vector<InstructionAction> ret{};
@@ -438,8 +434,8 @@ InstructionAction instruction_clear_stack(Fungespace &, InstructionPointer &ip) 
 InstructionAction instruction_output_file(Fungespace &fungespace, InstructionPointer &ip) {
     const auto filename = ip.stack.pop_0gnirts();
     const auto flags = ip.stack.pop();
-    const auto y = ip.stack.pop() + ip.storage_offset[1];
-    const auto x = ip.stack.pop() + ip.storage_offset[0];
+    const auto y = ip.stack.pop() + ip.storage_offset.y;
+    const auto x = ip.stack.pop() + ip.storage_offset.x;
     const auto h = ip.stack.pop();
     const auto w = ip.stack.pop();
 
@@ -453,7 +449,7 @@ InstructionAction instruction_put(Fungespace &fungespace, InstructionPointer &ip
     const auto y = ip.stack.pop();
     const auto x = ip.stack.pop();
     const auto v = ip.stack.pop();
-    fungespace.put(x + ip.storage_offset[0], y + ip.storage_offset[1], v);
+    fungespace.put(x + ip.storage_offset.x, y + ip.storage_offset.y, v);
     return MoveAction{};
 }
 
@@ -469,7 +465,7 @@ InstructionAction instruction_reflect(Fungespace &, InstructionPointer &ip) {
 InstructionAction instruction_store_character(Fungespace &fungespace, InstructionPointer &ip) {
     const auto v = ip.stack.pop();
     ip.step_wrap(fungespace);
-    fungespace.put(ip.pos[0], ip.pos[1], v);
+    fungespace.put(ip.pos.x, ip.pos.y, v);
     return MoveAction{};
 }
 
@@ -500,8 +496,8 @@ InstructionAction instruction_compare(Fungespace &fungespace, InstructionPointer
 InstructionAction instruction_absolute_delta(Fungespace &, InstructionPointer &ip) {
     const auto dy = ip.stack.pop();
     const auto dx = ip.stack.pop();
-    ip.delta[0] = dx;
-    ip.delta[1] = dy;
+    ip.delta.x = dx;
+    ip.delta.y = dy;
     return MoveAction{};
 }
 
@@ -546,16 +542,16 @@ InstructionAction instruction_get_sysinfo(const Fungespace &fungespace, Instruct
     sysinfo.push_back(0);
 
     // fungespace position of current IP
-    sysinfo.push_back(ip.pos[1]);
-    sysinfo.push_back(ip.pos[0]);
+    sysinfo.push_back(ip.pos.y);
+    sysinfo.push_back(ip.pos.x);
 
     // fungespace delta of current IP
-    sysinfo.push_back(ip.delta[1]);
-    sysinfo.push_back(ip.delta[0]);
+    sysinfo.push_back(ip.delta.y);
+    sysinfo.push_back(ip.delta.x);
 
     // fungespace storage offset of current IP
-    sysinfo.push_back(ip.storage_offset[1]);
-    sysinfo.push_back(ip.storage_offset[0]);
+    sysinfo.push_back(ip.storage_offset.y);
+    sysinfo.push_back(ip.storage_offset.x);
 
     // least point which contains a non-space cell
     sysinfo.push_back(fungespace.min_coord[1]);
@@ -626,7 +622,7 @@ InstructionAction instruction_no_operation(Fungespace &, InstructionPointer &) {
 
 InstructionAction instruction_begin_block(Fungespace &fungespace, InstructionPointer &ip) {
     if (ip.switchmode)
-        fungespace.put(ip.pos[0], ip.pos[1], static_cast<Cell>(Instruction::EndBlock));
+        fungespace.put(ip.pos.x, ip.pos.y, static_cast<Cell>(Instruction::EndBlock));
     ip.begin_block();
     return MoveAction{};
 }
@@ -642,7 +638,7 @@ InstructionAction instruction_north_south_if(Fungespace &, InstructionPointer &i
 
 InstructionAction instruction_end_block(Fungespace &fungespace, InstructionPointer &ip) {
     if (ip.switchmode)
-        fungespace.put(ip.pos[0], ip.pos[1], static_cast<Cell>(Instruction::BeginBlock));
+        fungespace.put(ip.pos.x, ip.pos.y, static_cast<Cell>(Instruction::BeginBlock));
     ip.end_block();
     return MoveAction{};
 }

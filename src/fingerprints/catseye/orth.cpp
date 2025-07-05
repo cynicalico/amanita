@@ -24,22 +24,22 @@ InstructionAction orth::bitwise_exor(Fungespace &, InstructionPointer &ip) {
 }
 
 InstructionAction orth::change_x(Fungespace &, InstructionPointer &ip) {
-    ip.pos[0] = ip.stack.pop();
+    ip.pos.x = ip.stack.pop();
     return MoveAction{};
 }
 
 InstructionAction orth::change_y(Fungespace &, InstructionPointer &ip) {
-    ip.pos[1] = ip.stack.pop();
+    ip.pos.y = ip.stack.pop();
     return MoveAction{};
 }
 
 InstructionAction orth::change_dx(Fungespace &, InstructionPointer &ip) {
-    ip.delta[0] = ip.stack.pop();
+    ip.delta.x = ip.stack.pop();
     return MoveAction{};
 }
 
 InstructionAction orth::change_dy(Fungespace &, InstructionPointer &ip) {
-    ip.delta[1] = ip.stack.pop();
+    ip.delta.y = ip.stack.pop();
     return MoveAction{};
 }
 
