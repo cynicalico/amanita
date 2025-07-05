@@ -17,6 +17,9 @@ InstructionPointer::InstructionPointer(const InstructionPointer &other)
       delta{other.delta[0], other.delta[1]},
       stringmode(other.stringmode),
       cache_ins(other.cache_ins),
+      hovermode(other.hovermode),
+      switchmode(other.switchmode),
+      subr_relative_mode(other.subr_relative_mode),
       stack(other.stack),
       storage_offset{other.storage_offset[0], other.storage_offset[1]},
       instruction_stack(other.instruction_stack) {}

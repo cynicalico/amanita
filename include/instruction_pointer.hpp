@@ -25,6 +25,8 @@ public:
     bool hovermode{false};
     bool switchmode{false};
 
+    bool subr_relative_mode{false};
+
     StackStack stack{};
     std::int64_t storage_offset[2]{0, 0};
 
