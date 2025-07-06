@@ -14,8 +14,11 @@ public:
     InstructionAction perform(Instruction ins, Fungespace &fungespace, InstructionPointer &ip);
 
     bool load_fingerprint(std::int64_t fingerprint);
-
     bool unload_fingerprint(std::int64_t fingerprint);
+
+    void push(Instruction ins, InstructionFunc f);
+    InstructionFunc pop(Instruction ins);
+    InstructionFunc peek(Instruction ins);
 
 private:
     void populate_default_fns_();

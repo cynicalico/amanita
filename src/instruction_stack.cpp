@@ -19,6 +19,7 @@
 #include "fingerprints/rcs/dirf.hpp"
 #include "fingerprints/rcs/evar.hpp"
 #include "fingerprints/rcs/file.hpp"
+#include "fingerprints/rcs/fing.hpp"
 #include "fingerprints/rcs/fixp.hpp"
 #include "fingerprints/rcs/fpdp.hpp"
 #include "fingerprints/rcs/fpsp.hpp"
@@ -40,6 +41,7 @@ const std::unordered_map<std::int64_t, const Fingerprint &> &registry() {
             {dirf::FINGERPRINT.id, dirf::FINGERPRINT},
             {evar::FINGERPRINT.id, evar::FINGERPRINT},
             {file::FINGERPRINT.id, file::FINGERPRINT},
+            {fing::FINGERPRINT.id, fing::FINGERPRINT},
             {fixp::FINGERPRINT.id, fixp::FINGERPRINT},
             {fpdp::FINGERPRINT.id, fpdp::FINGERPRINT},
             {fpsp::FINGERPRINT.id, fpsp::FINGERPRINT},
@@ -67,6 +69,9 @@ InstructionAction InstructionStack::perform(Instruction ins, Fungespace &fungesp
         return fns[static_cast<std::size_t>(Instruction::Reflect)].back()(fungespace, ip);
     }
 
+    // Can pop all A-Z instructions off with FING
+    if (fns[static_cast<std::size_t>(ins)].empty())
+        return fns[static_cast<std::size_t>(Instruction::Reflect)].back()(fungespace, ip);
     return fns[static_cast<std::size_t>(ins)].back()(fungespace, ip);
 }
 
@@ -94,6 +99,31 @@ bool InstructionStack::unload_fingerprint(const std::int64_t fingerprint) {
     }
 
     return false;
+}
+
+void InstructionStack::push(Instruction ins, InstructionFunc f) {
+    const std::size_t idx = static_cast<std::size_t>(ins);
+    fns[idx].push_back(std::move(f));
+}
+
+InstructionFunc InstructionStack::pop(Instruction ins) {
+    const std::size_t idx = static_cast<std::size_t>(ins);
+
+    if (fns[idx].empty())
+        return instruction_reflect;
+
+    InstructionFunc ret = std::move(fns[idx].back());
+    fns[idx].pop_back();
+    return std::move(ret);
+}
+
+InstructionFunc InstructionStack::peek(Instruction ins) {
+    const std::size_t idx = static_cast<std::size_t>(ins);
+
+    if (fns[idx].empty())
+        return instruction_reflect;
+
+    return fns[idx].back();
 }
 
 void InstructionStack::populate_default_fns_() {

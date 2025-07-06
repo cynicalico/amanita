@@ -115,7 +115,7 @@ struct IterAction {
 class Fungespace;
 class InstructionPointer;
 
-using InstructionFunc = std::function<InstructionAction(Fungespace &fungespace, InstructionPointer &)>;
+using InstructionFunc = std::function<InstructionAction(Fungespace &, InstructionPointer &)>;
 using InstructionMapping = std::unordered_map<Instruction, InstructionFunc>;
 
 struct Fingerprint {
