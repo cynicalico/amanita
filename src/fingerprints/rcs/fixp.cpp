@@ -1,0 +1,109 @@
+#include "fingerprints/rcs/fixp.hpp"
+#include <numbers>
+#include "instruction_pointer.hpp"
+#include "mizu/util/rng.hpp"
+
+double deg_to_rad(double v);
+double rad_to_deg(double v);
+
+InstructionAction fixp::and_(Fungespace &, InstructionPointer &ip) {
+    const auto b = ip.pop();
+    const auto a = ip.pop();
+    ip.push(a & b);
+    return MoveAction{};
+}
+
+InstructionAction fixp::acos(Fungespace &, InstructionPointer &ip) {
+    const auto a = static_cast<double>(ip.pop()) / 10'000.0;
+    ip.push(static_cast<Cell>(rad_to_deg(std::acos(a)) * 10'000.0));
+    return MoveAction{};
+}
+
+InstructionAction fixp::cos(Fungespace &, InstructionPointer &ip) {
+    const auto a = static_cast<double>(ip.pop()) / 10'000.0;
+    ip.push(static_cast<Cell>(std::cos(deg_to_rad(a)) * 10'000.0));
+    return MoveAction{};
+}
+
+InstructionAction fixp::rnd(Fungespace &, InstructionPointer &ip) {
+    const auto n = ip.pop();
+    ip.push(mizu::rng::get<Cell>(n));
+    return MoveAction{};
+}
+
+InstructionAction fixp::sin(Fungespace &, InstructionPointer &ip) {
+    const auto a = static_cast<double>(ip.pop()) / 10'000;
+    ip.push(static_cast<Cell>(std::sin(deg_to_rad(a)) * 10'000.0));
+    return MoveAction{};
+}
+
+InstructionAction fixp::asin(Fungespace &, InstructionPointer &ip) {
+    const auto a = static_cast<double>(ip.pop()) / 10'000;
+    ip.push(static_cast<Cell>(rad_to_deg(std::asin(a)) * 10'000.0));
+    return MoveAction{};
+}
+
+InstructionAction fixp::neg(Fungespace &, InstructionPointer &ip) {
+    ip.push(-ip.pop());
+    return MoveAction{};
+}
+
+InstructionAction fixp::or_(Fungespace &, InstructionPointer &ip) {
+    const auto b = ip.pop();
+    const auto a = ip.pop();
+    ip.push(a | b);
+    return MoveAction{};
+}
+
+InstructionAction fixp::mul_pi(Fungespace &, InstructionPointer &ip) {
+    ip.push(ip.pop() * std::numbers::pi);
+    return MoveAction{};
+}
+
+InstructionAction fixp::sqrt(Fungespace &, InstructionPointer &ip) {
+    ip.push(std::sqrt(ip.pop()));
+    return MoveAction{};
+}
+
+InstructionAction fixp::pow(Fungespace &, InstructionPointer &ip) {
+    const auto b = ip.pop();
+    const auto a = ip.pop();
+    ip.push(std::pow(a, b));
+    return MoveAction{};
+}
+
+InstructionAction fixp::sign(Fungespace &, InstructionPointer &ip) {
+    if (const auto a = ip.pop(); a == 0)
+        ip.push(0);
+    else
+        ip.push(a < 0 ? -1 : 1);
+    return MoveAction{};
+}
+
+InstructionAction fixp::tan(Fungespace &, InstructionPointer &ip) {
+    const auto a = static_cast<double>(ip.pop()) / 10'000.0;
+    ip.push(static_cast<Cell>(std::tan(deg_to_rad(a)) * 10'000.0));
+    return MoveAction{};
+}
+
+InstructionAction fixp::atan(Fungespace &, InstructionPointer &ip) {
+    const auto a = static_cast<double>(ip.pop()) / 10'000.0;
+    ip.push(static_cast<Cell>(rad_to_deg(std::atan(a)) * 10'000.0));
+    return MoveAction{};
+}
+
+InstructionAction fixp::abs(Fungespace &, InstructionPointer &ip) {
+    ip.push(std::abs(ip.pop()));
+    return MoveAction{};
+}
+
+InstructionAction fixp::xor_(Fungespace &, InstructionPointer &ip) {
+    const auto b = ip.pop();
+    const auto a = ip.pop();
+    ip.push(a ^ b);
+    return MoveAction{};
+}
+
+double deg_to_rad(const double v) { return v * std::numbers::pi / 180.0; }
+
+double rad_to_deg(const double v) { return v * 180.0 / std::numbers::pi; }

@@ -49,6 +49,7 @@ add_executable(amanita
         include/fingerprints/rcs/dirf.hpp
         include/fingerprints/rcs/evar.hpp
         include/fingerprints/rcs/file.hpp
+        include/fingerprints/rcs/fixp.hpp
         include/fingerprints/rcs/fpdp.hpp
         include/fingerprints/rcs/fpsp.hpp
         include/fingerprints/rcs/subr.hpp
@@ -64,6 +65,7 @@ add_executable(amanita
         src/fingerprints/rcs/dirf.cpp
         src/fingerprints/rcs/evar.cpp
         src/fingerprints/rcs/file.cpp
+        src/fingerprints/rcs/fixp.cpp
         src/fingerprints/rcs/fpdp.cpp
         src/fingerprints/rcs/fpsp.cpp
         src/fingerprints/rcs/subr.cpp
