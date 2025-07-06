@@ -51,6 +51,8 @@ InstructionAction evar::put(Fungespace &, InstructionPointer &ip) {
         *(val - 1) = '\0'; // Null terminate the key
         if (setenv(keyval.c_str(), val, 1) == -1)
             ip.reflect();
+    } else {
+        ip.reflect();
     }
 #endif
     return MoveAction{};
