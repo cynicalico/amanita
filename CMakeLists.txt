@@ -46,6 +46,7 @@ add_executable(amanita
         include/fingerprints/catseye/refc.hpp
         include/fingerprints/catseye/roma.hpp
         include/fingerprints/catseye/toys.hpp
+        include/fingerprints/rcs/cpli.hpp
         include/fingerprints/rcs/dirf.hpp
         include/fingerprints/rcs/evar.hpp
         include/fingerprints/rcs/file.hpp
@@ -63,6 +64,7 @@ add_executable(amanita
         src/fingerprints/catseye/refc.cpp
         src/fingerprints/catseye/roma.cpp
         src/fingerprints/catseye/toys.cpp
+        src/fingerprints/rcs/cpli.cpp
         src/fingerprints/rcs/dirf.cpp
         src/fingerprints/rcs/evar.cpp
         src/fingerprints/rcs/file.cpp

@@ -1,0 +1,35 @@
+#ifndef AMANITA_CPLI_HPP
+#define AMANITA_CPLI_HPP
+
+/*
+ * A	(ar ai br bi -- r i)	Add two complex integers
+ * D	(ar ai br bi -- r i)	Divide two complex integers
+ * M	(ar ai br bi -- r i)	Multiply two complex integers
+ * O	(r i -- )	            Output a complex number
+ * S	(ar ai br bi -- r i)	Subtract two complex integers
+ * V	(r i -- n)	            Absolute value of a complex integer
+ */
+
+#include "common.hpp"
+
+namespace cpli {
+InstructionAction add(Fungespace &, InstructionPointer &ip);
+InstructionAction div(Fungespace &, InstructionPointer &ip);
+InstructionAction mul(Fungespace &, InstructionPointer &ip);
+InstructionAction print(Fungespace &, InstructionPointer &ip);
+InstructionAction sub(Fungespace &, InstructionPointer &ip);
+InstructionAction abs(Fungespace &, InstructionPointer &ip);
+
+const Fingerprint FINGERPRINT{
+        .id = 0x43504c49,
+        .fns = {
+                {Instruction::A, add},
+                {Instruction::D, div},
+                {Instruction::M, mul},
+                {Instruction::O, print},
+                {Instruction::S, sub},
+                {Instruction::V, abs},
+        }};
+} // namespace cpli
+
+#endif // AMANITA_CPLI_HPP

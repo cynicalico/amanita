@@ -16,6 +16,7 @@
 #include "fingerprints/catseye/refc.hpp"
 #include "fingerprints/catseye/roma.hpp"
 #include "fingerprints/catseye/toys.hpp"
+#include "fingerprints/rcs/cpli.hpp"
 #include "fingerprints/rcs/dirf.hpp"
 #include "fingerprints/rcs/evar.hpp"
 #include "fingerprints/rcs/file.hpp"
@@ -38,6 +39,7 @@ const std::unordered_map<std::int64_t, const Fingerprint &> &registry() {
             {roma::FINGERPRINT.id, roma::FINGERPRINT},
             {toys::FINGERPRINT.id, toys::FINGERPRINT},
             // RCS
+            {cpli::FINGERPRINT.id, cpli::FINGERPRINT},
             {dirf::FINGERPRINT.id, dirf::FINGERPRINT},
             {evar::FINGERPRINT.id, evar::FINGERPRINT},
             {file::FINGERPRINT.id, file::FINGERPRINT},

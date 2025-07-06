@@ -51,6 +51,7 @@ See output of `amanita --help`
 
 | Name                                                                                            | ID           | Description                             |
 |-------------------------------------------------------------------------------------------------|--------------|-----------------------------------------|
+| [`CPLI`](https://web.archive.org/web/20230617132045/https://rcfunge98.com/rcsfingers.html#CPLI) | `0x43504c49` | Complex Integer extension               |
 | [`DIRF`](https://web.archive.org/web/20230617132045/https://rcfunge98.com/rcsfingers.html#DIRF) | `0x44495246` | Directory functions extension           |
 | [`EVAR`](https://web.archive.org/web/20230617132045/https://rcfunge98.com/rcsfingers.html#EVAR) | `0x45564152` | Environment variables extension         |
 | [`FILE`](https://web.archive.org/web/20230617132045/https://rcfunge98.com/rcsfingers.html#FILE) | `0x46494c45` | File I/O functions                      |
@@ -109,6 +110,15 @@ UNDEF: ( with a negative count reflects and pops 0 times or less than the absolu
 UNDEF: ) with a negative count reflects and pops 0 times or less than the absolute value of the count
 
 UNDEF: IVXLCDM didn't reflect: child IP has ROMA loaded
+```
+
+#### CPLI
+
+```
+UNDEF: abO outputs 10+11i 
+UNDEF: 0a-bO outputs -10+11i 
+UNDEF: a0b-O outputs 10-11i 
+UNDEF: 0a-0b-O outputs -10-11i 
 ```
 
 #### FIXP
