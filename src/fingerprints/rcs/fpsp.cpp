@@ -2,6 +2,7 @@
 #include <fmt/format.h>
 #include "instruction_pointer.hpp"
 
+namespace fpsp {
 union SpUnion {
     float f;
     std::int32_t i;
@@ -15,6 +16,7 @@ SpUnion pop(InstructionPointer &ip) {
 }
 
 void push(InstructionPointer &ip, SpUnion u) { ip.stack.push(u.i); }
+} // namespace fpsp
 
 InstructionAction fpsp::add(Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);

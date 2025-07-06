@@ -10,6 +10,7 @@ AllowShortCompoundRequirementOnASingleLine: true
 AllowShortEnumsOnASingleLine: true
 AllowShortFunctionsOnASingleLine: All
 AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: true
 AllowShortLambdasOnASingleLine: Empty
 AlignAfterOpenBracket: AlwaysBreak
 AlignConsecutiveAssignments: false

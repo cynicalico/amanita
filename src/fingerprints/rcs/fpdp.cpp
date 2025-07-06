@@ -2,6 +2,7 @@
 #include <fmt/format.h>
 #include "instruction_pointer.hpp"
 
+namespace fpdp {
 union DpUnion {
     double d;
     Cell i;
@@ -15,6 +16,7 @@ DpUnion pop(InstructionPointer &ip) {
 }
 
 void push(InstructionPointer &ip, DpUnion u) { ip.push(u.i); }
+} // namespace fpdp
 
 InstructionAction fpdp::add(Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);

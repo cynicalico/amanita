@@ -1,5 +1,6 @@
 #include "fingerprints/rcs/file.hpp"
 #include <cstdio>
+#include <cstring>
 #include "fungespace.hpp"
 #include "instruction_pointer.hpp"
 #include "mizu/util/platform.hpp"

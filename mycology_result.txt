@@ -83,12 +83,12 @@ y claims all of the following:
 	That the day of the month is 5 
 	That the month is 7 
 	That the year is 2025 
-	That the time is 14 : 16 : 01 
+	That the time is 22 : 12 : 42 
 	That the size of the stack stack is 1 
 	That the stack sizes are [ 0 ] from top to bottom
-	That the command-line arguments were: [ ".\mycology.b98" ]
+	That the command-line arguments were: [ "mycology.b98" ]
 	That the environment variables are:
-		[snip]
+        [snip]
 Best that the above claims are manually verified to be correct.
 GOOD: 1y works
 GOOD: 5y works
@@ -102,8 +102,8 @@ GOOD: i pushed correct Va (60, 119)
 GOOD: i pushed correct Vb (90, 16)
 Entering MycoRand...
 
-The directions were generated in the order v<>^
-? was met 7 times
+The directions were generated in the order <v>^
+? was met 6 times
 
 Successfully exited MycoRand. Rerun a few times to ensure ? works.
 GOOD: i works in text mode
@@ -173,8 +173,8 @@ GOOD: all of A-Z reflected
 Testing fingerprint HRTI... loaded.
 UNDEF: G gives clock granularity as 1 microseconds
 GOOD: T reflected when called before M
-UNDEF: S pushed 377349 
-UNDEF: T after M pushed 28 and a second T, after 675 ys, pushed 631657 
+UNDEF: S pushed 255955 
+UNDEF: T after M pushed 1 and a second T, after 675 ys, pushed 5634 
 GOOD: ET reflected
 UNDEF: E without M did not reflect
 
@@ -295,7 +295,7 @@ GOOD: created 'mycodirf' with M
 Removed 'mycodirf' with R.
 
 Testing fingerprint EVAR... loaded.
-UNDEF: "PATH"G reflected: no path or G doesn't work
+UNDEF: "PATH"G worked and pushed [snip]
 GOOD: NV failed
 GOOD: N1-V worked and pushed 1
 GOOD: put 'foo=bar' with P
@@ -327,8 +327,57 @@ GOOD: closed file with C
 GOOD: deleted mycotemp.tmp with D
 GOOD: deleted mycotmp0.tmp with D
 
-Testing fingerprint FING... not loaded.
-Testing fingerprint FIXP... not loaded.
+Testing fingerprint FING... loaded.
+To test FING properly, we need another fingerprint. For its implementation simplicity, ROMA was chosen to be required.
+ROMA loaded.
+GOOD: 'X'AZ seems to have worked
+GOOD: after f7+0Z, A reflects
+GOOD: ff+0Z reflected
+GOOD: 0ff+Z reflected
+GOOD: after 'AY, A pushes 10
+GOOD: after 0Y, A reflected
+GOOD: after 0Y, A reflected
+GOOD: 'yY reflected
+ROMA unloaded.
+GOOD: after bc+0Z'V'BZ"ROMA"4), A pushes 10 and B pushes 5
+GOOD after 'A'BX, A pushes 5 and B pushes 10
+GOOD: after 02X, A reflected and C pushed 5
+GOOD: 'b'CX reflected
+GOOD: 'B'cX reflected
+GOOD: cleaned B with 'BY
+GOOD: cleaned C with 'CY
+
+Testing fingerprint FIXP... loaded.
+GOOD: b6A is 2
+GOOD: 93O is 11
+GOOD: c6X is 10
+GOOD: C says cos(35) is 0.8192 or 0.8191
+GOOD: I says sin(35) is 0.5736 or 0.5735
+GOOD: T says tan(35) is 0.7002
+GOOD: B says acos(1) is 0
+GOOD: B says acos(0) is 90
+GOOD: B says acos(-1) is 180
+GOOD: J says asin(0.3) is 17.4576
+UNDEF: 2aaaa****J pushes -9223372036854775808 
+GOOD: U says atan(2348.2368) is 89.9756
+UNDEF: called 3D 9 times and got [ 1 3 3 3 3 0 3 0 3 ]
+GOOD: 01-N is 1
+GOOD: 0S is 0
+GOOD: 2S is 1
+GOOD: 03-S is -1
+GOOD: 5V is 05-V
+GOOD: P says 16777216 * pi is 52707178 or 52707179
+GOOD: Q says sqrt(200) is 14
+GOOD: 23R is 8
+GOOD: 203-R is 0
+GOOD: 02-3R is -8
+GOOD: 02-03-R is 0
+GOOD: 02R is 0
+UNDEF: 002-R pushes -9223372036854775808 
+GOOD: 20R is 1
+GOOD: 02-0R is 1
+UNDEF: 00R pushes 1 
+
 Testing fingerprint FPSP... loaded.
 Because floating point equality is, with epsilons, too tricky, and without them, poorly defined, and because rounding with I is too inaccurate, results of calculations will be UNDEF. The precisely correct answer will follow, to 6 decimal places: the calculated result can be compared to it.
 
@@ -344,7 +393,7 @@ UNDEF: D says -1/0 is -inf (NaN or -infinity)
 UNDEF: B says sin(4.2) is -0.871576 (-0.871576)
 UNDEF: C says cos(42) is -0.399985 (-0.399985)
 UNDEF: T says tan(-.42) is -0.446573 (-0.446573)
-UNDEF: E says asin(2) is -nan (actually complex: NaN)
+UNDEF: E says asin(2) is nan (actually complex: NaN)
 UNDEF: H says acos(0) is 1.570796 (1.570796)
 UNDEF: G says atan(100) is 1.560797 (1.560797)
 UNDEF: K says ln(0) is -inf (-infinity)
@@ -373,7 +422,7 @@ UNDEF: D says -1/0 is -inf (NaN or -infinity)
 UNDEF: B says sin(4.2) is -0.871576 (-0.871576)
 UNDEF: C says cos(42) is -0.399985 (-0.399985)
 UNDEF: T says tan(-.42) is -0.446573 (-0.446573)
-UNDEF: E says asin(2) is -nan (actually complex: NaN)
+UNDEF: E says asin(2) is nan (actually complex: NaN)
 UNDEF: H says acos(0) is 1.570796 (1.570796)
 UNDEF: G says atan(100) is 1.560797 (1.560797)
 UNDEF: K says ln(0) is -inf (-infinity)
