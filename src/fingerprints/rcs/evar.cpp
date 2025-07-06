@@ -45,11 +45,13 @@ InstructionAction evar::put(Fungespace &, InstructionPointer &ip) {
     if (_putenv(keyval.c_str()) == -1)
         ip.reflect();
 #else
-    char *c = &keyval[0];
-    while (*c && *c++ != '=') {} // Skip past the key
-    *(c - 1) = '\0'; // Null terminate the key
-    if (setenv(keyval.c_str(), c, 1) == -1)
-        ip.reflect();
+    char *val = &keyval[0];
+    while (*val && *val++ != '=') {} // Skip past the key
+    if (*val) {
+        *(val - 1) = '\0'; // Null terminate the key
+        if (setenv(keyval.c_str(), val, 1) == -1)
+            ip.reflect();
+    }
 #endif
     return MoveAction{};
 }
