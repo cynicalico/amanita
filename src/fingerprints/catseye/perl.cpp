@@ -37,14 +37,12 @@ InstructionAction perl::eval(Fungespace &, InstructionPointer &ip) {
     std::string out;
     char buf[1024];
     FILE *fp = subprocess_stdout(&subp);
-    while (const auto *l = fgets(buf, sizeof(buf), fp))
-        out += l;
+    while (const auto *l = fgets(buf, sizeof(buf), fp)) out += l;
 
     subprocess_destroy(&subp);
 
     ip.push('\0');
-    for (const auto &c: out | std::views::reverse)
-        ip.push(c);
+    for (const auto &c: out | std::views::reverse) ip.push(c);
 
     return MoveAction{};
 }
@@ -75,8 +73,7 @@ InstructionAction perl::int_eval(Fungespace &, InstructionPointer &ip) {
     std::string out;
     char buf[1024];
     FILE *fp = subprocess_stdout(&subp);
-    while (const auto *l = fgets(buf, sizeof(buf), fp))
-        out += l;
+    while (const auto *l = fgets(buf, sizeof(buf), fp)) out += l;
 
     subprocess_destroy(&subp);
 

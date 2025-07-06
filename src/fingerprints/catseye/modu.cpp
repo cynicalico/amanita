@@ -8,8 +8,7 @@ InstructionAction modu::signed_result_modulo(Fungespace &, InstructionPointer &i
         ip.push(0);
     } else {
         auto c = a / b;
-        if (c < 0)
-            c -= 1;
+        if (c < 0) c -= 1;
         const auto v = a - c * b;
         ip.push(v);
     }

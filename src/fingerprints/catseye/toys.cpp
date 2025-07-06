@@ -8,8 +8,7 @@
 InstructionAction toys::gable(Fungespace &, InstructionPointer &ip) {
     const auto n = ip.pop();
     const auto v = ip.pop();
-    for (Index i = 0; i < n; ++i)
-        ip.push(v);
+    for (Index i = 0; i < n; ++i) ip.push(v);
     return MoveAction{};
 }
 
@@ -37,8 +36,7 @@ InstructionAction toys::bracelet(Fungespace &fungespace, InstructionPointer &ip)
             const auto dst_x = dst_x_orig + j;
 
             const auto v = fungespace.get(src_x, src_y);
-            if (v != EMPTY)
-                fungespace.put(dst_x, dst_y, v);
+            if (v != EMPTY) fungespace.put(dst_x, dst_y, v);
         }
     }
 
@@ -52,8 +50,7 @@ InstructionAction toys::toilet_seat(Fungespace &, InstructionPointer &ip) {
 
 InstructionAction toys::pitchfork_head(Fungespace &, InstructionPointer &ip) {
     Cell sum = 0;
-    while (ip.stack.size() > 0)
-        sum += ip.pop();
+    while (ip.stack.size() > 0) sum += ip.pop();
     ip.push(sum);
     return MoveAction{};
 }
@@ -65,8 +62,7 @@ InstructionAction toys::calipers(Fungespace &fungespace, InstructionPointer &ip)
     const auto i = ip.pop();
 
     for (Index dy = 0; dy < j; ++dy)
-        for (Index dx = 0; dx < i; ++dx)
-            fungespace.put(x + dx, y + dy, ip.pop());
+        for (Index dx = 0; dx < i; ++dx) fungespace.put(x + dx, y + dy, ip.pop());
 
     return MoveAction{};
 }
@@ -78,8 +74,7 @@ InstructionAction toys::counterclockwise(Fungespace &fungespace, InstructionPoin
     const auto i = ip.pop();
 
     for (Index dy = j - 1; dy >= 0; --dy)
-        for (Index dx = i - 1; dx >= 0; --dx)
-            ip.push(fungespace.get(x + dx, y + dy));
+        for (Index dx = i - 1; dx >= 0; --dx) ip.push(fungespace.get(x + dx, y + dy));
 
     return MoveAction{};
 }
@@ -87,12 +82,9 @@ InstructionAction toys::counterclockwise(Fungespace &fungespace, InstructionPoin
 InstructionAction toys::pair_of_stilts(Fungespace &, InstructionPointer &ip) {
     const auto b = ip.pop();
     const auto a = ip.pop();
-    if (b > 0)
-        ip.push(a << b);
-    else if (b < 0)
-        ip.push(a >> std::abs(b));
-    else
-        ip.push(a);
+    if (b > 0) ip.push(a << b);
+    else if (b < 0) ip.push(a >> std::abs(b));
+    else ip.push(a);
     return MoveAction{};
 }
 
@@ -137,8 +129,7 @@ InstructionAction toys::scissors(Fungespace &fungespace, InstructionPointer &ip)
             const auto dst_x = dst_x_orig + j;
 
             const auto v = fungespace.get(src_x, src_y);
-            if (v != EMPTY)
-                fungespace.put(dst_x, dst_y, v);
+            if (v != EMPTY) fungespace.put(dst_x, dst_y, v);
         }
     }
 
@@ -175,8 +166,7 @@ InstructionAction toys::kittycat(Fungespace &fungespace, InstructionPointer &ip)
             const auto dst_x = dst_x_orig + j;
 
             const auto v = fungespace.get(src_x, src_y);
-            if (v != EMPTY)
-                fungespace.put(dst_x, dst_y, v);
+            if (v != EMPTY) fungespace.put(dst_x, dst_y, v);
             fungespace.put(src_x, src_y, EMPTY);
         }
     }
@@ -211,8 +201,7 @@ InstructionAction toys::boulder(Fungespace &fungespace, InstructionPointer &ip) 
 
 InstructionAction toys::mailbox(Fungespace &, InstructionPointer &ip) {
     Cell prod = 1;
-    while (ip.stack.size() > 0)
-        prod *= ip.pop();
+    while (ip.stack.size() > 0) prod *= ip.pop();
     ip.push(prod);
     return MoveAction{};
 }
@@ -255,8 +244,7 @@ InstructionAction toys::chicane(Fungespace &fungespace, InstructionPointer &ip) 
     const auto v = ip.pop();
 
     for (Index dst_y = y; dst_y < y + h; ++dst_y)
-        for (Index dst_x = x; dst_x < x + w; ++dst_x)
-            fungespace.put(dst_x, dst_y, v);
+        for (Index dst_x = x; dst_x < x + w; ++dst_x) fungespace.put(dst_x, dst_y, v);
 
     return MoveAction{};
 }
@@ -317,8 +305,7 @@ InstructionAction toys::dixiecup(Fungespace &fungespace, InstructionPointer &ip)
             const auto dst_x = dst_x_orig + j;
 
             const auto v = fungespace.get(src_x, src_y);
-            if (v != EMPTY)
-                fungespace.put(dst_x, dst_y, v);
+            if (v != EMPTY) fungespace.put(dst_x, dst_y, v);
             fungespace.put(src_x, src_y, EMPTY);
         }
     }

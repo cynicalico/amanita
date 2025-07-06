@@ -58,8 +58,7 @@ InstructionAction orth::ortho_put(Fungespace &fungespace, InstructionPointer &ip
 }
 
 InstructionAction orth::ramp_if_zero(Fungespace &, InstructionPointer &ip) {
-    if (ip.pop() == 0)
-        ip.step();
+    if (ip.pop() == 0) ip.step();
     return MoveAction{};
 }
 
@@ -67,8 +66,7 @@ InstructionAction orth::output_string(Fungespace &, InstructionPointer &ip) {
     Cell c = 0;
     do {
         c = ip.pop();
-        if (c != 0)
-            fmt::print("{}", static_cast<char>(c));
+        if (c != 0) fmt::print("{}", static_cast<char>(c));
     } while (c != 0);
     return MoveAction{};
 }

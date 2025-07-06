@@ -21,12 +21,9 @@ InstructionAction file::close(Fungespace &, InstructionPointer &ip) {
 
     auto &of = open_files();
     if (const auto it = of.find(h); it != of.end())
-        if (const auto err = fclose(it->second.f); err == EOF)
-            ip.reflect();
-        else
-            of.erase(it);
-    else
-        ip.reflect();
+        if (const auto err = fclose(it->second.f); err == EOF) ip.reflect();
+        else of.erase(it);
+    else ip.reflect();
 
     return MoveAction{};
 }
@@ -34,8 +31,7 @@ InstructionAction file::close(Fungespace &, InstructionPointer &ip) {
 InstructionAction file::delete_(Fungespace &, InstructionPointer &ip) {
     const auto filepath = ip.stack.pop_0gnirts();
 
-    if (remove(filepath.c_str()) != 0)
-        ip.reflect();
+    if (remove(filepath.c_str()) != 0) ip.reflect();
 
     return MoveAction{};
 }
@@ -57,8 +53,7 @@ InstructionAction file::read_string(Fungespace &, InstructionPointer &ip) {
             if (s) {
                 const auto len = strlen(s);
                 ip.push('\0');
-                for (std::size_t i = len; i-- > 0;)
-                    ip.push(s[i]);
+                for (std::size_t i = len; i-- > 0;) ip.push(s[i]);
                 ip.push(len);
             } else {
                 ip.push('\0');
@@ -132,8 +127,7 @@ InstructionAction file::write_string(Fungespace &, InstructionPointer &ip) {
 
     auto &of = open_files();
     if (const auto it = of.find(h); it != of.end()) {
-        if (const auto err = fputs(s.c_str(), it->second.f); err == EOF)
-            ip.reflect();
+        if (const auto err = fputs(s.c_str(), it->second.f); err == EOF) ip.reflect();
     } else {
         ip.reflect();
     }
@@ -179,8 +173,7 @@ InstructionAction file::seek(Fungespace &, InstructionPointer &ip) {
     if (const auto origin = get_funge_seek_origin(m); origin != std::numeric_limits<int>::max()) {
         auto &of = open_files();
         if (const auto it = of.find(h); it != of.end()) {
-            if (fseek(it->second.f, static_cast<long>(n), origin) != 0)
-                ip.reflect();
+            if (fseek(it->second.f, static_cast<long>(n), origin) != 0) ip.reflect();
         } else {
             ip.reflect();
         }

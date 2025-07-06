@@ -7,18 +7,15 @@ std::size_t StackStack::count() const { return stacks.size(); }
 
 std::vector<std::size_t> StackStack::sizes() const {
     std::vector<std::size_t> sizes{};
-    for (const auto &stack: stacks)
-        sizes.emplace_back(stack.size());
+    for (const auto &stack: stacks) sizes.emplace_back(stack.size());
     return sizes;
 }
 
 void StackStack::push(Cell value) { push_(value, toss); }
 
 Cell StackStack::peek() const {
-    if (stacks[toss].empty())
-        return 0;
-    if (queuemode)
-        return stacks[toss].front();
+    if (stacks[toss].empty()) return 0;
+    if (queuemode) return stacks[toss].front();
     return stacks[toss].back();
 }
 
@@ -29,8 +26,7 @@ std::string StackStack::pop_0gnirts() {
     Cell c;
     do {
         c = pop();
-        if (c != 0)
-            ret += static_cast<char>(c);
+        if (c != 0) ret += static_cast<char>(c);
     } while (c != 0);
     return ret;
 }
@@ -41,8 +37,7 @@ void StackStack::clear() { stacks[toss].clear(); }
 
 Cell StackStack::pick(Cell n) const {
     n = stacks[toss].size() - n;
-    if (n >= 0)
-        return stacks[toss][static_cast<std::size_t>(n)];
+    if (n >= 0) return stacks[toss][static_cast<std::size_t>(n)];
     return 0;
 }
 
@@ -57,19 +52,15 @@ void StackStack::begin_block(const Vec &storage_offset) {
         const auto soss_len = static_cast<Cell>(stacks[soss].size());
         const auto zero_fill = n - soss_len;
         if (zero_fill > 0) {
-            for (Cell i = 0; i < zero_fill; i++)
-                push(0);
+            for (Cell i = 0; i < zero_fill; i++) push(0);
             n -= zero_fill;
         }
         std::vector<Cell> buffer{};
         buffer.reserve(n);
-        for (Cell i = 0; i < n; i++)
-            buffer.push_back(pop_(soss));
-        for (std::size_t i = 0; i < buffer.size(); i++)
-            push(buffer[buffer.size() - 1 - i]);
+        for (Cell i = 0; i < n; i++) buffer.push_back(pop_(soss));
+        for (std::size_t i = 0; i < buffer.size(); i++) push(buffer[buffer.size() - 1 - i]);
     } else {
-        for (Cell i = 0; i < std::abs(n); i++)
-            push_(0, soss);
+        for (Cell i = 0; i < std::abs(n); i++) push_(0, soss);
     }
 
     push_(storage_offset.x, soss);
@@ -77,8 +68,7 @@ void StackStack::begin_block(const Vec &storage_offset) {
 }
 
 bool StackStack::end_block(Vec &storage_offset) {
-    if (toss == soss)
-        return false;
+    if (toss == soss) return false;
 
     const auto n = pop();
     storage_offset.y = pop_(soss);
@@ -87,13 +77,10 @@ bool StackStack::end_block(Vec &storage_offset) {
     if (n > 0) {
         std::vector<Cell> buffer{};
         buffer.reserve(n);
-        for (Cell i = 0; i < n && size() > 0; i++)
-            buffer.push_back(pop());
-        for (std::size_t i = 0; i < buffer.size(); i++)
-            push_(buffer[buffer.size() - 1 - i], soss);
+        for (Cell i = 0; i < n && size() > 0; i++) buffer.push_back(pop());
+        for (std::size_t i = 0; i < buffer.size(); i++) push_(buffer[buffer.size() - 1 - i], soss);
     } else {
-        for (Cell i = 0; i < std::abs(n); i++)
-            pop_(soss);
+        for (Cell i = 0; i < std::abs(n); i++) pop_(soss);
     }
 
     stacks.pop_back();
@@ -104,29 +91,24 @@ bool StackStack::end_block(Vec &storage_offset) {
 }
 
 bool StackStack::stack_under_stack() {
-    if (toss == soss)
-        return false;
+    if (toss == soss) return false;
 
     const auto n = pop();
     const auto src = n > 0 ? soss : toss;
     const auto dst = n > 0 ? toss : soss;
 
-    for (Cell i = 0; i < std::abs(n); i++)
-        push_(pop_(src), dst);
+    for (Cell i = 0; i < std::abs(n); i++) push_(pop_(src), dst);
 
     return true;
 }
 
 void StackStack::push_(Cell value, std::size_t stack_idx) {
-    if (invertmode)
-        stacks[stack_idx].push_front(value);
-    else
-        stacks[stack_idx].push_back(value);
+    if (invertmode) stacks[stack_idx].push_front(value);
+    else stacks[stack_idx].push_back(value);
 }
 
 Cell StackStack::pop_(std::size_t stack_idx) {
-    if (stacks[stack_idx].empty())
-        return 0;
+    if (stacks[stack_idx].empty()) return 0;
 
     Cell v;
     if (queuemode) {

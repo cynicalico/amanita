@@ -15,9 +15,8 @@ InstructionAction fing::swap(Fungespace &, InstructionPointer &ip) {
     if (INVALID_SEM(sem_a) || INVALID_SEM(sem_b)) {
         ip.reflect();
     } else {
-        const InstructionFunc tmp_a = ip.instruction_stack.pop(static_cast<Instruction>(sem_a));
-        const InstructionFunc tmp_b = ip.instruction_stack.pop(static_cast<Instruction>(sem_b));
-
+        InstructionFunc tmp_a = ip.instruction_stack.pop(static_cast<Instruction>(sem_a));
+        InstructionFunc tmp_b = ip.instruction_stack.pop(static_cast<Instruction>(sem_b));
         ip.instruction_stack.push(static_cast<Instruction>(sem_a), std::move(tmp_b));
         ip.instruction_stack.push(static_cast<Instruction>(sem_b), std::move(tmp_a));
     }
@@ -29,10 +28,9 @@ InstructionAction fing::pop(Fungespace &, InstructionPointer &ip) {
     auto sem = ip.pop();
     sem = sem <= 25 ? sem + 'A' : sem;
 
-    if (INVALID_SEM(sem))
-        ip.reflect();
-    else
-        ip.instruction_stack.pop(static_cast<Instruction>(sem));
+    if (INVALID_SEM(sem)) ip.reflect();
+    else ip.instruction_stack.pop(static_cast<Instruction>(sem));
+
     return MoveAction{};
 }
 

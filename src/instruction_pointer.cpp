@@ -32,8 +32,7 @@ void InstructionPointer::step_wrap(const Fungespace &fungespace) {
     if (!fungespace.in_bounds(pos.x, pos.y)) {
         reflect();
         step();
-        while (fungespace.in_bounds(pos.x, pos.y))
-            step();
+        while (fungespace.in_bounds(pos.x, pos.y)) step();
         reflect();
         step();
     }
@@ -63,12 +62,10 @@ void InstructionPointer::step_to_next_instruction(
                 continue;
             }
             // Ignore spaces
-            if (ins == Instruction::Space)
-                continue;
+            if (ins == Instruction::Space) continue;
         } else {
             // Stop skipping at end of comment
-            if (ins == Instruction::JumpOver)
-                skipping = false;
+            if (ins == Instruction::JumpOver) skipping = false;
             // Need to move at least one more time even if skipping stopped
             continue;
         }
@@ -78,31 +75,23 @@ void InstructionPointer::step_to_next_instruction(
 }
 
 void InstructionPointer::go_south() {
-    if (hover_mode)
-        delta.y += 1;
-    else
-        delta = SOUTH;
+    if (hover_mode) delta.y += 1;
+    else delta = SOUTH;
 }
 
 void InstructionPointer::go_east() {
-    if (hover_mode)
-        delta.x += 1;
-    else
-        delta = EAST;
+    if (hover_mode) delta.x += 1;
+    else delta = EAST;
 }
 
 void InstructionPointer::go_north() {
-    if (hover_mode)
-        delta.y -= 1;
-    else
-        delta = NORTH;
+    if (hover_mode) delta.y -= 1;
+    else delta = NORTH;
 }
 
 void InstructionPointer::go_west() {
-    if (hover_mode)
-        delta.x -= 1;
-    else
-        delta = WEST;
+    if (hover_mode) delta.x -= 1;
+    else delta = WEST;
 }
 
 void InstructionPointer::turn_left() {
@@ -157,13 +146,10 @@ void InstructionPointer::begin_block() {
 
 void InstructionPointer::end_block() {
     Vec new_storage_offset;
-    if (const auto success = stack.end_block(new_storage_offset); !success)
-        reflect();
-    else
-        storage_offset = new_storage_offset;
+    if (const auto success = stack.end_block(new_storage_offset); !success) reflect();
+    else storage_offset = new_storage_offset;
 }
 
 void InstructionPointer::stack_under_stack() {
-    if (!stack.stack_under_stack())
-        reflect();
+    if (!stack.stack_under_stack()) reflect();
 }

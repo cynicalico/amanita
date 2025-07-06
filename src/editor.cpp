@@ -120,10 +120,8 @@ void Editor::draw_program() {
         for (std::int64_t x = viewport_pos.x; x < viewport_pos.x + COLS; ++x) {
             const auto v = fungespace.get(x, y);
             // TODO: Display something other than a space
-            if (v == '\0' || v == '\r' || v == '\n')
-                s += ' ';
-            else
-                s += static_cast<char>(v);
+            if (v == '\0' || v == '\r' || v == '\n') s += ' ';
+            else s += static_cast<char>(v);
         }
 
         program_font->draw(s, {pos.x, pos.y + program_font->pen_offset()}, PROGRAM_COLOR);
@@ -137,10 +135,8 @@ void Editor::draw_ip_info() {
     glm::vec2 pos = ip_info_pos;
     auto add_line = [&](std::string_view text, bool right_aligned) {
         std::string s;
-        if (right_aligned)
-            s = fmt::format("{:>{}}", text, IP_INFO_CHAR_MAX + 1);
-        else
-            s = text;
+        if (right_aligned) s = fmt::format("{:>{}}", text, IP_INFO_CHAR_MAX + 1);
+        else s = text;
         ip_info_font->draw(
                 s, {pos.x + IP_INFO_MARGIN, pos.y + IP_INFO_MARGIN + ip_info_font->pen_offset()}, mizu::rgb(0xffffff));
         pos.y += ip_info_char_size.y;
@@ -204,10 +200,8 @@ void Editor::draw_stacks() {
     glm::vec2 pos = stackstack_pos;
     auto add_line = [&](std::string_view text, bool right_aligned) {
         std::string s;
-        if (right_aligned)
-            s = fmt::format("{:>{}}", text, STACK_DIGIT_MAX + 1);
-        else
-            s = text;
+        if (right_aligned) s = fmt::format("{:>{}}", text, STACK_DIGIT_MAX + 1);
+        else s = text;
         stackstack_font->draw(
                 s,
                 {pos.x + IP_INFO_MARGIN, pos.y + IP_INFO_MARGIN + stackstack_font->pen_offset()},
@@ -226,8 +220,7 @@ void Editor::draw_stacks() {
             std::int64_t end = std::max(
                     static_cast<std::int64_t>(0),
                     static_cast<std::int64_t>(toss.size()) - static_cast<std::int64_t>(STACKSTACK_ENTRIES));
-            for (auto i = start; i >= end; i--)
-                add_line(fmt::format("{}", toss[i]), true);
+            for (auto i = start; i >= end; i--) add_line(fmt::format("{}", toss[i]), true);
         } else {
             add_line("EMPTY", true);
         }
@@ -245,8 +238,7 @@ void Editor::draw_stacks() {
                 std::int64_t end = std::max(
                         static_cast<std::int64_t>(0),
                         static_cast<std::int64_t>(soss.size()) - static_cast<std::int64_t>(STACKSTACK_ENTRIES));
-                for (auto i = start; i >= end; i--)
-                    add_line(fmt::format("{}", soss[i]), true);
+                for (auto i = start; i >= end; i--) add_line(fmt::format("{}", soss[i]), true);
             } else {
                 add_line("EMPTY", true);
             }
@@ -276,19 +268,14 @@ void Editor::key_press_callback(mizu::Key key, mizu::Mod mods) {
         slow_ticker.reset();
     }
 
-    if (key == mizu::Key::Left)
-        viewport_pos.x--;
-    if (key == mizu::Key::Right)
-        viewport_pos.x++;
-    if (key == mizu::Key::Up)
-        viewport_pos.y--;
-    if (key == mizu::Key::Down)
-        viewport_pos.y++;
+    if (key == mizu::Key::Left) viewport_pos.x--;
+    if (key == mizu::Key::Right) viewport_pos.x++;
+    if (key == mizu::Key::Up) viewport_pos.y--;
+    if (key == mizu::Key::Down) viewport_pos.y++;
 }
 
 void Editor::key_release_callback(mizu::Key key, mizu::Mod mods) {
-    if (key == mizu::Key::Escape)
-        engine->shutdown();
+    if (key == mizu::Key::Escape) engine->shutdown();
 
     if (key == mizu::Key::Space) {
         if (paused) {
@@ -304,8 +291,7 @@ void Editor::key_release_callback(mizu::Key key, mizu::Mod mods) {
         check_move_viewport();
     }
 
-    if (key == mizu::Key::S)
-        slow_ticking = false;
+    if (key == mizu::Key::S) slow_ticking = false;
 }
 
 void Editor::text_input_callback(const char *text) {}
@@ -319,8 +305,7 @@ void Editor::do_single_tick() {
             ins = fungespace.get(ip.pos.x, ip.pos.y);
             if (!ip.string_mode && (ins == Instruction::Space || ins == Instruction::JumpOver))
                 ip.step_to_next_instruction(fungespace, '\0', ins == Instruction::JumpOver);
-            else
-                break;
+            else break;
         } while (true);
         ip.cache_ins = ins;
 
@@ -328,8 +313,7 @@ void Editor::do_single_tick() {
         std::visit(
                 overloaded{
                         [&](const IterAction &a) {
-                            if (!ip.alive)
-                                return;
+                            if (!ip.alive) return;
 
                             for (const auto &sub_action: a.actions) {
                                 if (std::holds_alternative<SplitAction>(sub_action)) {
@@ -364,8 +348,7 @@ void Editor::do_single_tick() {
     }
 
     std::swap(active_list, inactive_list);
-    for (auto &ip: active_list)
-        ip.step_to_next_instruction(fungespace, ip.cache_ins, false);
+    for (auto &ip: active_list) ip.step_to_next_instruction(fungespace, ip.cache_ins, false);
 
     tick++;
 }
@@ -375,19 +358,15 @@ void Editor::check_move_viewport() {
 
     // Check move x
     if (ip.pos.x < viewport_pos.x)
-        while (ip.pos.x < viewport_pos.x)
-            viewport_pos.x--;
+        while (ip.pos.x < viewport_pos.x) viewport_pos.x--;
     else if (ip.pos.x >= viewport_pos.x + COLS)
-        while (ip.pos.x >= viewport_pos.x + COLS)
-            viewport_pos.x++;
+        while (ip.pos.x >= viewport_pos.x + COLS) viewport_pos.x++;
 
     // Check move y
     if (ip.pos.y < viewport_pos.y)
-        while (ip.pos.y < viewport_pos.y)
-            viewport_pos.y--;
+        while (ip.pos.y < viewport_pos.y) viewport_pos.y--;
     else if (ip.pos.y >= viewport_pos.y + ROWS)
-        while (ip.pos.y >= viewport_pos.y + ROWS)
-            viewport_pos.y++;
+        while (ip.pos.y >= viewport_pos.y + ROWS) viewport_pos.y++;
 }
 
 void draw_rect(mizu::G2d &g2d, const glm::vec2 pos, glm::vec2 size, const mizu::Color &color) {

@@ -52,8 +52,7 @@ const std::unordered_map<std::int64_t, const Fingerprint &> &registry() {
 
 InstructionStack::InstructionStack() {
     populate_default_fns_();
-    for (std::size_t i = 0; i < 26; ++i)
-        loaded_fingerprints[i] = std::vector{"none"};
+    for (std::size_t i = 0; i < 26; ++i) loaded_fingerprints[i] = std::vector{"none"};
 }
 
 InstructionAction InstructionStack::perform(Instruction ins, Fungespace &fungespace, InstructionPointer &ip) {
@@ -109,8 +108,7 @@ void InstructionStack::push(Instruction ins, InstructionFunc f) {
 InstructionFunc InstructionStack::pop(Instruction ins) {
     const std::size_t idx = static_cast<std::size_t>(ins);
 
-    if (fns[idx].empty())
-        return instruction_reflect;
+    if (fns[idx].empty()) return instruction_reflect;
 
     InstructionFunc ret = std::move(fns[idx].back());
     fns[idx].pop_back();
@@ -120,8 +118,7 @@ InstructionFunc InstructionStack::pop(Instruction ins) {
 InstructionFunc InstructionStack::peek(Instruction ins) {
     const std::size_t idx = static_cast<std::size_t>(ins);
 
-    if (fns[idx].empty())
-        return instruction_reflect;
+    if (fns[idx].empty()) return instruction_reflect;
 
     return fns[idx].back();
 }

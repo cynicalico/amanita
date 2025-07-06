@@ -14,12 +14,10 @@ InstructionAction evar::get(Fungespace &, InstructionPointer &ip) {
         std::size_t i = 0;
         // Compare to name
         for (; *c && i < name.size(); ++i, ++c)
-            if (*c != name[i])
-                break;
+            if (*c != name[i]) break;
 
         // Didn't match, also move past the key if it did
-        if (i != name.size() || (*c && *c++ != '='))
-            continue;
+        if (i != name.size() || (*c && *c++ != '=')) continue;
 
         // Read the value backwards
         const std::size_t start = strlen(c);
@@ -42,15 +40,13 @@ InstructionAction evar::count(Fungespace &, InstructionPointer &ip) {
 InstructionAction evar::put(Fungespace &, InstructionPointer &ip) {
     auto keyval = ip.stack.pop_0gnirts();
 #if defined(MIZU_PLATFORM_WINDOWS)
-    if (_putenv(keyval.c_str()) == -1)
-        ip.reflect();
+    if (_putenv(keyval.c_str()) == -1) ip.reflect();
 #else
     char *val = &keyval[0];
     while (*val && *val++ != '=') {} // Skip past the key
     if (*val) {
         *(val - 1) = '\0'; // Null terminate the key
-        if (setenv(keyval.c_str(), val, 1) == -1)
-            ip.reflect();
+        if (setenv(keyval.c_str(), val, 1) == -1) ip.reflect();
     } else {
         ip.reflect();
     }

@@ -17,8 +17,7 @@ Fungespace::Fungespace(const std::filesystem::path &path) {
 bool Fungespace::input_file(
         const std::string &filename, const std::int64_t flags, const std::int64_t x, const std::int64_t y, Vec &size) {
     std::ifstream file(filename, std::ios::binary);
-    if (!file.is_open())
-        return false;
+    if (!file.is_open()) return false;
 
     const bool binary_mode = (flags & 0b1) == 1;
 
@@ -30,8 +29,7 @@ bool Fungespace::input_file(
         unsigned char buf[CHUNK_SIZE];
         file.read(reinterpret_cast<char *>(buf), sizeof(buf));
         for (std::size_t i = 0; i < file.gcount(); ++i) {
-            if (!binary_mode && (buf[i] == CARRIAGE_RETURN || buf[i] == FORM_FEED))
-                continue;
+            if (!binary_mode && (buf[i] == CARRIAGE_RETURN || buf[i] == FORM_FEED)) continue;
 
             if (!binary_mode && buf[i] == NEWLINE) {
                 size.x = std::max(size.x, input_pos.x - x);
@@ -43,8 +41,7 @@ bool Fungespace::input_file(
                 continue;
             }
 
-            if (buf[i] != EMPTY)
-                put(input_pos.x, input_pos.y, buf[i]);
+            if (buf[i] != EMPTY) put(input_pos.x, input_pos.y, buf[i]);
             input_pos.x++;
         }
     } while (file.gcount() == CHUNK_SIZE);
@@ -60,21 +57,18 @@ bool Fungespace::output_file(
         const std::int64_t w,
         const std::int64_t h) {
     std::ofstream file(filename, std::ios::binary);
-    if (!file.is_open())
-        return false;
+    if (!file.is_open()) return false;
 
     const bool linear_mode = (flags & 0b1) == 1;
 
     for (std::int64_t oy = y; oy < y + h; ++oy) {
         std::string line;
 
-        for (std::int64_t ox = x; ox < x + w; ++ox)
-            line += static_cast<unsigned char>(get(ox, oy));
+        for (std::int64_t ox = x; ox < x + w; ++ox) line += static_cast<unsigned char>(get(ox, oy));
 
         if (linear_mode) {
             rtrim(line);
-            if (oy < y + h - 1)
-                line += static_cast<unsigned char>(NEWLINE);
+            if (oy < y + h - 1) line += static_cast<unsigned char>(NEWLINE);
         } else {
             line += static_cast<unsigned char>(NEWLINE);
         }
@@ -102,14 +96,11 @@ void Fungespace::reset() {
 }
 
 Cell Fungespace::get(Index x, Index y) const {
-    if (!in_bounds(x, y))
-        return EMPTY;
+    if (!in_bounds(x, y)) return EMPTY;
 
     const auto coord = make_fixed_coord_(x, y);
-    if (coord.y >= coord.quadrant.size())
-        return EMPTY;
-    if (coord.x >= coord.quadrant[coord.y].size())
-        return EMPTY;
+    if (coord.y >= coord.quadrant.size()) return EMPTY;
+    if (coord.x >= coord.quadrant[coord.y].size()) return EMPTY;
 
     return coord.quadrant[coord.y][coord.x];
 }
@@ -126,8 +117,7 @@ void Fungespace::put(Index x, Index y, Cell v) {
     check_resize_(coord);
     coord.quadrant[coord.y][coord.x] = v;
 
-    if (v == EMPTY)
-        check_shrink_bounds_(x, y);
+    if (v == EMPTY) check_shrink_bounds_(x, y);
 }
 
 bool Fungespace::in_bounds(Index x, Index y) const {
@@ -166,10 +156,8 @@ Fungespace::FixedCoord_ Fungespace::make_fixed_coord_(Index x, Index y) const {
 }
 
 void Fungespace::check_resize_(const FixedCoord_ &coord) {
-    if (coord.y >= coord.quadrant.size())
-        coord.quadrant.resize(coord.y + 1);
-    if (coord.x >= coord.quadrant[coord.y].size())
-        coord.quadrant[coord.y].resize(coord.x + 1, EMPTY);
+    if (coord.y >= coord.quadrant.size()) coord.quadrant.resize(coord.y + 1);
+    if (coord.x >= coord.quadrant[coord.y].size()) coord.quadrant[coord.y].resize(coord.x + 1, EMPTY);
 }
 
 void Fungespace::check_shrink_bounds_(Index x, Index y) {
@@ -185,8 +173,7 @@ void Fungespace::check_shrink_bounds_(Index x, Index y) {
                     break;
                 }
             }
-            if (all_empty)
-                min_coord.y++;
+            if (all_empty) min_coord.y++;
         }
     }
 
@@ -199,8 +186,7 @@ void Fungespace::check_shrink_bounds_(Index x, Index y) {
                     break;
                 }
             }
-            if (all_empty)
-                min_coord.x++;
+            if (all_empty) min_coord.x++;
         }
     }
 
@@ -213,8 +199,7 @@ void Fungespace::check_shrink_bounds_(Index x, Index y) {
                     break;
                 }
             }
-            if (all_empty)
-                max_coord.y--;
+            if (all_empty) max_coord.y--;
         }
     }
 
@@ -227,8 +212,7 @@ void Fungespace::check_shrink_bounds_(Index x, Index y) {
                     break;
                 }
             }
-            if (all_empty)
-                max_coord.x--;
+            if (all_empty) max_coord.x--;
         }
     }
 }

@@ -73,10 +73,8 @@ InstructionAction fixp::pow(Fungespace &, InstructionPointer &ip) {
 }
 
 InstructionAction fixp::sign(Fungespace &, InstructionPointer &ip) {
-    if (const auto a = ip.pop(); a == 0)
-        ip.push(0);
-    else
-        ip.push(a < 0 ? -1 : 1);
+    if (const auto a = ip.pop(); a == 0) ip.push(0);
+    else ip.push(a < 0 ? -1 : 1);
     return MoveAction{};
 }
 

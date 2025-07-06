@@ -2,8 +2,7 @@
 #include "instruction_pointer.hpp"
 
 Vec pop_offset_vec(InstructionPointer &ip) {
-    if (ip.relative_mode)
-        return ip.pop_offset_vec();
+    if (ip.relative_mode) return ip.pop_offset_vec();
     return ip.pop_vec();
 }
 
@@ -16,8 +15,7 @@ InstructionAction subr::call(Fungespace &, InstructionPointer &ip) {
     const auto n = ip.pop();
     const auto dst = pop_offset_vec(ip);
 
-    for (Index i = 0; i < n; ++i)
-        ip.call_stack.push_back(ip.pop());
+    for (Index i = 0; i < n; ++i) ip.call_stack.push_back(ip.pop());
 
     ip.push_vec(ip.pos);
     ip.push_vec(ip.delta);
@@ -46,8 +44,7 @@ InstructionAction subr::set_relative_mode(Fungespace &, InstructionPointer &ip) 
 InstructionAction subr::ret(Fungespace &, InstructionPointer &ip) {
     const auto n = ip.pop();
 
-    for (Index i = 0; i < n; ++i)
-        ip.call_stack.push_back(ip.pop());
+    for (Index i = 0; i < n; ++i) ip.call_stack.push_back(ip.pop());
 
     ip.delta = ip.pop_vec();
     ip.pos = ip.pop_vec();

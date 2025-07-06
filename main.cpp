@@ -69,8 +69,7 @@ void run(CliArgs *cli_args) {
                 ins = fungespace.get(ip.pos.x, ip.pos.y);
                 if (!ip.string_mode && (ins == Instruction::Space || ins == Instruction::JumpOver))
                     ip.step_to_next_instruction(fungespace, '\0', ins == Instruction::JumpOver);
-                else
-                    break;
+                else break;
             } while (true);
             ip.cache_ins = ins;
 
@@ -78,8 +77,7 @@ void run(CliArgs *cli_args) {
             std::visit(
                     overloaded{
                             [&](const IterAction &a) {
-                                if (!ip.alive)
-                                    return;
+                                if (!ip.alive) return;
 
                                 for (const auto &sub_action: a.actions) {
                                     if (std::holds_alternative<SplitAction>(sub_action)) {
@@ -114,7 +112,6 @@ void run(CliArgs *cli_args) {
         }
 
         std::swap(active_list, inactive_list);
-        for (auto &ip: active_list)
-            ip.step_to_next_instruction(fungespace, ip.cache_ins, false);
+        for (auto &ip: active_list) ip.step_to_next_instruction(fungespace, ip.cache_ins, false);
     }
 }

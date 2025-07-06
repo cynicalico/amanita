@@ -12,12 +12,9 @@ InstructionAction refc::reference(Fungespace &, InstructionPointer &ip) {
 }
 
 InstructionAction refc::dereference(Fungespace &, InstructionPointer &ip) {
-    if (const auto i = ip.pop(); i < 0)
-        ip.reflect();
-    else if (const auto &r = references(); r.size() <= i)
-        ip.reflect();
-    else
-        ip.push_vec(r[static_cast<std::size_t>(i)]);
+    if (const auto i = ip.pop(); i < 0) ip.reflect();
+    else if (const auto &r = references(); r.size() <= i) ip.reflect();
+    else ip.push_vec(r[static_cast<std::size_t>(i)]);
     return MoveAction{};
 }
 
