@@ -26,6 +26,7 @@
 #include "fingerprints/rcs/fixp.hpp"
 #include "fingerprints/rcs/fpdp.hpp"
 #include "fingerprints/rcs/fpsp.hpp"
+#include "fingerprints/rcs/indv.hpp"
 #include "fingerprints/rcs/strn.hpp"
 #include "fingerprints/rcs/subr.hpp"
 
@@ -51,6 +52,7 @@ const std::unordered_map<std::int64_t, const Fingerprint &> &registry() {
             {fixp::FINGERPRINT.id, fixp::FINGERPRINT},
             {fpdp::FINGERPRINT.id, fpdp::FINGERPRINT},
             {fpsp::FINGERPRINT.id, fpsp::FINGERPRINT},
+            {indv::FINGERPRINT.id, indv::FINGERPRINT},
             {strn::FINGERPRINT.id, strn::FINGERPRINT},
             {subr::FINGERPRINT.id, subr::FINGERPRINT},
     };

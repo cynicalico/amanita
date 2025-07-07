@@ -41,7 +41,7 @@ The Mycology column indicates whether an extension is tested in Mycology.
 |      ❌      |    ✅     | IIPC | `0x49495043`  |          RCS           | Inter IP communicaiton extension        |
 |      ❌      |    ✅     | IMAP | `0x494D4150`  |          RCS           | Instruction remap extension             |
 |      ❌      |    ❌     | IMTH | `0x494d5448`  |          RCS           | Some integer math functions             |
-|      ❌      |    ✅     | INDV | `0x494E4456`  |          RCS           | Pointer functions                       |
+|      ✅      |    ✅     | INDV | `0x494E4456`  |          RCS           | Pointer functions                       |
 |      ❌      |    ❌     | IPMD | `0x49504d44`  |          RCS           | IP dimension modes                      |
 |      ❌      |    ❌     | LONG | `0x4c4f4e47`  |          RCS           | Long Integers                           |
 |      ❌      |    ❌     | MACR | `0x4d414352`  |          RCS           | Macro Extension                         |
