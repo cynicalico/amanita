@@ -11,6 +11,22 @@ This interpreter's handprint is `0x4e495441` ("NITA")
 
 See output of `amanita --help`
 
+## Archival
+
+There is not much of a community for this language out there anymore. As a result there is a *lot* of link rot.
+
+The major implementation where the majority of fingerprints come from, Rc/Funge, has been abandoned and no longer has a
+functional website (GitHub user kronosta has created an archive of the source
+code [here](https://github.com/kronosta/rcfunge/tree/main)).
+
+To help with this, I have included the complete [Funge-98 specification](docs/funge98.md) and [ERRATA](docs/errata.md)
+document. The original documents are still available [here](https://catseye.tc/view/funge-98/doc/funge98.markdown) if
+desired, though there's no telling for how many more years this will be true.
+
+Additionally, all fingerprint specifications I could find are located [here](docs/fingerprints.md). Where the links are
+still active, I have included them. For all RCS fingerprints, I have not included a link, though one could be added to
+the internet archive similar to what [esolangs.org](https://esolangs.org/wiki/Funge-98#Fingerprints) has done.
+
 ## TODO
 
 - [x] CLI arguments and ENV variables (`y`)
@@ -31,35 +47,9 @@ See output of `amanita --help`
         - [ ] Colorize instructions
         - [ ] Editing
 
-## Available Fingerprints (names link to documentation)
+## Fingerprints
 
-### Cat's Eye
-
-| Name                                                                                                        | ID           | Description                            |
-|-------------------------------------------------------------------------------------------------------------|--------------|----------------------------------------|
-| [`HRTI`](https://web.archive.org/web/20250124201720/https://catseye.tc/view/Funge-98/library/HRTI.markdown) | `0x48525449` | High-Resolution Timer Interface        |
-| [`MODE`](https://web.archive.org/web/20250525000331/https://catseye.tc/view/funge-98/library/MODE.markdown) | `0x4d4f4445` | Funge-98 Standard Modes                |
-| [`MODU`](https://web.archive.org/web/20250523022748/https://catseye.tc/view/funge-98/library/MODU.markdown) | `0x4d4f4455` | Modulo Arithmetic Extension            |
-| [`NULL`](https://web.archive.org/web/20250124201817/https://catseye.tc/view/Funge-98/library/NULL.markdown) | `0x4e554c4c` | Funge-98 Null Fingerprint              |
-| [`ORTH`](https://web.archive.org/web/20250124201940/https://catseye.tc/view/funge-98/library/ORTH.markdown) | `0x4f525448` | Orthogonal Easement Library            |
-| [`PERL`](https://web.archive.org/web/20250124201940/https://catseye.tc/view/funge-98/library/PERL.markdown) | `0x5045524c` | Generic Interface to the Perl Language |
-| [`REFC`](https://web.archive.org/web/20250124201827/https://catseye.tc/view/Funge-98/library/REFC.markdown) | `0x52454643` | Referenced Cells Extension             |
-| [`ROMA`](https://web.archive.org/web/20250523145159/https://catseye.tc/view/funge-98/library/ROMA.markdown) | `0x524f4d41` | Funge-98 Roman Numerals                |
-| [`TOYS`](https://web.archive.org/web/20211201092300/https://catseye.tc/view/funge-98/library/TOYS.markdown) | `0x544f5953` | Funge-98 Standard Toys                 |
-
-### RCS
-
-| Name                                                                                            | ID           | Description                             |
-|-------------------------------------------------------------------------------------------------|--------------|-----------------------------------------|
-| [`CPLI`](https://web.archive.org/web/20230617132045/https://rcfunge98.com/rcsfingers.html#CPLI) | `0x43504c49` | Complex Integer extension               |
-| [`DIRF`](https://web.archive.org/web/20230617132045/https://rcfunge98.com/rcsfingers.html#DIRF) | `0x44495246` | Directory functions extension           |
-| [`EVAR`](https://web.archive.org/web/20230617132045/https://rcfunge98.com/rcsfingers.html#EVAR) | `0x45564152` | Environment variables extension         |
-| [`FILE`](https://web.archive.org/web/20230617132045/https://rcfunge98.com/rcsfingers.html#FILE) | `0x46494c45` | File I/O functions                      |
-| [`FING`](https://web.archive.org/web/20230617132045/https://rcfunge98.com/rcsfingers.html#FING) | `0x46494e47` | Operate on single fingerprint semantics |
-| [`FIXP`](https://web.archive.org/web/20230617132045/https://rcfunge98.com/rcsfingers.html#FIXP) | `0x46495850` | Some useful math functions              |
-| [`FPDP`](https://web.archive.org/web/20230617132045/https://rcfunge98.com/rcsfingers.html#FPDP) | `0x46504450` | Double precision floating point         |
-| [`FPSP`](https://web.archive.org/web/20230617132045/https://rcfunge98.com/rcsfingers.html#FPSP) | `0x46505350` | Single precision floating point         |
-| [`SUBR`](https://web.archive.org/web/20230617132045/https://rcfunge98.com/rcsfingers.html#SUBR) | `0x53554252` | Subroutine extension                    |
+See [docs/fingerprints.md](docs/fingerprints.md).
 
 ## Notable Implementation Details
 

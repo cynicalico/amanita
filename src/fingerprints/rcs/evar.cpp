@@ -16,7 +16,7 @@ InstructionAction evar::get(Fungespace &, InstructionPointer &ip) {
         for (; *c && i < name.size(); ++i, ++c)
             if (*c != name[i]) break;
 
-        // Didn't match, also move past the key if it did
+        // Move to next if it didn't match, move pointer past '=' if it did
         if (i != name.size() || (*c && *c++ != '=')) continue;
 
         // Read the value backwards
