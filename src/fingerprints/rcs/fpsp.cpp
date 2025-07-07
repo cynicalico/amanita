@@ -15,7 +15,7 @@ SpUnion pop(InstructionPointer &ip) {
     return u;
 }
 
-void push(InstructionPointer &ip, SpUnion u) { ip.stack.push(u.i); }
+void push(InstructionPointer &ip, SpUnion u) { ip.push(u.i); }
 } // namespace fpsp
 
 InstructionAction fpsp::add(Fungespace &, InstructionPointer &ip) {
@@ -104,7 +104,7 @@ InstructionAction fpsp::acos(Fungespace &, InstructionPointer &ip) {
 
 InstructionAction fpsp::ftoi(Fungespace &, InstructionPointer &ip) {
     const auto u = pop(ip);
-    ip.stack.push(static_cast<std::int32_t>(std::round(u.f)));
+    ip.push(static_cast<std::int32_t>(std::round(u.f)));
 
     return MoveAction{};
 }
@@ -171,7 +171,7 @@ InstructionAction fpsp::sqrt(Fungespace &, InstructionPointer &ip) {
 }
 
 InstructionAction fpsp::parse(Fungespace &, InstructionPointer &ip) {
-    const auto s = ip.stack.pop_0gnirts();
+    const auto s = ip.pop_0gnirts();
 
     try {
         SpUnion u;

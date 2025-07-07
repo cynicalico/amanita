@@ -171,7 +171,7 @@ InstructionAction fpdp::sqrt(Fungespace &, InstructionPointer &ip) {
 }
 
 InstructionAction fpdp::parse(Fungespace &, InstructionPointer &ip) {
-    const auto s = ip.stack.pop_0gnirts();
+    const auto s = ip.pop_0gnirts();
 
     try {
         DpUnion u;

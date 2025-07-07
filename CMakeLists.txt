@@ -55,6 +55,7 @@ add_executable(amanita
         include/fingerprints/rcs/fixp.hpp
         include/fingerprints/rcs/fpdp.hpp
         include/fingerprints/rcs/fpsp.hpp
+        include/fingerprints/rcs/strn.hpp
         include/fingerprints/rcs/subr.hpp
 
         src/fingerprints/catseye/hrti.cpp
@@ -74,6 +75,7 @@ add_executable(amanita
         src/fingerprints/rcs/fixp.cpp
         src/fingerprints/rcs/fpdp.cpp
         src/fingerprints/rcs/fpsp.cpp
+        src/fingerprints/rcs/strn.cpp
         src/fingerprints/rcs/subr.cpp
 
         thirdparty/argparse.hpp

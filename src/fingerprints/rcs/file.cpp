@@ -29,7 +29,7 @@ InstructionAction file::close(Fungespace &, InstructionPointer &ip) {
 }
 
 InstructionAction file::delete_(Fungespace &, InstructionPointer &ip) {
-    const auto filepath = ip.stack.pop_0gnirts();
+    const auto filepath = ip.pop_0gnirts();
 
     if (remove(filepath.c_str()) != 0) ip.reflect();
 
@@ -92,7 +92,7 @@ InstructionAction file::location(Fungespace &, InstructionPointer &ip) {
 }
 
 InstructionAction file::open(Fungespace &, InstructionPointer &ip) {
-    const auto filepath = ip.stack.pop_0gnirts();
+    const auto filepath = ip.pop_0gnirts();
     const auto m = ip.pop();
     const auto io_buffer_y = ip.pop();
     const auto io_buffer_x = ip.pop();
@@ -122,7 +122,7 @@ InstructionAction file::open(Fungespace &, InstructionPointer &ip) {
 }
 
 InstructionAction file::write_string(Fungespace &, InstructionPointer &ip) {
-    const auto s = ip.stack.pop_0gnirts();
+    const auto s = ip.pop_0gnirts();
     const auto h = ip.pop();
 
     auto &of = open_files();

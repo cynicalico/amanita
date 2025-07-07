@@ -1,4 +1,5 @@
 #include "instruction_pointer.hpp"
+#include <ranges>
 #include "fungespace.hpp"
 
 Cell next_ip_id() {
@@ -130,6 +131,21 @@ Vec InstructionPointer::pop_offset_vec() {
     v.y = stack.pop();
     v.x = stack.pop();
     return v + storage_offset;
+}
+
+std::string InstructionPointer::pop_0gnirts() {
+    std::string ret;
+    Cell c;
+    do {
+        c = pop();
+        if (c != 0) ret += static_cast<char>(c);
+    } while (c != 0);
+    return ret;
+}
+
+void InstructionPointer::push_0gnirts(const std::string &s) {
+    push('\0');
+    for (const auto &c: s | std::views::reverse) push(c);
 }
 
 void InstructionPointer::push(Cell v) { stack.push(v); }

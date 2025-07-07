@@ -26,6 +26,7 @@
 #include "fingerprints/rcs/fixp.hpp"
 #include "fingerprints/rcs/fpdp.hpp"
 #include "fingerprints/rcs/fpsp.hpp"
+#include "fingerprints/rcs/strn.hpp"
 #include "fingerprints/rcs/subr.hpp"
 
 const std::unordered_map<std::int64_t, const Fingerprint &> &registry() {
@@ -50,6 +51,7 @@ const std::unordered_map<std::int64_t, const Fingerprint &> &registry() {
             {fixp::FINGERPRINT.id, fixp::FINGERPRINT},
             {fpdp::FINGERPRINT.id, fpdp::FINGERPRINT},
             {fpsp::FINGERPRINT.id, fpsp::FINGERPRINT},
+            {strn::FINGERPRINT.id, strn::FINGERPRINT},
             {subr::FINGERPRINT.id, subr::FINGERPRINT},
     };
     return registry;
@@ -63,7 +65,7 @@ InstructionStack::InstructionStack() {
 InstructionAction InstructionStack::perform(Instruction ins, Fungespace &fungespace, InstructionPointer &ip) {
     if (ip.string_mode) {
         if (ins != Instruction::ToggleStringmode) {
-            ip.stack.push(static_cast<std::int64_t>(ins));
+            ip.push(static_cast<std::int64_t>(ins));
             return MoveAction{};
         }
     }

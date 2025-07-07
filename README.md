@@ -191,6 +191,20 @@ UNDEF: stack stack seems unaffected by queuemode
 UNDEF: E without M did not reflect
 ```
 
+#### STRN
+
+```
+UNDEF: 00L leaves 0 on stack
+UNDEF: "ooF"01-L reflects
+UNDEF: 00R leaves 0 on stack
+UNDEF: "ooF"01-R reflects
+UNDEF: 000M reflects
+UNDEF: "ooF"101-M reflects
+UNDEF: "ooF"01-1M reflects
+UNDEF: "ooF"42M reflects
+UNDEF: "ooF"24M leaves "o" on stack
+```
+
 #### TOYS
 
 ```

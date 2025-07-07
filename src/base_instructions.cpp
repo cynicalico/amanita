@@ -346,7 +346,7 @@ InstructionAction instruction_go_high(Fungespace &, InstructionPointer &ip) {
 }
 
 InstructionAction instruction_input_file(Fungespace &fungespace, InstructionPointer &ip) {
-    const auto filename = ip.stack.pop_0gnirts();
+    const auto filename = ip.pop_0gnirts();
     const auto flags = ip.pop();
     const auto v = ip.pop_offset_vec();
 
@@ -410,7 +410,7 @@ InstructionAction instruction_clear_stack(Fungespace &, InstructionPointer &ip) 
 }
 
 InstructionAction instruction_output_file(Fungespace &fungespace, InstructionPointer &ip) {
-    const auto filename = ip.stack.pop_0gnirts();
+    const auto filename = ip.pop_0gnirts();
     const auto flags = ip.pop();
     const auto v = ip.pop_offset_vec();
     const auto h = ip.pop();

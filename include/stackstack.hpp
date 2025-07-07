@@ -26,7 +26,6 @@ public:
     void push(Cell value);
     Cell peek() const;
     Cell pop();
-    std::string pop_0gnirts();
 
     std::size_t size() const;
     void clear();

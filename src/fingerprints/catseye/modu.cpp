@@ -2,8 +2,8 @@
 #include "instruction_pointer.hpp"
 
 InstructionAction modu::signed_result_modulo(Fungespace &, InstructionPointer &ip) {
-    const auto b = ip.stack.pop();
-    const auto a = ip.stack.pop();
+    const auto b = ip.pop();
+    const auto a = ip.pop();
     if (b == 0) {
         ip.push(0);
     } else {
@@ -16,15 +16,15 @@ InstructionAction modu::signed_result_modulo(Fungespace &, InstructionPointer &i
 }
 
 InstructionAction modu::sam_holden_unsigned_result_modulo(Fungespace &, InstructionPointer &ip) {
-    const auto b = std::abs(ip.stack.pop());
-    const auto a = std::abs(ip.stack.pop());
+    const auto b = std::abs(ip.pop());
+    const auto a = std::abs(ip.pop());
     ip.push(b == 0 ? 0 : a % b);
     return MoveAction{};
 }
 
 InstructionAction modu::c_language_integer_remainder(Fungespace &, InstructionPointer &ip) {
-    const auto b = ip.stack.pop();
-    const auto a = ip.stack.pop();
+    const auto b = ip.pop();
+    const auto a = ip.pop();
     ip.push(b == 0 ? 0 : a % b);
     return MoveAction{};
 }

@@ -21,16 +21,6 @@ Cell StackStack::peek() const {
 
 Cell StackStack::pop() { return pop_(toss); }
 
-std::string StackStack::pop_0gnirts() {
-    std::string ret;
-    Cell c;
-    do {
-        c = pop();
-        if (c != 0) ret += static_cast<char>(c);
-    } while (c != 0);
-    return ret;
-}
-
 std::size_t StackStack::size() const { return stacks[toss].size(); }
 
 void StackStack::clear() { stacks[toss].clear(); }

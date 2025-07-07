@@ -7,7 +7,7 @@
 extern char **environ;
 
 InstructionAction evar::get(Fungespace &, InstructionPointer &ip) {
-    const auto name = ip.stack.pop_0gnirts();
+    const auto name = ip.pop_0gnirts();
 
     for (char **current = environ; *current; ++current) {
         char *c = *current;
@@ -38,7 +38,7 @@ InstructionAction evar::count(Fungespace &, InstructionPointer &ip) {
 }
 
 InstructionAction evar::put(Fungespace &, InstructionPointer &ip) {
-    auto keyval = ip.stack.pop_0gnirts();
+    auto keyval = ip.pop_0gnirts();
 #if defined(MIZU_PLATFORM_WINDOWS)
     if (_putenv(keyval.c_str()) == -1) ip.reflect();
 #else

@@ -61,6 +61,8 @@ public:
     Cell pop();
     Vec pop_vec();
     Vec pop_offset_vec();
+    std::string pop_0gnirts();
+    void push_0gnirts(const std::string &s);
     void push(Cell v);
     void push_vec(Vec v);
 

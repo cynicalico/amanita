@@ -56,7 +56,7 @@ The Mycology column indicates whether an extension is tested in Mycology.
 |      ❌      |    ✅     | SOCK | `0x534F434B`  |          RCS           | tcp/ip socket extension                 |
 |      ❌      |    ❌     | SORT | `0x534f5254`  |          RCS           | Sorting Functions                       |
 |      ❌      |    ❌     | STCK | `0x5354434b`  |          RCS           | Stack Manipulation                      |
-|      ❌      |    ✅     | STRN | `0x5354524E`  |          RCS           | String functions                        |
+|      ✅      |    ✅     | STRN | `0x5354524E`  |          RCS           | String functions                        |
 |      ✅      |    ✅     | SUBR | `0x53554252`  |          RCS           | Subroutine extension                    |
 |      ❌      |    ✅     | TIME | `0x54494D45`  |          RCS           | Time and Date functions                 |
 |      ❌      |    ✅     | TERM | `0x5445524D`  |          RCS           | Terminal extension                      |
