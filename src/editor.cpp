@@ -66,7 +66,7 @@ Editor::Editor(mizu::Engine *engine, const std::filesystem::path &path, CliArgs 
 
     input.start_text_input();
 
-    ticker = mizu::Ticker(std::chrono::milliseconds(2));
+    ticker = mizu::Ticker(std::chrono::milliseconds(1));
     slow_ticker = mizu::Ticker(std::chrono::milliseconds(50));
     active_list.emplace_back(cli_args);
 
@@ -115,9 +115,9 @@ void Editor::draw_program() {
 
 
     glm::vec2 pos = {program_pos.x + PROGRAM_MARGIN, program_pos.y + PROGRAM_MARGIN};
-    for (std::int64_t y = viewport_pos.y; y < viewport_pos.y + ROWS; ++y) {
+    for (std::int64_t y = viewport_pos.y; y < viewport_pos.y + static_cast<std::int64_t>(ROWS); ++y) {
         std::string s = "";
-        for (std::int64_t x = viewport_pos.x; x < viewport_pos.x + COLS; ++x) {
+        for (std::int64_t x = viewport_pos.x; x < viewport_pos.x + static_cast<std::int64_t>(COLS); ++x) {
             const auto v = fungespace.get(x, y);
             // TODO: Display something other than a space
             if (v == '\0' || v == '\r' || v == '\n') s += ' ';
@@ -186,13 +186,13 @@ void Editor::draw_ip_info() {
         pos.y -= ip_info_char_size.y;
         add_line(active_list[0].hover_mode ? "true" : "false", true);
 
-        pos.y += ip_info_char_size.y;
-        add_line("Fingerprint Semantics", false);
-        for (std::size_t i = 0; i < 26; ++i) {
-            add_line(fmt::format("{}", static_cast<char>('A' + i)), false);
-            pos.y -= ip_info_char_size.y;
-            add_line(fmt::format("{}", active_list[0].instruction_stack.loaded_fingerprints[i].back()), true);
-        }
+        // pos.y += ip_info_char_size.y;
+        // add_line("Fingerprint Semantics", false);
+        // for (std::size_t i = 0; i < 26; ++i) {
+        //     add_line(fmt::format("{}", static_cast<char>('A' + i)), false);
+        //     pos.y -= ip_info_char_size.y;
+        //     add_line(fmt::format("{}", active_list[0].instruction_stack.loaded_fingerprints[i].back()), true);
+        // }
     }
 }
 

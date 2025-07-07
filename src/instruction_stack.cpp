@@ -16,7 +16,9 @@
 #include "fingerprints/catseye/refc.hpp"
 #include "fingerprints/catseye/roma.hpp"
 #include "fingerprints/catseye/toys.hpp"
+
 #include "fingerprints/rcs/cpli.hpp"
+#include "fingerprints/rcs/date.hpp"
 #include "fingerprints/rcs/dirf.hpp"
 #include "fingerprints/rcs/evar.hpp"
 #include "fingerprints/rcs/file.hpp"
@@ -40,6 +42,7 @@ const std::unordered_map<std::int64_t, const Fingerprint &> &registry() {
             {toys::FINGERPRINT.id, toys::FINGERPRINT},
             // RCS
             {cpli::FINGERPRINT.id, cpli::FINGERPRINT},
+            {date::FINGERPRINT.id, date::FINGERPRINT},
             {dirf::FINGERPRINT.id, dirf::FINGERPRINT},
             {evar::FINGERPRINT.id, evar::FINGERPRINT},
             {file::FINGERPRINT.id, file::FINGERPRINT},
@@ -103,12 +106,12 @@ bool InstructionStack::unload_fingerprint(const std::int64_t fingerprint) {
 }
 
 void InstructionStack::push(Instruction ins, InstructionFunc f) {
-    const std::size_t idx = static_cast<std::size_t>(ins);
+    const auto idx = static_cast<std::size_t>(ins);
     fns[idx].push_back(std::move(f));
 }
 
 InstructionFunc InstructionStack::pop(Instruction ins) {
-    const std::size_t idx = static_cast<std::size_t>(ins);
+    const auto idx = static_cast<std::size_t>(ins);
 
     if (fns[idx].empty()) return instruction_reflect;
 
@@ -118,7 +121,7 @@ InstructionFunc InstructionStack::pop(Instruction ins) {
 }
 
 InstructionFunc InstructionStack::peek(Instruction ins) {
-    const std::size_t idx = static_cast<std::size_t>(ins);
+    const auto idx = static_cast<std::size_t>(ins);
 
     if (fns[idx].empty()) return instruction_reflect;
 

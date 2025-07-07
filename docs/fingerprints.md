@@ -22,7 +22,7 @@ The Mycology column indicates whether an extension is tested in Mycology.
 |      ❌      |    ❌     | BOOL | `0x424F4F4C`  |          RCS           | Logic functions                         |
 |      ❌      |    ❌     | COPT | `0x434f5054`  |          RCS           | Command line arguments                  |
 |      ✅      |    ✅     | CPLI | `0x43504C49`  |          RCS           | Complex Integer extension               |
-|      ❌      |    ✅     | DATE | `0x44415445`  |          RCS           | Date Functions                          |
+|      ✅      |    ✅     | DATE | `0x44415445`  |          RCS           | Date Functions                          |
 |      ✅      |    ✅     | DIRF | `0x44495246`  |          RCS           | Directory functions extension           |
 |      ❌      |    ❌     | EMEM | `0x454d454d`  |          RCS           | Extended memory                         |
 |      ✅      |    ✅     | EVAR | `0x45564152`  |          RCS           | Environment variables extension         |
