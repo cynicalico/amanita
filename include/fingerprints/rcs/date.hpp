@@ -26,6 +26,7 @@ InstructionAction day_of_week(State &, Fungespace &, InstructionPointer &);
 InstructionAction day_of_year(State &, Fungespace &, InstructionPointer &);
 
 const Fingerprint SPEC{
+        .name = "DATE",
         .id = 0x44415445,
         .fns = {{Instruction::A, add_days},
                 {Instruction::C, julian_to_calendar},

@@ -29,6 +29,7 @@ InstructionAction get_vector(State &, Fungespace &, InstructionPointer &);
 InstructionAction put_vector(State &, Fungespace &, InstructionPointer &);
 
 const Fingerprint SPEC{
+        .name = "INDV",
         .id = 0x494E4456,
         .fns = {
                 {Instruction::G, get_number},

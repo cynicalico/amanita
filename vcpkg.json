@@ -4,38 +4,6 @@
   "builtin-baseline": "d6995a0cf3cafda5e9e52749fad075dd62bfd90c",
   "dependencies": [
     {
-      "name": "libflac",
-      "version>=": "1.5.0"
-    },
-    {
-      "name": "libogg",
-      "version>=": "1.3.5#2"
-    },
-    {
-      "name": "libusb",
-      "version>=": "1.0.27#2"
-    },
-    {
-      "name": "libvorbis",
-      "version>=": "1.3.7#4"
-    },
-    {
-      "name": "mp3lame",
-      "version>=": "3.100#15"
-    },
-    {
-      "name": "mpg123",
-      "version>=": "1.32.9#1"
-    },
-    {
-      "name": "opus",
-      "version>=": "1.5.2"
-    },
-    {
-      "name": "libpng",
-      "version>=": "1.6.46"
-    },
-    {
       "name": "freetype",
       "version>=": "2.13.3"
     }

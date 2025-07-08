@@ -51,6 +51,7 @@ InstructionAction exp(State &, Fungespace &, InstructionPointer &);
 InstructionAction pow(State &, Fungespace &, InstructionPointer &);
 
 const Fingerprint SPEC{
+        .name = "FPDP",
         .id = 0x46504450,
         .fns = {
                 {Instruction::A, add},  {Instruction::B, sin},   {Instruction::C, cos},   {Instruction::D, div},

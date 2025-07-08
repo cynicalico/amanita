@@ -21,6 +21,7 @@ InstructionAction sub(State &, Fungespace &, InstructionPointer &);
 InstructionAction abs(State &, Fungespace &, InstructionPointer &);
 
 const Fingerprint SPEC{
+        .name = "CPLI",
         .id = 0x43504c49,
         .fns = {
                 {Instruction::A, add},

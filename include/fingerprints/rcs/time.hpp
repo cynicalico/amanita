@@ -29,6 +29,7 @@ InstructionAction day_of_week(State &, Fungespace &, InstructionPointer &);
 InstructionAction year(State &, Fungespace &, InstructionPointer &);
 
 const Fingerprint SPEC{
+        .name = "TIME",
         .id = 0x54494D45,
         .fns = {
                 {Instruction::D, day},

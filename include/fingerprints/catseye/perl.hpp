@@ -29,6 +29,7 @@ InstructionAction eval(State &, Fungespace &, InstructionPointer &);
 InstructionAction int_eval(State &, Fungespace &, InstructionPointer &);
 
 const Fingerprint SPEC{
+        .name = "PERL",
         .id = 0x5045524c,
         .fns = {
                 {Instruction::S, shelled},

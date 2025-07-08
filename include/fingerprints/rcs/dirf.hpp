@@ -16,6 +16,7 @@ InstructionAction mkdir(State &, Fungespace &, InstructionPointer &);
 InstructionAction rmdir(State &, Fungespace &, InstructionPointer &);
 
 const Fingerprint SPEC{
+        .name = "DIRF",
         .id = 0x44495246,
         .fns = {
                 {Instruction::C, cd},

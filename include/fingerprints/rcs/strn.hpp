@@ -61,6 +61,7 @@ InstructionAction itoa(State &, Fungespace &, InstructionPointer &);
 InstructionAction atoi(State &, Fungespace &, InstructionPointer &);
 
 const Fingerprint SPEC{
+        .name = "STRN",
         .id = 0x5354524E,
         .fns = {
                 {Instruction::A, append},

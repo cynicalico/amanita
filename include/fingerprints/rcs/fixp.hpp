@@ -46,6 +46,7 @@ InstructionAction abs(State &, Fungespace &, InstructionPointer &);
 InstructionAction xor_(State &, Fungespace &, InstructionPointer &);
 
 const Fingerprint SPEC{
+        .name = "FIXP",
         .id = 0x46495850,
         .fns = {
                 {Instruction::A, and_},

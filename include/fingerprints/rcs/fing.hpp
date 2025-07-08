@@ -21,6 +21,7 @@ InstructionAction pop(State &, Fungespace &, InstructionPointer &);
 InstructionAction push(State &, Fungespace &, InstructionPointer &);
 
 const Fingerprint SPEC{
+        .name = "FING",
         .id = 0x46494e47,
         .fns = {
                 {Instruction::X, swap},

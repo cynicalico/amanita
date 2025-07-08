@@ -16,6 +16,7 @@ InstructionAction put(State &, Fungespace &, InstructionPointer &);
 InstructionAction get_nth(State &, Fungespace &, InstructionPointer &);
 
 const Fingerprint SPEC{
+        .name = "EVAR",
         .id = 0x45564152,
         .fns = {
                 {Instruction::G, get},

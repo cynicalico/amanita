@@ -42,6 +42,7 @@ InstructionAction set_relative_mode(State &, Fungespace &, InstructionPointer &)
 InstructionAction ret(State &, Fungespace &, InstructionPointer &);
 
 const Fingerprint SPEC{
+        .name = "SUBR",
         .id = 0x53554252,
         .fns = {
                 {Instruction::A, set_absolute_mode},
