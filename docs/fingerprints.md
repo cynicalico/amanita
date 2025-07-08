@@ -1,3 +1,5 @@
+### TODO: Spell Check, many of these specs have obvious (English) typos
+
 # Fingerprint Specifications
 
 This is a reference for all the Funge-98 specifications that I could find.
