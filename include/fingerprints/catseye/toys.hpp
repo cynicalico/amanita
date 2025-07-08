@@ -84,7 +84,7 @@
 
 #include "common.hpp"
 
-namespace toys {
+namespace fingerprints::toys {
 InstructionAction gable(Fungespace &, InstructionPointer &ip);
 InstructionAction pair_of_shoes(Fungespace &, InstructionPointer &ip);
 InstructionAction bracelet(Fungespace &, InstructionPointer &ip);
@@ -112,7 +112,7 @@ InstructionAction buried_treasure(Fungespace &, InstructionPointer &ip);
 InstructionAction slingshot(Fungespace &, InstructionPointer &ip);
 InstructionAction barn_door(Fungespace &, InstructionPointer &ip);
 
-const Fingerprint FINGERPRINT{
+const Fingerprint SPEC{
         .name = "TOYS",
         .id = 0x544f5953,
         .fns = {
@@ -143,6 +143,6 @@ const Fingerprint FINGERPRINT{
                 {Instruction::Y, slingshot},
                 {Instruction::Z, barn_door},
         }};
-} // namespace toys
+} // namespace fingerprints::toys
 
 #endif // AMANITA_TOYS_HPP

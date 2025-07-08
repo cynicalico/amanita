@@ -12,7 +12,7 @@
 
 #include "common.hpp"
 
-namespace cpli {
+namespace fingerprints::cpli {
 InstructionAction add(Fungespace &, InstructionPointer &ip);
 InstructionAction div(Fungespace &, InstructionPointer &ip);
 InstructionAction mul(Fungespace &, InstructionPointer &ip);
@@ -20,7 +20,7 @@ InstructionAction print(Fungespace &, InstructionPointer &ip);
 InstructionAction sub(Fungespace &, InstructionPointer &ip);
 InstructionAction abs(Fungespace &, InstructionPointer &ip);
 
-const Fingerprint FINGERPRINT{
+const Fingerprint SPEC{
         .id = 0x43504c49,
         .fns = {
                 {Instruction::A, add},
@@ -30,6 +30,6 @@ const Fingerprint FINGERPRINT{
                 {Instruction::S, sub},
                 {Instruction::V, abs},
         }};
-} // namespace cpli
+} // namespace fingerprints::cpli
 
 #endif // AMANITA_CPLI_HPP

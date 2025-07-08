@@ -29,39 +29,41 @@
 #include "fingerprints/rcs/indv.hpp"
 #include "fingerprints/rcs/strn.hpp"
 #include "fingerprints/rcs/subr.hpp"
+#include "fingerprints/rcs/time.hpp"
 
 const std::unordered_map<std::int64_t, const Fingerprint &> &registry() {
     static std::unordered_map<std::int64_t, const Fingerprint &> registry{
             // Cat's Eye
-            {hrti::FINGERPRINT.id, hrti::FINGERPRINT},
-            {mode::FINGERPRINT.id, mode::FINGERPRINT},
-            {modu::FINGERPRINT.id, modu::FINGERPRINT},
-            {null::FINGERPRINT.id, null::FINGERPRINT},
-            {orth::FINGERPRINT.id, orth::FINGERPRINT},
-            {perl::FINGERPRINT.id, perl::FINGERPRINT},
-            {refc::FINGERPRINT.id, refc::FINGERPRINT},
-            {roma::FINGERPRINT.id, roma::FINGERPRINT},
-            {toys::FINGERPRINT.id, toys::FINGERPRINT},
+            {fingerprints::hrti::SPEC.id, fingerprints::hrti::SPEC},
+            {fingerprints::mode::SPEC.id, fingerprints::mode::SPEC},
+            {fingerprints::modu::SPEC.id, fingerprints::modu::SPEC},
+            {fingerprints::null::SPEC.id, fingerprints::null::SPEC},
+            {fingerprints::orth::SPEC.id, fingerprints::orth::SPEC},
+            {fingerprints::perl::SPEC.id, fingerprints::perl::SPEC},
+            {fingerprints::refc::SPEC.id, fingerprints::refc::SPEC},
+            {fingerprints::roma::SPEC.id, fingerprints::roma::SPEC},
+            {fingerprints::toys::SPEC.id, fingerprints::toys::SPEC},
             // RCS
-            {cpli::FINGERPRINT.id, cpli::FINGERPRINT},
-            {date::FINGERPRINT.id, date::FINGERPRINT},
-            {dirf::FINGERPRINT.id, dirf::FINGERPRINT},
-            {evar::FINGERPRINT.id, evar::FINGERPRINT},
-            {file::FINGERPRINT.id, file::FINGERPRINT},
-            {fing::FINGERPRINT.id, fing::FINGERPRINT},
-            {fixp::FINGERPRINT.id, fixp::FINGERPRINT},
-            {fpdp::FINGERPRINT.id, fpdp::FINGERPRINT},
-            {fpsp::FINGERPRINT.id, fpsp::FINGERPRINT},
-            {indv::FINGERPRINT.id, indv::FINGERPRINT},
-            {strn::FINGERPRINT.id, strn::FINGERPRINT},
-            {subr::FINGERPRINT.id, subr::FINGERPRINT},
+            {fingerprints::cpli::SPEC.id, fingerprints::cpli::SPEC},
+            {fingerprints::date::SPEC.id, fingerprints::date::SPEC},
+            {fingerprints::dirf::SPEC.id, fingerprints::dirf::SPEC},
+            {fingerprints::evar::SPEC.id, fingerprints::evar::SPEC},
+            {fingerprints::file::SPEC.id, fingerprints::file::SPEC},
+            {fingerprints::fing::SPEC.id, fingerprints::fing::SPEC},
+            {fingerprints::fixp::SPEC.id, fingerprints::fixp::SPEC},
+            {fingerprints::fpdp::SPEC.id, fingerprints::fpdp::SPEC},
+            {fingerprints::fpsp::SPEC.id, fingerprints::fpsp::SPEC},
+            {fingerprints::indv::SPEC.id, fingerprints::indv::SPEC},
+            {fingerprints::strn::SPEC.id, fingerprints::strn::SPEC},
+            {fingerprints::subr::SPEC.id, fingerprints::subr::SPEC},
+            {fingerprints::time::SPEC.id, fingerprints::time::SPEC},
     };
     return registry;
 }
 
 InstructionStack::InstructionStack() {
     populate_default_fns_();
-    for (std::size_t i = 0; i < 26; ++i) loaded_fingerprints[i] = std::vector{"none"};
+    for (std::size_t i = 0; i < 26; ++i) loaded_fingerprints[i] = std::vector<const char *>();
 }
 
 InstructionAction InstructionStack::perform(Instruction ins, Fungespace &fungespace, InstructionPointer &ip) {
@@ -77,7 +79,6 @@ InstructionAction InstructionStack::perform(Instruction ins, Fungespace &fungesp
         return fns[static_cast<std::size_t>(Instruction::Reflect)].back()(fungespace, ip);
     }
 
-    // Can pop all A-Z instructions off with FING
     if (fns[static_cast<std::size_t>(ins)].empty())
         return fns[static_cast<std::size_t>(Instruction::Reflect)].back()(fungespace, ip);
     return fns[static_cast<std::size_t>(ins)].back()(fungespace, ip);
@@ -167,32 +168,6 @@ void InstructionStack::populate_default_fns_() {
     fns[static_cast<std::size_t>(Instruction::GoEast)].push_back(instruction_go_east);
     fns[static_cast<std::size_t>(Instruction::GoAway)].push_back(instruction_go_away);
     fns[static_cast<std::size_t>(Instruction::Stop)].push_back(instruction_stop);
-    fns[static_cast<std::size_t>(Instruction::A)].push_back(instruction_reflect);
-    fns[static_cast<std::size_t>(Instruction::B)].push_back(instruction_reflect);
-    fns[static_cast<std::size_t>(Instruction::C)].push_back(instruction_reflect);
-    fns[static_cast<std::size_t>(Instruction::D)].push_back(instruction_reflect);
-    fns[static_cast<std::size_t>(Instruction::E)].push_back(instruction_reflect);
-    fns[static_cast<std::size_t>(Instruction::F)].push_back(instruction_reflect);
-    fns[static_cast<std::size_t>(Instruction::G)].push_back(instruction_reflect);
-    fns[static_cast<std::size_t>(Instruction::H)].push_back(instruction_reflect);
-    fns[static_cast<std::size_t>(Instruction::I)].push_back(instruction_reflect);
-    fns[static_cast<std::size_t>(Instruction::J)].push_back(instruction_reflect);
-    fns[static_cast<std::size_t>(Instruction::K)].push_back(instruction_reflect);
-    fns[static_cast<std::size_t>(Instruction::L)].push_back(instruction_reflect);
-    fns[static_cast<std::size_t>(Instruction::M)].push_back(instruction_reflect);
-    fns[static_cast<std::size_t>(Instruction::N)].push_back(instruction_reflect);
-    fns[static_cast<std::size_t>(Instruction::O)].push_back(instruction_reflect);
-    fns[static_cast<std::size_t>(Instruction::P)].push_back(instruction_reflect);
-    fns[static_cast<std::size_t>(Instruction::Q)].push_back(instruction_reflect);
-    fns[static_cast<std::size_t>(Instruction::R)].push_back(instruction_reflect);
-    fns[static_cast<std::size_t>(Instruction::S)].push_back(instruction_reflect);
-    fns[static_cast<std::size_t>(Instruction::T)].push_back(instruction_reflect);
-    fns[static_cast<std::size_t>(Instruction::U)].push_back(instruction_reflect);
-    fns[static_cast<std::size_t>(Instruction::V)].push_back(instruction_reflect);
-    fns[static_cast<std::size_t>(Instruction::W)].push_back(instruction_reflect);
-    fns[static_cast<std::size_t>(Instruction::X)].push_back(instruction_reflect);
-    fns[static_cast<std::size_t>(Instruction::Y)].push_back(instruction_reflect);
-    fns[static_cast<std::size_t>(Instruction::Z)].push_back(instruction_reflect);
     fns[static_cast<std::size_t>(Instruction::TurnLeft)].push_back(instruction_turn_left);
     fns[static_cast<std::size_t>(Instruction::Swap)].push_back(instruction_swap);
     fns[static_cast<std::size_t>(Instruction::TurnRight)].push_back(instruction_turn_right);

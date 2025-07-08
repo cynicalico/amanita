@@ -28,7 +28,7 @@
 
 #include "common.hpp"
 
-namespace file {
+namespace fingerprints::file {
 InstructionAction close(Fungespace &, InstructionPointer &ip);
 InstructionAction delete_(Fungespace &, InstructionPointer &ip);
 InstructionAction read_string(Fungespace &, InstructionPointer &ip);
@@ -39,7 +39,7 @@ InstructionAction read_bytes(Fungespace &, InstructionPointer &ip);
 InstructionAction seek(Fungespace &, InstructionPointer &ip);
 InstructionAction write_bytes(Fungespace &, InstructionPointer &ip);
 
-const Fingerprint FINGERPRINT{
+const Fingerprint SPEC{
         .name = "FILE",
         .id = 0x46494C45,
         .fns = {
@@ -53,6 +53,6 @@ const Fingerprint FINGERPRINT{
                 {Instruction::S, seek},
                 {Instruction::W, write_bytes},
         }};
-} // namespace file
+} // namespace fingerprints::file
 
 #endif // AMANITA_FILE_HPP

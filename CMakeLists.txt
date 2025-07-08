@@ -58,6 +58,7 @@ add_executable(amanita
         include/fingerprints/rcs/indv.hpp
         include/fingerprints/rcs/strn.hpp
         include/fingerprints/rcs/subr.hpp
+        include/fingerprints/rcs/time.hpp
 
         src/fingerprints/catseye/hrti.cpp
         src/fingerprints/catseye/mode.cpp
@@ -79,6 +80,7 @@ add_executable(amanita
         src/fingerprints/rcs/indv.cpp
         src/fingerprints/rcs/strn.cpp
         src/fingerprints/rcs/subr.cpp
+        src/fingerprints/rcs/time.cpp
 
         thirdparty/argparse.hpp
         thirdparty/subprocess.h

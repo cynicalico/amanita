@@ -17,7 +17,7 @@
 
 #include "common.hpp"
 
-namespace roma {
+namespace fingerprints::roma {
 InstructionAction push_100(Fungespace &, InstructionPointer &ip);
 InstructionAction push_500(Fungespace &, InstructionPointer &ip);
 InstructionAction push_1(Fungespace &, InstructionPointer &ip);
@@ -26,7 +26,7 @@ InstructionAction push_1000(Fungespace &, InstructionPointer &ip);
 InstructionAction push_5(Fungespace &, InstructionPointer &ip);
 InstructionAction push_10(Fungespace &, InstructionPointer &ip);
 
-const static Fingerprint FINGERPRINT{
+const static Fingerprint SPEC{
         .name = "ROMA",
         .id = 0x524f4d41,
         .fns = {
@@ -38,8 +38,6 @@ const static Fingerprint FINGERPRINT{
                 {Instruction::V, push_5},
                 {Instruction::X, push_10},
         }};
-} // namespace roma
-
-// constexpr std::int64_t ROMA = 0x524f4d41;
+} // namespace fingerprints::roma
 
 #endif // AMANITA_ROMA_HPP

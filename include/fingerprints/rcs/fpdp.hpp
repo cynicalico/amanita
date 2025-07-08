@@ -27,7 +27,7 @@
 
 #include "common.hpp"
 
-namespace fpdp {
+namespace fingerprints::fpdp {
 InstructionAction add(Fungespace &, InstructionPointer &ip);
 InstructionAction sin(Fungespace &, InstructionPointer &ip);
 InstructionAction cos(Fungespace &, InstructionPointer &ip);
@@ -50,7 +50,7 @@ InstructionAction abs(Fungespace &, InstructionPointer &ip);
 InstructionAction exp(Fungespace &, InstructionPointer &ip);
 InstructionAction pow(Fungespace &, InstructionPointer &ip);
 
-const Fingerprint FINGERPRINT{
+const Fingerprint SPEC{
         .id = 0x46504450,
         .fns = {
                 {Instruction::A, add},  {Instruction::B, sin},   {Instruction::C, cos},   {Instruction::D, div},
@@ -60,6 +60,6 @@ const Fingerprint FINGERPRINT{
                 {Instruction::S, sub},  {Instruction::T, tan},   {Instruction::V, abs},   {Instruction::X, exp},
                 {Instruction::Y, pow},
         }};
-} // namespace fpdp
+} // namespace fingerprints::fpdp
 
 #endif // AMANITA_FPDP_HPP

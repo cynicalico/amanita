@@ -23,18 +23,18 @@
 
 #include "common.hpp"
 
-namespace perl {
+namespace fingerprints::perl {
 InstructionAction shelled(Fungespace &, InstructionPointer &ip);
 InstructionAction eval(Fungespace &, InstructionPointer &ip);
 InstructionAction int_eval(Fungespace &, InstructionPointer &ip);
 
-const Fingerprint FINGERPRINT{
+const Fingerprint SPEC{
         .id = 0x5045524c,
         .fns = {
                 {Instruction::S, shelled},
                 {Instruction::E, eval},
                 {Instruction::I, int_eval},
         }};
-} // namespace perl
+} // namespace fingerprints::perl
 
 #endif // AMANITA_PERL_HPP

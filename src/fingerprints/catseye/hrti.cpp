@@ -8,17 +8,17 @@ using Clock = steady_clock;
 
 std::unordered_map<Id, Clock::time_point> &marks();
 
-InstructionAction hrti::granularity(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::hrti::granularity(Fungespace &, InstructionPointer &ip) {
     ip.push(1);
     return MoveAction{};
 }
 
-InstructionAction hrti::mark(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::hrti::mark(Fungespace &, InstructionPointer &ip) {
     marks()[ip.id] = Clock::now();
     return MoveAction{};
 }
 
-InstructionAction hrti::timer(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::hrti::timer(Fungespace &, InstructionPointer &ip) {
     auto m = marks();
     if (const auto it = m.find(ip.id); it != m.end()) {
         const auto elapsed = Clock::now() - it->second;
@@ -29,12 +29,12 @@ InstructionAction hrti::timer(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction hrti::erase_mark(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::hrti::erase_mark(Fungespace &, InstructionPointer &ip) {
     marks().erase(ip.id);
     return MoveAction{};
 }
 
-InstructionAction hrti::second(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::hrti::second(Fungespace &, InstructionPointer &ip) {
     const auto now = Clock::now();
     const auto last_second = std::chrono::floor<seconds>(now);
     const auto elapsed = now - last_second;

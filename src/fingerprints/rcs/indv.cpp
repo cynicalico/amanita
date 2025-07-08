@@ -13,7 +13,7 @@ Vec pop_pointer(Fungespace &fungespace, InstructionPointer &ip) {
     return p;
 }
 
-InstructionAction indv::get_number(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction fingerprints::indv::get_number(Fungespace &fungespace, InstructionPointer &ip) {
     const auto p = pop_pointer(fungespace, ip);
 
     ip.push(fungespace.get(p.x, p.y));
@@ -21,7 +21,7 @@ InstructionAction indv::get_number(Fungespace &fungespace, InstructionPointer &i
     return MoveAction{};
 }
 
-InstructionAction indv::put_number(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction fingerprints::indv::put_number(Fungespace &fungespace, InstructionPointer &ip) {
     const auto p = pop_pointer(fungespace, ip);
     const auto n = ip.pop();
 
@@ -30,7 +30,7 @@ InstructionAction indv::put_number(Fungespace &fungespace, InstructionPointer &i
     return MoveAction{};
 }
 
-InstructionAction indv::get_vector(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction fingerprints::indv::get_vector(Fungespace &fungespace, InstructionPointer &ip) {
     auto p = pop_pointer(fungespace, ip);
 
     p.x += 1;
@@ -40,7 +40,7 @@ InstructionAction indv::get_vector(Fungespace &fungespace, InstructionPointer &i
     return MoveAction{};
 }
 
-InstructionAction indv::put_vector(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction fingerprints::indv::put_vector(Fungespace &fungespace, InstructionPointer &ip) {
     auto p = pop_pointer(fungespace, ip);
     const auto v = ip.pop_vec();
 

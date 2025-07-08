@@ -21,13 +21,13 @@
 
 #include "common.hpp"
 
-namespace mode {
+namespace fingerprints::mode {
 InstructionAction toggle_hovermode(Fungespace &, InstructionPointer &ip);
 InstructionAction toggle_invertmode(Fungespace &, InstructionPointer &ip);
 InstructionAction toggle_queuemode(Fungespace &, InstructionPointer &ip);
 InstructionAction toggle_switchmode(Fungespace &, InstructionPointer &ip);
 
-const Fingerprint FINGERPRINT{
+const Fingerprint SPEC{
         .name = "MODE",
         .id = 0x4d4f4445,
         .fns = {
@@ -36,6 +36,6 @@ const Fingerprint FINGERPRINT{
                 {Instruction::Q, toggle_queuemode},
                 {Instruction::S, toggle_switchmode},
         }};
-} // namespace mode
+} // namespace fingerprints::mode
 
 #endif // AMANITA_MODE_HPP

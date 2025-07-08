@@ -3,7 +3,7 @@
 #include <fmt/format.h>
 #include "instruction_pointer.hpp"
 
-InstructionAction cpli::add(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::cpli::add(Fungespace &, InstructionPointer &ip) {
     const auto bi = ip.pop();
     const auto br = ip.pop();
     const auto ai = ip.pop();
@@ -13,7 +13,7 @@ InstructionAction cpli::add(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction cpli::div(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::cpli::div(Fungespace &, InstructionPointer &ip) {
     const auto bi = ip.pop();
     const auto br = ip.pop();
     const auto ai = ip.pop();
@@ -24,7 +24,7 @@ InstructionAction cpli::div(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction cpli::mul(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::cpli::mul(Fungespace &, InstructionPointer &ip) {
     const auto bi = ip.pop();
     const auto br = ip.pop();
     const auto ai = ip.pop();
@@ -34,14 +34,14 @@ InstructionAction cpli::mul(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction cpli::print(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::cpli::print(Fungespace &, InstructionPointer &ip) {
     const auto i = ip.pop();
     const auto r = ip.pop();
     fmt::print("{}{}{}i ", r, i < 0 ? "-" : "+", std::abs(i));
     return MoveAction{};
 }
 
-InstructionAction cpli::sub(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::cpli::sub(Fungespace &, InstructionPointer &ip) {
     const auto bi = ip.pop();
     const auto br = ip.pop();
     const auto ai = ip.pop();
@@ -51,7 +51,7 @@ InstructionAction cpli::sub(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction cpli::abs(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::cpli::abs(Fungespace &, InstructionPointer &ip) {
     const auto i = ip.pop();
     const auto r = ip.pop();
     ip.push(std::sqrt(r * r + i * i));

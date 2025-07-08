@@ -2,7 +2,7 @@
 #include <fmt/format.h>
 #include "instruction_pointer.hpp"
 
-namespace fpsp {
+namespace fingerprints::fpsp {
 union SpUnion {
     float f;
     std::int32_t i;
@@ -16,9 +16,9 @@ SpUnion pop(InstructionPointer &ip) {
 }
 
 void push(InstructionPointer &ip, SpUnion u) { ip.push(u.i); }
-} // namespace fpsp
+} // namespace fingerprints::fpsp
 
-InstructionAction fpsp::add(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::add(Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const float b = u.f;
     u = pop(ip);
@@ -30,7 +30,7 @@ InstructionAction fpsp::add(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction fpsp::sin(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::sin(Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const float a = u.f;
 
@@ -40,7 +40,7 @@ InstructionAction fpsp::sin(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction fpsp::cos(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::cos(Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const float a = u.f;
 
@@ -50,7 +50,7 @@ InstructionAction fpsp::cos(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction fpsp::div(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::div(Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const float b = u.f;
     u = pop(ip);
@@ -62,7 +62,7 @@ InstructionAction fpsp::div(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction fpsp::asin(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::asin(Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const float a = u.f;
 
@@ -72,7 +72,7 @@ InstructionAction fpsp::asin(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction fpsp::itof(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::itof(Fungespace &, InstructionPointer &ip) {
     const auto i = static_cast<std::int32_t>(ip.pop());
 
     SpUnion u;
@@ -82,7 +82,7 @@ InstructionAction fpsp::itof(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction fpsp::atan(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::atan(Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const float a = u.f;
 
@@ -92,7 +92,7 @@ InstructionAction fpsp::atan(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction fpsp::acos(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::acos(Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const float a = u.f;
 
@@ -102,14 +102,14 @@ InstructionAction fpsp::acos(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction fpsp::ftoi(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::ftoi(Fungespace &, InstructionPointer &ip) {
     const auto u = pop(ip);
     ip.push(static_cast<std::int32_t>(std::round(u.f)));
 
     return MoveAction{};
 }
 
-InstructionAction fpsp::ln(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::ln(Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const float a = u.f;
 
@@ -119,7 +119,7 @@ InstructionAction fpsp::ln(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction fpsp::log10(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::log10(Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const float a = u.f;
 
@@ -129,7 +129,7 @@ InstructionAction fpsp::log10(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction fpsp::mul(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::mul(Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const float b = u.f;
     u = pop(ip);
@@ -141,7 +141,7 @@ InstructionAction fpsp::mul(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction fpsp::neg(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::neg(Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const float a = u.f;
 
@@ -151,7 +151,7 @@ InstructionAction fpsp::neg(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction fpsp::print(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::print(Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const float a = u.f;
 
@@ -160,7 +160,7 @@ InstructionAction fpsp::print(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction fpsp::sqrt(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::sqrt(Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const float a = u.f;
 
@@ -170,7 +170,7 @@ InstructionAction fpsp::sqrt(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction fpsp::parse(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::parse(Fungespace &, InstructionPointer &ip) {
     const auto s = ip.pop_0gnirts();
 
     try {
@@ -182,7 +182,7 @@ InstructionAction fpsp::parse(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction fpsp::sub(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::sub(Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const float b = u.f;
     u = pop(ip);
@@ -194,7 +194,7 @@ InstructionAction fpsp::sub(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction fpsp::tan(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::tan(Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const float a = u.f;
 
@@ -204,7 +204,7 @@ InstructionAction fpsp::tan(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction fpsp::abs(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::abs(Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const float a = u.f;
 
@@ -214,7 +214,7 @@ InstructionAction fpsp::abs(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction fpsp::exp(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::exp(Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const float a = u.f;
 
@@ -224,7 +224,7 @@ InstructionAction fpsp::exp(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction fpsp::pow(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::pow(Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const float b = u.f;
     u = pop(ip);

@@ -22,13 +22,13 @@
 
 #include "common.hpp"
 
-namespace indv {
+namespace fingerprints::indv {
 InstructionAction get_number(Fungespace &, InstructionPointer &ip);
 InstructionAction put_number(Fungespace &, InstructionPointer &ip);
 InstructionAction get_vector(Fungespace &, InstructionPointer &ip);
 InstructionAction put_vector(Fungespace &, InstructionPointer &ip);
 
-const Fingerprint FINGERPRINT{
+const Fingerprint SPEC{
         .id = 0x494E4456,
         .fns = {
                 {Instruction::G, get_number},
@@ -36,6 +36,6 @@ const Fingerprint FINGERPRINT{
                 {Instruction::V, get_vector},
                 {Instruction::W, put_vector},
         }};
-} // namespace indv
+} // namespace fingerprints::indv
 
 #endif // AMANITA_INDV_HPP

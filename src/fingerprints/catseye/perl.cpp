@@ -6,12 +6,12 @@
 #include "instruction_pointer.hpp"
 #include "subprocess.h"
 
-InstructionAction perl::shelled(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::perl::shelled(Fungespace &, InstructionPointer &ip) {
     ip.push(1);
     return MoveAction{};
 }
 
-InstructionAction perl::eval(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::perl::eval(Fungespace &, InstructionPointer &ip) {
     const auto s = ip.pop_0gnirts();
 
     std::stringstream ss2;
@@ -47,7 +47,7 @@ InstructionAction perl::eval(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction perl::int_eval(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::perl::int_eval(Fungespace &, InstructionPointer &ip) {
     const auto s = ip.pop_0gnirts();
 
     std::stringstream ss2;
@@ -78,7 +78,7 @@ InstructionAction perl::int_eval(Fungespace &, InstructionPointer &ip) {
     subprocess_destroy(&subp);
 
     try {
-        const auto i = std::stoi(out);
+        const auto i = std::stoll(out);
         ip.push(i);
     } catch (const std::exception &) { ip.reflect(); }
 

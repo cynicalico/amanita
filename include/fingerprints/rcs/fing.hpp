@@ -15,19 +15,19 @@
 
 #include "common.hpp"
 
-namespace fing {
+namespace fingerprints::fing {
 InstructionAction swap(Fungespace &, InstructionPointer &ip);
 InstructionAction pop(Fungespace &, InstructionPointer &ip);
 InstructionAction push(Fungespace &, InstructionPointer &ip);
 
-const Fingerprint FINGERPRINT{
+const Fingerprint SPEC{
         .id = 0x46494e47,
         .fns = {
                 {Instruction::X, swap},
                 {Instruction::Y, pop},
                 {Instruction::Z, push},
         }};
-} // namespace fing
+} // namespace fingerprints::fing
 
 
 #endif // AMANITA_FING_HPP

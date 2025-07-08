@@ -16,7 +16,7 @@ std::unordered_map<Cell, File> &open_files();
 const char *get_funge_file_mode(Cell m);
 int get_funge_seek_origin(Cell m);
 
-InstructionAction file::close(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::file::close(Fungespace &, InstructionPointer &ip) {
     const auto h = ip.pop();
 
     auto &of = open_files();
@@ -28,7 +28,7 @@ InstructionAction file::close(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction file::delete_(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::file::delete_(Fungespace &, InstructionPointer &ip) {
     const auto filepath = ip.pop_0gnirts();
 
     if (remove(filepath.c_str()) != 0) ip.reflect();
@@ -36,7 +36,7 @@ InstructionAction file::delete_(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction file::read_string(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::file::read_string(Fungespace &, InstructionPointer &ip) {
     const auto h = ip.pop();
 
     auto &of = open_files();
@@ -69,7 +69,7 @@ InstructionAction file::read_string(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction file::location(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::file::location(Fungespace &, InstructionPointer &ip) {
     const auto h = ip.pop();
 
     auto &of = open_files();
@@ -91,7 +91,7 @@ InstructionAction file::location(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction file::open(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::file::open(Fungespace &, InstructionPointer &ip) {
     const auto filepath = ip.pop_0gnirts();
     const auto m = ip.pop();
     const auto io_buffer_y = ip.pop();
@@ -121,7 +121,7 @@ InstructionAction file::open(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction file::write_string(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::file::write_string(Fungespace &, InstructionPointer &ip) {
     const auto s = ip.pop_0gnirts();
     const auto h = ip.pop();
 
@@ -137,7 +137,7 @@ InstructionAction file::write_string(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction file::read_bytes(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction fingerprints::file::read_bytes(Fungespace &fungespace, InstructionPointer &ip) {
     const auto n = ip.pop();
     const auto h = ip.pop();
 
@@ -165,7 +165,7 @@ InstructionAction file::read_bytes(Fungespace &fungespace, InstructionPointer &i
     return MoveAction{};
 }
 
-InstructionAction file::seek(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::file::seek(Fungespace &, InstructionPointer &ip) {
     const auto n = ip.pop();
     const auto m = ip.pop();
     const auto h = ip.pop();
@@ -186,7 +186,7 @@ InstructionAction file::seek(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction file::write_bytes(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction fingerprints::file::write_bytes(Fungespace &fungespace, InstructionPointer &ip) {
     const auto n = ip.pop();
     const auto h = ip.pop();
 

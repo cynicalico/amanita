@@ -3,7 +3,7 @@
 #include "fungespace.hpp"
 #include "instruction_pointer.hpp"
 
-InstructionAction strn::append(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::strn::append(Fungespace &, InstructionPointer &ip) {
     const auto s2 = ip.pop_0gnirts();
     const auto s1 = ip.pop_0gnirts();
 
@@ -12,7 +12,7 @@ InstructionAction strn::append(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction strn::compare(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::strn::compare(Fungespace &, InstructionPointer &ip) {
     const auto s2 = ip.pop_0gnirts();
     const auto s1 = ip.pop_0gnirts();
 
@@ -21,7 +21,7 @@ InstructionAction strn::compare(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction strn::display(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::strn::display(Fungespace &, InstructionPointer &ip) {
     const auto s = ip.pop_0gnirts();
 
     fmt::print("{}", s);
@@ -29,7 +29,7 @@ InstructionAction strn::display(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction strn::search(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::strn::search(Fungespace &, InstructionPointer &ip) {
     const auto s2 = ip.pop_0gnirts();
     const auto s1 = ip.pop_0gnirts();
 
@@ -39,7 +39,7 @@ InstructionAction strn::search(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction strn::get(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction fingerprints::strn::get(Fungespace &fungespace, InstructionPointer &ip) {
     auto va = ip.pop_offset_vec();
 
     std::string s;
@@ -55,7 +55,7 @@ InstructionAction strn::get(Fungespace &fungespace, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction strn::input(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::strn::input(Fungespace &, InstructionPointer &ip) {
     std::string s;
     int c;
     do {
@@ -68,7 +68,7 @@ InstructionAction strn::input(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction strn::leftmost(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::strn::leftmost(Fungespace &, InstructionPointer &ip) {
     const auto n = ip.pop();
     const auto s = ip.pop_0gnirts();
 
@@ -79,7 +79,7 @@ InstructionAction strn::leftmost(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction strn::substr(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::strn::substr(Fungespace &, InstructionPointer &ip) {
     const auto n = ip.pop();
     const auto start = ip.pop();
     const auto s = ip.pop_0gnirts();
@@ -92,7 +92,7 @@ InstructionAction strn::substr(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction strn::length(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::strn::length(Fungespace &, InstructionPointer &ip) {
     const auto s = ip.pop_0gnirts();
 
     ip.push_0gnirts(s);
@@ -101,7 +101,7 @@ InstructionAction strn::length(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction strn::put(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction fingerprints::strn::put(Fungespace &fungespace, InstructionPointer &ip) {
     auto va = ip.pop_offset_vec();
     const auto s = ip.pop_0gnirts();
 
@@ -114,7 +114,7 @@ InstructionAction strn::put(Fungespace &fungespace, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction strn::rightmost(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::strn::rightmost(Fungespace &, InstructionPointer &ip) {
     const auto n = ip.pop();
     const auto s = ip.pop_0gnirts();
 
@@ -126,7 +126,7 @@ InstructionAction strn::rightmost(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction strn::itoa(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::strn::itoa(Fungespace &, InstructionPointer &ip) {
     const auto n = ip.pop();
 
     ip.push_0gnirts(std::to_string(n));
@@ -134,7 +134,7 @@ InstructionAction strn::itoa(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction strn::atoi(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::strn::atoi(Fungespace &, InstructionPointer &ip) {
     const auto s = ip.pop_0gnirts();
 
     try {

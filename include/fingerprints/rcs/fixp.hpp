@@ -27,7 +27,7 @@
 
 #include "common.hpp"
 
-namespace fixp {
+namespace fingerprints::fixp {
 InstructionAction and_(Fungespace &, InstructionPointer &ip);
 InstructionAction acos(Fungespace &, InstructionPointer &ip);
 InstructionAction cos(Fungespace &, InstructionPointer &ip);
@@ -45,7 +45,7 @@ InstructionAction atan(Fungespace &, InstructionPointer &ip);
 InstructionAction abs(Fungespace &, InstructionPointer &ip);
 InstructionAction xor_(Fungespace &, InstructionPointer &ip);
 
-const Fingerprint FINGERPRINT{
+const Fingerprint SPEC{
         .id = 0x46495850,
         .fns = {
                 {Instruction::A, and_},
@@ -65,6 +65,6 @@ const Fingerprint FINGERPRINT{
                 {Instruction::V, abs},
                 {Instruction::X, xor_},
         }};
-} // namespace fixp
+} // namespace fingerprints::fixp
 
 #endif // AMANITA_FIXP_HPP

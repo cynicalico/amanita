@@ -9,13 +9,13 @@
 
 #include "common.hpp"
 
-namespace evar {
+namespace fingerprints::evar {
 InstructionAction get(Fungespace &, InstructionPointer &ip);
 InstructionAction count(Fungespace &, InstructionPointer &ip);
 InstructionAction put(Fungespace &, InstructionPointer &ip);
 InstructionAction get_nth(Fungespace &, InstructionPointer &ip);
 
-const Fingerprint FINGERPRINT{
+const Fingerprint SPEC{
         .id = 0x45564152,
         .fns = {
                 {Instruction::G, get},
@@ -23,6 +23,6 @@ const Fingerprint FINGERPRINT{
                 {Instruction::P, put},
                 {Instruction::V, get_nth},
         }};
-} // namespace evar
+} // namespace fingerprints::evar
 
 #endif // AMANITA_EVAR_HPP

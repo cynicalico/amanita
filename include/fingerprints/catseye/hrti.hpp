@@ -22,14 +22,14 @@
 
 #include "common.hpp"
 
-namespace hrti {
+namespace fingerprints::hrti {
 InstructionAction granularity(Fungespace &, InstructionPointer &ip);
 InstructionAction mark(Fungespace &, InstructionPointer &ip);
 InstructionAction timer(Fungespace &, InstructionPointer &ip);
 InstructionAction erase_mark(Fungespace &, InstructionPointer &ip);
 InstructionAction second(Fungespace &, InstructionPointer &ip);
 
-const Fingerprint FINGERPRINT{
+const Fingerprint SPEC{
         .name = "HRTI",
         .id = 0x48525449,
         .fns = {
@@ -39,6 +39,6 @@ const Fingerprint FINGERPRINT{
                 {Instruction::E, erase_mark},
                 {Instruction::S, second},
         }};
-} // namespace hrti
+} // namespace fingerprints::hrti
 
 #endif // AMANITA_HRTI_HPP

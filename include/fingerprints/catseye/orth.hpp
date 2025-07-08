@@ -46,7 +46,7 @@
 
 #include "common.hpp"
 
-namespace orth {
+namespace fingerprints::orth {
 InstructionAction bitwise_and(Fungespace &, InstructionPointer &ip);
 InstructionAction bitwise_or(Fungespace &, InstructionPointer &ip);
 InstructionAction bitwise_exor(Fungespace &, InstructionPointer &ip);
@@ -59,7 +59,7 @@ InstructionAction ortho_put(Fungespace &, InstructionPointer &ip);
 InstructionAction ramp_if_zero(Fungespace &, InstructionPointer &ip);
 InstructionAction output_string(Fungespace &, InstructionPointer &ip);
 
-const Fingerprint FINGERPRINT{
+const Fingerprint SPEC{
         .name = "ORTH",
         .id = 0x4f525448,
         .fns = {
@@ -75,6 +75,6 @@ const Fingerprint FINGERPRINT{
                 {Instruction::Z, ramp_if_zero},
                 {Instruction::S, output_string},
         }};
-} // namespace orth
+} // namespace fingerprints::orth
 
 #endif // AMANITA_ORTH_HPP

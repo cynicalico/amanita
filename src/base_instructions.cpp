@@ -532,8 +532,7 @@ InstructionAction instruction_get_sysinfo(const Fungespace &fungespace, Instruct
     buf.push(fungespace.max_coord.y - 1 + std::abs(fungespace.min_coord.y));
     buf.push(fungespace.max_coord.x - 1 + std::abs(fungespace.min_coord.x));
 
-    const std::chrono::system_clock::time_point now_utc = std::chrono::system_clock::now();
-    const std::chrono::time_point now = std::chrono::current_zone()->to_local(now_utc);
+    const auto now = std::chrono::current_zone()->to_local(std::chrono::system_clock::now());
     const std::chrono::year_month_day ymd{std::chrono::floor<std::chrono::days>(now)};
     const std::chrono::hh_mm_ss hms{now - std::chrono::floor<std::chrono::days>(now)};
     const auto year = static_cast<int>(ymd.year());

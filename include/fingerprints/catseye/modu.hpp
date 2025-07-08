@@ -14,12 +14,12 @@
 
 #include "common.hpp"
 
-namespace modu {
+namespace fingerprints::modu {
 InstructionAction signed_result_modulo(Fungespace &, InstructionPointer &ip);
 InstructionAction sam_holden_unsigned_result_modulo(Fungespace &, InstructionPointer &ip);
 InstructionAction c_language_integer_remainder(Fungespace &, InstructionPointer &ip);
 
-const Fingerprint FINGERPRINT{
+const Fingerprint SPEC{
         .name = "MODU",
         .id = 0x4d4f4455,
         .fns = {
@@ -27,6 +27,6 @@ const Fingerprint FINGERPRINT{
                 {Instruction::U, sam_holden_unsigned_result_modulo},
                 {Instruction::R, c_language_integer_remainder},
         }};
-} // namespace modu
+} // namespace fingerprints::modu
 
 #endif // AMANITA_MODU_HPP

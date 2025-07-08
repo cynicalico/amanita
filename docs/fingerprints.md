@@ -58,7 +58,7 @@ The Mycology column indicates whether an extension is tested in Mycology.
 |      ❌      |    ❌     | STCK | `0x5354434b`  |          RCS           | Stack Manipulation                      |
 |      ✅      |    ✅     | STRN | `0x5354524E`  |          RCS           | String functions                        |
 |      ✅      |    ✅     | SUBR | `0x53554252`  |          RCS           | Subroutine extension                    |
-|      ❌      |    ✅     | TIME | `0x54494D45`  |          RCS           | Time and Date functions                 |
+|      ✅      |    ✅     | TIME | `0x54494D45`  |          RCS           | Time and Date functions                 |
 |      ❌      |    ✅     | TERM | `0x5445524D`  |          RCS           | Terminal extension                      |
 |      ❌      |    ✅     | TRDS | `0x54524453`  |          RCS           | IP travel in time and space             |
 |      ❌      |    ❌     | TRGR | `0x54524752`  |          RCS           | Triggers                                |

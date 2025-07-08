@@ -34,14 +34,14 @@
 
 #include "common.hpp"
 
-namespace subr {
+namespace fingerprints::subr {
 InstructionAction set_absolute_mode(Fungespace &, InstructionPointer &ip);
 InstructionAction call(Fungespace &, InstructionPointer &ip);
 InstructionAction jump(Fungespace &, InstructionPointer &ip);
 InstructionAction set_relative_mode(Fungespace &, InstructionPointer &ip);
 InstructionAction ret(Fungespace &, InstructionPointer &ip);
 
-const Fingerprint FINGERPRINT{
+const Fingerprint SPEC{
         .id = 0x53554252,
         .fns = {
                 {Instruction::A, set_absolute_mode},
@@ -50,6 +50,6 @@ const Fingerprint FINGERPRINT{
                 {Instruction::O, set_relative_mode},
                 {Instruction::R, ret},
         }};
-} // namespace subr
+} // namespace fingerprints::subr
 
 #endif // AMANITA_SUBR_HPP

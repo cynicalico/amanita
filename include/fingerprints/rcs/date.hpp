@@ -16,7 +16,7 @@
 
 #include "common.hpp"
 
-namespace date {
+namespace fingerprints::date {
 InstructionAction add_days(Fungespace &, InstructionPointer &ip);
 InstructionAction julian_to_calendar(Fungespace &, InstructionPointer &ip);
 InstructionAction days_difference(Fungespace &, InstructionPointer &ip);
@@ -25,7 +25,7 @@ InstructionAction yd_to_ymd(Fungespace &, InstructionPointer &ip);
 InstructionAction day_of_week(Fungespace &, InstructionPointer &ip);
 InstructionAction day_of_year(Fungespace &, InstructionPointer &ip);
 
-const Fingerprint FINGERPRINT{
+const Fingerprint SPEC{
         .id = 0x44415445,
         .fns = {{Instruction::A, add_days},
                 {Instruction::C, julian_to_calendar},
@@ -34,6 +34,6 @@ const Fingerprint FINGERPRINT{
                 {Instruction::T, yd_to_ymd},
                 {Instruction::W, day_of_week},
                 {Instruction::Y, day_of_year}}};
-} // namespace date
+} // namespace fingerprints::date
 
 #endif // AMANITA_DATE_HPP

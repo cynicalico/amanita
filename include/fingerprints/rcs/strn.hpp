@@ -45,7 +45,7 @@
 
 #include "common.hpp"
 
-namespace strn {
+namespace fingerprints::strn {
 InstructionAction append(Fungespace &, InstructionPointer &ip);
 InstructionAction compare(Fungespace &, InstructionPointer &ip);
 InstructionAction display(Fungespace &, InstructionPointer &ip);
@@ -60,7 +60,7 @@ InstructionAction rightmost(Fungespace &, InstructionPointer &ip);
 InstructionAction itoa(Fungespace &, InstructionPointer &ip);
 InstructionAction atoi(Fungespace &, InstructionPointer &ip);
 
-const Fingerprint FINGERPRINT{
+const Fingerprint SPEC{
         .id = 0x5354524E,
         .fns = {
                 {Instruction::A, append},
@@ -77,6 +77,6 @@ const Fingerprint FINGERPRINT{
                 {Instruction::S, itoa},
                 {Instruction::V, atoi},
         }};
-} // namespace strn
+} // namespace fingerprints::strn
 
 #endif // AMANITA_STRN_HPP
