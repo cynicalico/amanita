@@ -55,6 +55,7 @@ add_executable(amanita
         include/fingerprints/rcs/fixp.hpp
         include/fingerprints/rcs/fpdp.hpp
         include/fingerprints/rcs/fpsp.hpp
+        include/fingerprints/rcs/frth.hpp
         include/fingerprints/rcs/indv.hpp
         include/fingerprints/rcs/sock.hpp
         include/fingerprints/rcs/strn.hpp
@@ -78,6 +79,7 @@ add_executable(amanita
         src/fingerprints/rcs/fixp.cpp
         src/fingerprints/rcs/fpdp.cpp
         src/fingerprints/rcs/fpsp.cpp
+        src/fingerprints/rcs/frth.cpp
         src/fingerprints/rcs/indv.cpp
         src/fingerprints/rcs/sock.cpp
         src/fingerprints/rcs/strn.cpp
