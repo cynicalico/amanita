@@ -10,6 +10,11 @@
 #include <variant>
 #include <vector>
 #include "instructions.hpp"
+#include "mizu/util/platform.hpp"
+
+#if defined(MIZU_PLATFORM_WINDOWS)
+#include <winsock2.h>
+#endif
 
 /*********
  * TYPES *
@@ -106,8 +111,8 @@ struct State {
     } refc;
 
     struct File { // For FILE
-        Vec io_buffer_pos;
-        FILE *f;
+        Vec io_buffer_pos{ZERO};
+        FILE *f{nullptr};
     };
 
     struct {
@@ -117,6 +122,19 @@ struct State {
     struct {
         bool utc{false};
     } time;
+
+#if defined(MIZU_PLATFORM_WINDOWS)
+    struct Socket {
+        addrinfo hints{};
+        SOCKET h{INVALID_SOCKET};
+    };
+
+    struct {
+        bool initialized{false};
+        WSADATA wsa_data{};
+        std::unordered_map<std::int64_t, Socket> sockets{};
+    } sock;
+#endif
 };
 
 /***********************

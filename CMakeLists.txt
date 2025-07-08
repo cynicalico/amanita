@@ -56,6 +56,7 @@ add_executable(amanita
         include/fingerprints/rcs/fpdp.hpp
         include/fingerprints/rcs/fpsp.hpp
         include/fingerprints/rcs/indv.hpp
+        include/fingerprints/rcs/sock.hpp
         include/fingerprints/rcs/strn.hpp
         include/fingerprints/rcs/subr.hpp
         include/fingerprints/rcs/time.hpp
@@ -78,6 +79,7 @@ add_executable(amanita
         src/fingerprints/rcs/fpdp.cpp
         src/fingerprints/rcs/fpsp.cpp
         src/fingerprints/rcs/indv.cpp
+        src/fingerprints/rcs/sock.cpp
         src/fingerprints/rcs/strn.cpp
         src/fingerprints/rcs/subr.cpp
         src/fingerprints/rcs/time.cpp
@@ -91,7 +93,8 @@ add_executable(amanita
 target_compile_features(amanita PRIVATE cxx_std_23)
 
 if (WIN32)
-    target_compile_options(amanita PUBLIC /utf-8 /W4)
+    target_compile_definitions(amanita PRIVATE WIN32_LEAN_AND_MEAN NOMINMAX)
+    target_compile_options(amanita PRIVATE /utf-8 /W4)
 endif ()
 
 target_include_directories(amanita PRIVATE include thirdparty)
