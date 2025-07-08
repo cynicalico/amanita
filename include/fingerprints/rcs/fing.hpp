@@ -16,9 +16,9 @@
 #include "common.hpp"
 
 namespace fingerprints::fing {
-InstructionAction swap(Fungespace &, InstructionPointer &ip);
-InstructionAction pop(Fungespace &, InstructionPointer &ip);
-InstructionAction push(Fungespace &, InstructionPointer &ip);
+InstructionAction swap(State &, Fungespace &, InstructionPointer &);
+InstructionAction pop(State &, Fungespace &, InstructionPointer &);
+InstructionAction push(State &, Fungespace &, InstructionPointer &);
 
 const Fingerprint SPEC{
         .id = 0x46494e47,

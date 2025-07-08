@@ -2,7 +2,7 @@
 #include <chrono>
 #include "instruction_pointer.hpp"
 
-InstructionAction fingerprints::date::add_days(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::date::add_days(State &, Fungespace &, InstructionPointer &ip) {
     using namespace std;
     using namespace chrono;
 
@@ -30,7 +30,7 @@ InstructionAction fingerprints::date::add_days(Fungespace &, InstructionPointer 
     return MoveAction{};
 }
 
-InstructionAction fingerprints::date::julian_to_calendar(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::date::julian_to_calendar(State &, Fungespace &, InstructionPointer &ip) {
     using namespace std;
     using namespace chrono;
 
@@ -49,7 +49,7 @@ InstructionAction fingerprints::date::julian_to_calendar(Fungespace &, Instructi
     return MoveAction{};
 }
 
-InstructionAction fingerprints::date::days_difference(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::date::days_difference(State &, Fungespace &, InstructionPointer &ip) {
     using namespace std;
     using namespace chrono;
 
@@ -76,7 +76,7 @@ InstructionAction fingerprints::date::days_difference(Fungespace &, InstructionP
     return MoveAction{};
 }
 
-InstructionAction fingerprints::date::calendar_to_julian(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::date::calendar_to_julian(State &, Fungespace &, InstructionPointer &ip) {
     using namespace std;
     using namespace chrono;
 
@@ -101,7 +101,7 @@ InstructionAction fingerprints::date::calendar_to_julian(Fungespace &, Instructi
     return MoveAction{};
 }
 
-InstructionAction fingerprints::date::yd_to_ymd(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::date::yd_to_ymd(State &, Fungespace &, InstructionPointer &ip) {
     using namespace std;
     using namespace chrono;
 
@@ -124,7 +124,7 @@ InstructionAction fingerprints::date::yd_to_ymd(Fungespace &, InstructionPointer
     return MoveAction{};
 }
 
-InstructionAction fingerprints::date::day_of_week(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::date::day_of_week(State &, Fungespace &, InstructionPointer &ip) {
     using namespace std;
     using namespace chrono;
 
@@ -141,7 +141,7 @@ InstructionAction fingerprints::date::day_of_week(Fungespace &, InstructionPoint
     return MoveAction{};
 }
 
-InstructionAction fingerprints::date::day_of_year(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::date::day_of_year(State &, Fungespace &, InstructionPointer &ip) {
     using namespace std;
     using namespace chrono;
 

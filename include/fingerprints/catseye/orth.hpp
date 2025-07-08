@@ -47,17 +47,17 @@
 #include "common.hpp"
 
 namespace fingerprints::orth {
-InstructionAction bitwise_and(Fungespace &, InstructionPointer &ip);
-InstructionAction bitwise_or(Fungespace &, InstructionPointer &ip);
-InstructionAction bitwise_exor(Fungespace &, InstructionPointer &ip);
-InstructionAction change_x(Fungespace &, InstructionPointer &ip);
-InstructionAction change_y(Fungespace &, InstructionPointer &ip);
-InstructionAction change_dx(Fungespace &, InstructionPointer &ip);
-InstructionAction change_dy(Fungespace &, InstructionPointer &ip);
-InstructionAction ortho_get(Fungespace &, InstructionPointer &ip);
-InstructionAction ortho_put(Fungespace &, InstructionPointer &ip);
-InstructionAction ramp_if_zero(Fungespace &, InstructionPointer &ip);
-InstructionAction output_string(Fungespace &, InstructionPointer &ip);
+InstructionAction bitwise_and(State &, Fungespace &, InstructionPointer &);
+InstructionAction bitwise_or(State &, Fungespace &, InstructionPointer &);
+InstructionAction bitwise_exor(State &, Fungespace &, InstructionPointer &);
+InstructionAction change_x(State &, Fungespace &, InstructionPointer &);
+InstructionAction change_y(State &, Fungespace &, InstructionPointer &);
+InstructionAction change_dx(State &, Fungespace &, InstructionPointer &);
+InstructionAction change_dy(State &, Fungespace &, InstructionPointer &);
+InstructionAction ortho_get(State &, Fungespace &, InstructionPointer &);
+InstructionAction ortho_put(State &, Fungespace &, InstructionPointer &);
+InstructionAction ramp_if_zero(State &, Fungespace &, InstructionPointer &);
+InstructionAction output_string(State &, Fungespace &, InstructionPointer &);
 
 const Fingerprint SPEC{
         .name = "ORTH",

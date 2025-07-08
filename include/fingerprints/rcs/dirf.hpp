@@ -11,9 +11,9 @@
 #include "common.hpp"
 
 namespace fingerprints::dirf {
-InstructionAction cd(Fungespace &, InstructionPointer &ip);
-InstructionAction mkdir(Fungespace &, InstructionPointer &ip);
-InstructionAction rmdir(Fungespace &, InstructionPointer &ip);
+InstructionAction cd(State &, Fungespace &, InstructionPointer &);
+InstructionAction mkdir(State &, Fungespace &, InstructionPointer &);
+InstructionAction rmdir(State &, Fungespace &, InstructionPointer &);
 
 const Fingerprint SPEC{
         .id = 0x44495246,

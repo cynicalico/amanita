@@ -5,14 +5,14 @@
 
 // TODO: Refactor to use ip.pop_vec/ip.pop_offset_vec
 
-InstructionAction fingerprints::toys::gable(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::toys::gable(State &, Fungespace &, InstructionPointer &ip) {
     const auto n = ip.pop();
     const auto v = ip.pop();
     for (Index i = 0; i < n; ++i) ip.push(v);
     return MoveAction{};
 }
 
-InstructionAction fingerprints::toys::pair_of_shoes(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::toys::pair_of_shoes(State &, Fungespace &, InstructionPointer &ip) {
     const auto b = ip.pop();
     const auto a = ip.pop();
     ip.push(a + b);
@@ -20,7 +20,7 @@ InstructionAction fingerprints::toys::pair_of_shoes(Fungespace &, InstructionPoi
     return MoveAction{};
 }
 
-InstructionAction fingerprints::toys::bracelet(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction fingerprints::toys::bracelet(State &, Fungespace &fungespace, InstructionPointer &ip) {
     const auto dst_y_orig = ip.pop();
     const auto dst_x_orig = ip.pop();
     const auto h = ip.pop();
@@ -43,19 +43,19 @@ InstructionAction fingerprints::toys::bracelet(Fungespace &fungespace, Instructi
     return MoveAction{};
 }
 
-InstructionAction fingerprints::toys::toilet_seat(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::toys::toilet_seat(State &, Fungespace &, InstructionPointer &ip) {
     ip.push(ip.pop() - 1);
     return MoveAction{};
 }
 
-InstructionAction fingerprints::toys::pitchfork_head(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::toys::pitchfork_head(State &, Fungespace &, InstructionPointer &ip) {
     Cell sum = 0;
     while (ip.stack.size() > 0) sum += ip.pop();
     ip.push(sum);
     return MoveAction{};
 }
 
-InstructionAction fingerprints::toys::calipers(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction fingerprints::toys::calipers(State &, Fungespace &fungespace, InstructionPointer &ip) {
     const auto y = ip.pop() + ip.storage_offset.y;
     const auto x = ip.pop() + ip.storage_offset.x;
     const auto j = ip.pop();
@@ -67,7 +67,7 @@ InstructionAction fingerprints::toys::calipers(Fungespace &fungespace, Instructi
     return MoveAction{};
 }
 
-InstructionAction fingerprints::toys::counterclockwise(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction fingerprints::toys::counterclockwise(State &, Fungespace &fungespace, InstructionPointer &ip) {
     const auto y = ip.pop() + ip.storage_offset.y;
     const auto x = ip.pop() + ip.storage_offset.x;
     const auto j = ip.pop();
@@ -79,7 +79,7 @@ InstructionAction fingerprints::toys::counterclockwise(Fungespace &fungespace, I
     return MoveAction{};
 }
 
-InstructionAction fingerprints::toys::pair_of_stilts(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::toys::pair_of_stilts(State &, Fungespace &, InstructionPointer &ip) {
     const auto b = ip.pop();
     const auto a = ip.pop();
     if (b > 0) ip.push(a << b);
@@ -88,12 +88,12 @@ InstructionAction fingerprints::toys::pair_of_stilts(Fungespace &, InstructionPo
     return MoveAction{};
 }
 
-InstructionAction fingerprints::toys::doric_column(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::toys::doric_column(State &, Fungespace &, InstructionPointer &ip) {
     ip.push(ip.pop() + 1);
     return MoveAction{};
 }
 
-InstructionAction fingerprints::toys::fishhook(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction fingerprints::toys::fishhook(State &, Fungespace &fungespace, InstructionPointer &ip) {
     if (const auto trans = ip.pop(); trans < 0) {
         const auto y_start = fungespace.min_coord.y;
         const auto y_end = fungespace.max_coord.y;
@@ -113,7 +113,7 @@ InstructionAction fingerprints::toys::fishhook(Fungespace &fungespace, Instructi
     return MoveAction{};
 }
 
-InstructionAction fingerprints::toys::scissors(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction fingerprints::toys::scissors(State &, Fungespace &fungespace, InstructionPointer &ip) {
     const auto dst_y_orig = ip.pop();
     const auto dst_x_orig = ip.pop();
     const auto h = ip.pop();
@@ -136,7 +136,7 @@ InstructionAction fingerprints::toys::scissors(Fungespace &fungespace, Instructi
     return MoveAction{};
 }
 
-InstructionAction fingerprints::toys::corner(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction fingerprints::toys::corner(State &, Fungespace &fungespace, InstructionPointer &ip) {
     ip.save_pos();
     ip.save_delta();
 
@@ -150,7 +150,7 @@ InstructionAction fingerprints::toys::corner(Fungespace &fungespace, Instruction
     return MoveAction{};
 }
 
-InstructionAction fingerprints::toys::kittycat(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction fingerprints::toys::kittycat(State &, Fungespace &fungespace, InstructionPointer &ip) {
     const auto dst_y_orig = ip.pop();
     const auto dst_x_orig = ip.pop();
     const auto h = ip.pop();
@@ -174,12 +174,12 @@ InstructionAction fingerprints::toys::kittycat(Fungespace &fungespace, Instructi
     return MoveAction{};
 }
 
-InstructionAction fingerprints::toys::lightning_bolt(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::toys::lightning_bolt(State &, Fungespace &, InstructionPointer &ip) {
     ip.push(-ip.pop());
     return MoveAction{};
 }
 
-InstructionAction fingerprints::toys::boulder(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction fingerprints::toys::boulder(State &, Fungespace &fungespace, InstructionPointer &ip) {
     if (const auto trans = ip.pop(); trans < 0) {
         const auto x_start = fungespace.min_coord.x;
         const auto x_end = fungespace.max_coord.x;
@@ -199,14 +199,14 @@ InstructionAction fingerprints::toys::boulder(Fungespace &fungespace, Instructio
     return MoveAction{};
 }
 
-InstructionAction fingerprints::toys::mailbox(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::toys::mailbox(State &, Fungespace &, InstructionPointer &ip) {
     Cell prod = 1;
     while (ip.stack.size() > 0) prod *= ip.pop();
     ip.push(prod);
     return MoveAction{};
 }
 
-InstructionAction fingerprints::toys::necklace(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction fingerprints::toys::necklace(State &, Fungespace &fungespace, InstructionPointer &ip) {
     const auto v = ip.pop();
 
     ip.save_pos();
@@ -222,7 +222,7 @@ InstructionAction fingerprints::toys::necklace(Fungespace &fungespace, Instructi
     return MoveAction{};
 }
 
-InstructionAction fingerprints::toys::can_opener(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction fingerprints::toys::can_opener(State &, Fungespace &fungespace, InstructionPointer &ip) {
     ip.save_pos();
     ip.save_delta();
 
@@ -236,7 +236,7 @@ InstructionAction fingerprints::toys::can_opener(Fungespace &fungespace, Instruc
     return MoveAction{};
 }
 
-InstructionAction fingerprints::toys::chicane(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction fingerprints::toys::chicane(State &, Fungespace &fungespace, InstructionPointer &ip) {
     const auto y = ip.pop() + ip.storage_offset.y;
     const auto x = ip.pop() + ip.storage_offset.x;
     const auto h = ip.pop();
@@ -249,14 +249,14 @@ InstructionAction fingerprints::toys::chicane(Fungespace &fungespace, Instructio
     return MoveAction{};
 }
 
-InstructionAction fingerprints::toys::barstool(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction fingerprints::toys::barstool(State &state, Fungespace &fungespace, InstructionPointer &ip) {
     switch (ip.pop()) {
     case 0:
-        return ip.instruction_stack.perform(Instruction::EastWestIf, fungespace, ip);
+        return ip.instruction_stack.perform(Instruction::EastWestIf, state, fungespace, ip);
     case 1:
-        return ip.instruction_stack.perform(Instruction::NorthSouthIf, fungespace, ip);
+        return ip.instruction_stack.perform(Instruction::NorthSouthIf, state, fungespace, ip);
     case 2:
-        return ip.instruction_stack.perform(Instruction::Compare, fungespace, ip);
+        return ip.instruction_stack.perform(Instruction::Compare, state, fungespace, ip);
     default:
         ip.reflect();
         break;
@@ -265,23 +265,23 @@ InstructionAction fingerprints::toys::barstool(Fungespace &fungespace, Instructi
     return MoveAction{};
 }
 
-InstructionAction fingerprints::toys::tumbler(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction fingerprints::toys::tumbler(State &state, Fungespace &fungespace, InstructionPointer &ip) {
     switch (mizu::rng::get<std::size_t>(3)) {
     case 0:
         fungespace.put(ip.pos.x, ip.pos.y, static_cast<Cell>(Instruction::GoSouth));
-        ip.instruction_stack.perform(Instruction::GoSouth, fungespace, ip);
+        ip.instruction_stack.perform(Instruction::GoSouth, state, fungespace, ip);
         break;
     case 1:
         fungespace.put(ip.pos.x, ip.pos.y, static_cast<Cell>(Instruction::GoEast));
-        ip.instruction_stack.perform(Instruction::GoEast, fungespace, ip);
+        ip.instruction_stack.perform(Instruction::GoEast, state, fungespace, ip);
         break;
     case 2:
         fungespace.put(ip.pos.x, ip.pos.y, static_cast<Cell>(Instruction::GoNorth));
-        ip.instruction_stack.perform(Instruction::GoNorth, fungespace, ip);
+        ip.instruction_stack.perform(Instruction::GoNorth, state, fungespace, ip);
         break;
     case 3:
         fungespace.put(ip.pos.x, ip.pos.y, static_cast<Cell>(Instruction::GoWest));
-        ip.instruction_stack.perform(Instruction::GoWest, fungespace, ip);
+        ip.instruction_stack.perform(Instruction::GoWest, state, fungespace, ip);
         break;
     default:
         std::unreachable();
@@ -289,7 +289,7 @@ InstructionAction fingerprints::toys::tumbler(Fungespace &fungespace, Instructio
     return MoveAction{};
 }
 
-InstructionAction fingerprints::toys::dixiecup(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction fingerprints::toys::dixiecup(State &, Fungespace &fungespace, InstructionPointer &ip) {
     const auto dst_y_orig = ip.pop();
     const auto dst_x_orig = ip.pop();
     const auto h = ip.pop();
@@ -313,7 +313,7 @@ InstructionAction fingerprints::toys::dixiecup(Fungespace &fungespace, Instructi
     return MoveAction{};
 }
 
-InstructionAction fingerprints::toys::television_antenna(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction fingerprints::toys::television_antenna(State &, Fungespace &fungespace, InstructionPointer &ip) {
     const auto y = ip.pop();
     const auto x = ip.pop();
     const auto v = ip.pop();
@@ -332,17 +332,17 @@ InstructionAction fingerprints::toys::television_antenna(Fungespace &fungespace,
     return MoveAction{};
 }
 
-InstructionAction fingerprints::toys::buried_treasure(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::toys::buried_treasure(State &, Fungespace &, InstructionPointer &ip) {
     ip.pos.x += 1;
     return MoveAction{};
 }
 
-InstructionAction fingerprints::toys::slingshot(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::toys::slingshot(State &, Fungespace &, InstructionPointer &ip) {
     ip.pos.y += 1;
     return MoveAction{};
 }
 
-InstructionAction fingerprints::toys::barn_door(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::toys::barn_door(State &, Fungespace &, InstructionPointer &ip) {
     ip.reflect();
     return MoveAction{};
 }

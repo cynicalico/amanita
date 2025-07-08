@@ -22,10 +22,10 @@
 #include "common.hpp"
 
 namespace fingerprints::mode {
-InstructionAction toggle_hovermode(Fungespace &, InstructionPointer &ip);
-InstructionAction toggle_invertmode(Fungespace &, InstructionPointer &ip);
-InstructionAction toggle_queuemode(Fungespace &, InstructionPointer &ip);
-InstructionAction toggle_switchmode(Fungespace &, InstructionPointer &ip);
+InstructionAction toggle_hovermode(State &, Fungespace &, InstructionPointer &);
+InstructionAction toggle_invertmode(State &, Fungespace &, InstructionPointer &);
+InstructionAction toggle_queuemode(State &, Fungespace &, InstructionPointer &);
+InstructionAction toggle_switchmode(State &, Fungespace &, InstructionPointer &);
 
 const Fingerprint SPEC{
         .name = "MODE",

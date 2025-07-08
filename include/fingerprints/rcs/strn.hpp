@@ -46,19 +46,19 @@
 #include "common.hpp"
 
 namespace fingerprints::strn {
-InstructionAction append(Fungespace &, InstructionPointer &ip);
-InstructionAction compare(Fungespace &, InstructionPointer &ip);
-InstructionAction display(Fungespace &, InstructionPointer &ip);
-InstructionAction search(Fungespace &, InstructionPointer &ip);
-InstructionAction get(Fungespace &, InstructionPointer &ip);
-InstructionAction input(Fungespace &, InstructionPointer &ip);
-InstructionAction leftmost(Fungespace &, InstructionPointer &ip);
-InstructionAction substr(Fungespace &, InstructionPointer &ip);
-InstructionAction length(Fungespace &, InstructionPointer &ip);
-InstructionAction put(Fungespace &, InstructionPointer &ip);
-InstructionAction rightmost(Fungespace &, InstructionPointer &ip);
-InstructionAction itoa(Fungespace &, InstructionPointer &ip);
-InstructionAction atoi(Fungespace &, InstructionPointer &ip);
+InstructionAction append(State &, Fungespace &, InstructionPointer &);
+InstructionAction compare(State &, Fungespace &, InstructionPointer &);
+InstructionAction display(State &, Fungespace &, InstructionPointer &);
+InstructionAction search(State &, Fungespace &, InstructionPointer &);
+InstructionAction get(State &, Fungespace &, InstructionPointer &);
+InstructionAction input(State &, Fungespace &, InstructionPointer &);
+InstructionAction leftmost(State &, Fungespace &, InstructionPointer &);
+InstructionAction substr(State &, Fungespace &, InstructionPointer &);
+InstructionAction length(State &, Fungespace &, InstructionPointer &);
+InstructionAction put(State &, Fungespace &, InstructionPointer &);
+InstructionAction rightmost(State &, Fungespace &, InstructionPointer &);
+InstructionAction itoa(State &, Fungespace &, InstructionPointer &);
+InstructionAction atoi(State &, Fungespace &, InstructionPointer &);
 
 const Fingerprint SPEC{
         .id = 0x5354524E,

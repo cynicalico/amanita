@@ -9,7 +9,6 @@ Cell next_ip_id();
 
 class InstructionPointer {
 public:
-    CliArgs *cli_args{nullptr};
     Cell id{next_ip_id()};
 
     bool alive{true};
@@ -32,7 +31,7 @@ public:
     bool relative_mode{false};
     std::vector<Cell> call_stack{};
 
-    InstructionPointer(CliArgs *interpreter);
+    InstructionPointer() = default;
     ~InstructionPointer() = default;
 
     InstructionPointer(const InstructionPointer &other);

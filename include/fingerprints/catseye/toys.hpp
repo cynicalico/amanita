@@ -85,32 +85,32 @@
 #include "common.hpp"
 
 namespace fingerprints::toys {
-InstructionAction gable(Fungespace &, InstructionPointer &ip);
-InstructionAction pair_of_shoes(Fungespace &, InstructionPointer &ip);
-InstructionAction bracelet(Fungespace &, InstructionPointer &ip);
-InstructionAction toilet_seat(Fungespace &, InstructionPointer &ip);
-InstructionAction pitchfork_head(Fungespace &, InstructionPointer &ip);
-InstructionAction calipers(Fungespace &, InstructionPointer &ip);
-InstructionAction counterclockwise(Fungespace &, InstructionPointer &ip);
-InstructionAction pair_of_stilts(Fungespace &, InstructionPointer &ip);
-InstructionAction doric_column(Fungespace &, InstructionPointer &ip);
-InstructionAction fishhook(Fungespace &, InstructionPointer &ip);
-InstructionAction scissors(Fungespace &, InstructionPointer &ip);
-InstructionAction corner(Fungespace &, InstructionPointer &ip);
-InstructionAction kittycat(Fungespace &, InstructionPointer &ip);
-InstructionAction lightning_bolt(Fungespace &, InstructionPointer &ip);
-InstructionAction boulder(Fungespace &, InstructionPointer &ip);
-InstructionAction mailbox(Fungespace &, InstructionPointer &ip);
-InstructionAction necklace(Fungespace &, InstructionPointer &ip);
-InstructionAction can_opener(Fungespace &, InstructionPointer &ip);
-InstructionAction chicane(Fungespace &, InstructionPointer &ip);
-InstructionAction barstool(Fungespace &, InstructionPointer &ip);
-InstructionAction tumbler(Fungespace &, InstructionPointer &ip);
-InstructionAction dixiecup(Fungespace &, InstructionPointer &ip);
-InstructionAction television_antenna(Fungespace &, InstructionPointer &ip);
-InstructionAction buried_treasure(Fungespace &, InstructionPointer &ip);
-InstructionAction slingshot(Fungespace &, InstructionPointer &ip);
-InstructionAction barn_door(Fungespace &, InstructionPointer &ip);
+InstructionAction gable(State &, Fungespace &, InstructionPointer &);
+InstructionAction pair_of_shoes(State &, Fungespace &, InstructionPointer &);
+InstructionAction bracelet(State &, Fungespace &, InstructionPointer &);
+InstructionAction toilet_seat(State &, Fungespace &, InstructionPointer &);
+InstructionAction pitchfork_head(State &, Fungespace &, InstructionPointer &);
+InstructionAction calipers(State &, Fungespace &, InstructionPointer &);
+InstructionAction counterclockwise(State &, Fungespace &, InstructionPointer &);
+InstructionAction pair_of_stilts(State &, Fungespace &, InstructionPointer &);
+InstructionAction doric_column(State &, Fungespace &, InstructionPointer &);
+InstructionAction fishhook(State &, Fungespace &, InstructionPointer &);
+InstructionAction scissors(State &, Fungespace &, InstructionPointer &);
+InstructionAction corner(State &, Fungespace &, InstructionPointer &);
+InstructionAction kittycat(State &, Fungespace &, InstructionPointer &);
+InstructionAction lightning_bolt(State &, Fungespace &, InstructionPointer &);
+InstructionAction boulder(State &, Fungespace &, InstructionPointer &);
+InstructionAction mailbox(State &, Fungespace &, InstructionPointer &);
+InstructionAction necklace(State &, Fungespace &, InstructionPointer &);
+InstructionAction can_opener(State &, Fungespace &, InstructionPointer &);
+InstructionAction chicane(State &, Fungespace &, InstructionPointer &);
+InstructionAction barstool(State &, Fungespace &, InstructionPointer &);
+InstructionAction tumbler(State &, Fungespace &, InstructionPointer &);
+InstructionAction dixiecup(State &, Fungespace &, InstructionPointer &);
+InstructionAction television_antenna(State &, Fungespace &, InstructionPointer &);
+InstructionAction buried_treasure(State &, Fungespace &, InstructionPointer &);
+InstructionAction slingshot(State &, Fungespace &, InstructionPointer &);
+InstructionAction barn_door(State &, Fungespace &, InstructionPointer &);
 
 const Fingerprint SPEC{
         .name = "TOYS",

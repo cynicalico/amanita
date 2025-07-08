@@ -17,8 +17,8 @@
 #include "common.hpp"
 
 namespace fingerprints::refc {
-InstructionAction reference(Fungespace &, InstructionPointer &ip);
-InstructionAction dereference(Fungespace &, InstructionPointer &ip);
+InstructionAction reference(State &, Fungespace &, InstructionPointer &);
+InstructionAction dereference(State &, Fungespace &, InstructionPointer &);
 
 const Fingerprint SPEC{
         .name = "REFC",

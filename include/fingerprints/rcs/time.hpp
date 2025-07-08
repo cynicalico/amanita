@@ -17,16 +17,16 @@
 #include "common.hpp"
 
 namespace fingerprints::time {
-InstructionAction day(Fungespace &, InstructionPointer &ip);
-InstructionAction day_of_year(Fungespace &, InstructionPointer &ip);
-InstructionAction set_gmt(Fungespace &, InstructionPointer &ip);
-InstructionAction hours(Fungespace &, InstructionPointer &ip);
-InstructionAction set_local(Fungespace &, InstructionPointer &ip);
-InstructionAction minutes(Fungespace &, InstructionPointer &ip);
-InstructionAction month(Fungespace &, InstructionPointer &ip);
-InstructionAction seconds(Fungespace &, InstructionPointer &ip);
-InstructionAction day_of_week(Fungespace &, InstructionPointer &ip);
-InstructionAction year(Fungespace &, InstructionPointer &ip);
+InstructionAction day(State &, Fungespace &, InstructionPointer &);
+InstructionAction day_of_year(State &, Fungespace &, InstructionPointer &);
+InstructionAction set_gmt(State &, Fungespace &, InstructionPointer &);
+InstructionAction hours(State &, Fungespace &, InstructionPointer &);
+InstructionAction set_local(State &, Fungespace &, InstructionPointer &);
+InstructionAction minutes(State &, Fungespace &, InstructionPointer &);
+InstructionAction month(State &, Fungespace &, InstructionPointer &);
+InstructionAction seconds(State &, Fungespace &, InstructionPointer &);
+InstructionAction day_of_week(State &, Fungespace &, InstructionPointer &);
+InstructionAction year(State &, Fungespace &, InstructionPointer &);
 
 const Fingerprint SPEC{
         .id = 0x54494D45,

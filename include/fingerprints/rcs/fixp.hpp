@@ -28,22 +28,22 @@
 #include "common.hpp"
 
 namespace fingerprints::fixp {
-InstructionAction and_(Fungespace &, InstructionPointer &ip);
-InstructionAction acos(Fungespace &, InstructionPointer &ip);
-InstructionAction cos(Fungespace &, InstructionPointer &ip);
-InstructionAction rnd(Fungespace &, InstructionPointer &ip);
-InstructionAction sin(Fungespace &, InstructionPointer &ip);
-InstructionAction asin(Fungespace &, InstructionPointer &ip);
-InstructionAction neg(Fungespace &, InstructionPointer &ip);
-InstructionAction or_(Fungespace &, InstructionPointer &ip);
-InstructionAction mul_pi(Fungespace &, InstructionPointer &ip);
-InstructionAction sqrt(Fungespace &, InstructionPointer &ip);
-InstructionAction pow(Fungespace &, InstructionPointer &ip);
-InstructionAction sign(Fungespace &, InstructionPointer &ip);
-InstructionAction tan(Fungespace &, InstructionPointer &ip);
-InstructionAction atan(Fungespace &, InstructionPointer &ip);
-InstructionAction abs(Fungespace &, InstructionPointer &ip);
-InstructionAction xor_(Fungespace &, InstructionPointer &ip);
+InstructionAction and_(State &, Fungespace &, InstructionPointer &);
+InstructionAction acos(State &, Fungespace &, InstructionPointer &);
+InstructionAction cos(State &, Fungespace &, InstructionPointer &);
+InstructionAction rnd(State &, Fungespace &, InstructionPointer &);
+InstructionAction sin(State &, Fungespace &, InstructionPointer &);
+InstructionAction asin(State &, Fungespace &, InstructionPointer &);
+InstructionAction neg(State &, Fungespace &, InstructionPointer &);
+InstructionAction or_(State &, Fungespace &, InstructionPointer &);
+InstructionAction mul_pi(State &, Fungespace &, InstructionPointer &);
+InstructionAction sqrt(State &, Fungespace &, InstructionPointer &);
+InstructionAction pow(State &, Fungespace &, InstructionPointer &);
+InstructionAction sign(State &, Fungespace &, InstructionPointer &);
+InstructionAction tan(State &, Fungespace &, InstructionPointer &);
+InstructionAction atan(State &, Fungespace &, InstructionPointer &);
+InstructionAction abs(State &, Fungespace &, InstructionPointer &);
+InstructionAction xor_(State &, Fungespace &, InstructionPointer &);
 
 const Fingerprint SPEC{
         .id = 0x46495850,

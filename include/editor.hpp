@@ -42,11 +42,15 @@ public:
     bool slow_ticking{false};
     mizu::Ticker<> slow_ticker;
     Vec viewport_pos;
+    State state{};
+    Fungespace fungespace;
     std::vector<InstructionPointer> active_list{};
     std::vector<InstructionPointer> inactive_list{};
-    Fungespace fungespace;
 
-    Editor(mizu::Engine *engine, const std::filesystem::path &path, CliArgs *cli_args, std::int64_t skip_ticks);
+    Editor(mizu::Engine *engine,
+           const std::filesystem::path &path,
+           std::unique_ptr<CliArgs> cli_args,
+           std::int64_t skip_ticks);
 
     void update(double dt) override;
 

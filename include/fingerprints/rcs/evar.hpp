@@ -10,10 +10,10 @@
 #include "common.hpp"
 
 namespace fingerprints::evar {
-InstructionAction get(Fungespace &, InstructionPointer &ip);
-InstructionAction count(Fungespace &, InstructionPointer &ip);
-InstructionAction put(Fungespace &, InstructionPointer &ip);
-InstructionAction get_nth(Fungespace &, InstructionPointer &ip);
+InstructionAction get(State &, Fungespace &, InstructionPointer &);
+InstructionAction count(State &, Fungespace &, InstructionPointer &);
+InstructionAction put(State &, Fungespace &, InstructionPointer &);
+InstructionAction get_nth(State &, Fungespace &, InstructionPointer &);
 
 const Fingerprint SPEC{
         .id = 0x45564152,

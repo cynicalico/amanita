@@ -23,11 +23,11 @@
 #include "common.hpp"
 
 namespace fingerprints::hrti {
-InstructionAction granularity(Fungespace &, InstructionPointer &ip);
-InstructionAction mark(Fungespace &, InstructionPointer &ip);
-InstructionAction timer(Fungespace &, InstructionPointer &ip);
-InstructionAction erase_mark(Fungespace &, InstructionPointer &ip);
-InstructionAction second(Fungespace &, InstructionPointer &ip);
+InstructionAction granularity(State &, Fungespace &, InstructionPointer &);
+InstructionAction mark(State &, Fungespace &, InstructionPointer &);
+InstructionAction timer(State &, Fungespace &, InstructionPointer &);
+InstructionAction erase_mark(State &, Fungespace &, InstructionPointer &);
+InstructionAction second(State &, Fungespace &, InstructionPointer &);
 
 const Fingerprint SPEC{
         .name = "HRTI",

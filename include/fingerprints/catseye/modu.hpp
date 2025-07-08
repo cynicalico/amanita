@@ -15,9 +15,9 @@
 #include "common.hpp"
 
 namespace fingerprints::modu {
-InstructionAction signed_result_modulo(Fungespace &, InstructionPointer &ip);
-InstructionAction sam_holden_unsigned_result_modulo(Fungespace &, InstructionPointer &ip);
-InstructionAction c_language_integer_remainder(Fungespace &, InstructionPointer &ip);
+InstructionAction signed_result_modulo(State &, Fungespace &, InstructionPointer &);
+InstructionAction sam_holden_unsigned_result_modulo(State &, Fungespace &, InstructionPointer &);
+InstructionAction c_language_integer_remainder(State &, Fungespace &, InstructionPointer &);
 
 const Fingerprint SPEC{
         .name = "MODU",

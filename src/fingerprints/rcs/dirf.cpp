@@ -2,7 +2,7 @@
 #include <filesystem>
 #include "instruction_pointer.hpp"
 
-InstructionAction fingerprints::dirf::cd(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::dirf::cd(State &, Fungespace &, InstructionPointer &ip) {
     const auto dirname = ip.pop_0gnirts();
     std::error_code ec;
     std::filesystem::current_path(dirname, ec);
@@ -10,13 +10,13 @@ InstructionAction fingerprints::dirf::cd(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction fingerprints::dirf::mkdir(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::dirf::mkdir(State &, Fungespace &, InstructionPointer &ip) {
     const auto dirname = ip.pop_0gnirts();
     if (std::error_code ec; !std::filesystem::create_directory(dirname, ec) || ec) ip.reflect();
     return MoveAction{};
 }
 
-InstructionAction fingerprints::dirf::rmdir(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::dirf::rmdir(State &, Fungespace &, InstructionPointer &ip) {
     const auto dirname = ip.pop_0gnirts();
     if (std::error_code ec; !std::filesystem::remove(dirname, ec) || ec) ip.reflect();
     return MoveAction{};

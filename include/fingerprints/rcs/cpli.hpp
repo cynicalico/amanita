@@ -13,12 +13,12 @@
 #include "common.hpp"
 
 namespace fingerprints::cpli {
-InstructionAction add(Fungespace &, InstructionPointer &ip);
-InstructionAction div(Fungespace &, InstructionPointer &ip);
-InstructionAction mul(Fungespace &, InstructionPointer &ip);
-InstructionAction print(Fungespace &, InstructionPointer &ip);
-InstructionAction sub(Fungespace &, InstructionPointer &ip);
-InstructionAction abs(Fungespace &, InstructionPointer &ip);
+InstructionAction add(State &, Fungespace &, InstructionPointer &);
+InstructionAction div(State &, Fungespace &, InstructionPointer &);
+InstructionAction mul(State &, Fungespace &, InstructionPointer &);
+InstructionAction print(State &, Fungespace &, InstructionPointer &);
+InstructionAction sub(State &, Fungespace &, InstructionPointer &);
+InstructionAction abs(State &, Fungespace &, InstructionPointer &);
 
 const Fingerprint SPEC{
         .id = 0x43504c49,

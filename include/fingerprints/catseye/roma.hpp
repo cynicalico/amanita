@@ -18,13 +18,13 @@
 #include "common.hpp"
 
 namespace fingerprints::roma {
-InstructionAction push_100(Fungespace &, InstructionPointer &ip);
-InstructionAction push_500(Fungespace &, InstructionPointer &ip);
-InstructionAction push_1(Fungespace &, InstructionPointer &ip);
-InstructionAction push_50(Fungespace &, InstructionPointer &ip);
-InstructionAction push_1000(Fungespace &, InstructionPointer &ip);
-InstructionAction push_5(Fungespace &, InstructionPointer &ip);
-InstructionAction push_10(Fungespace &, InstructionPointer &ip);
+InstructionAction push_100(State &, Fungespace &, InstructionPointer &);
+InstructionAction push_500(State &, Fungespace &, InstructionPointer &);
+InstructionAction push_1(State &, Fungespace &, InstructionPointer &);
+InstructionAction push_50(State &, Fungespace &, InstructionPointer &);
+InstructionAction push_1000(State &, Fungespace &, InstructionPointer &);
+InstructionAction push_5(State &, Fungespace &, InstructionPointer &);
+InstructionAction push_10(State &, Fungespace &, InstructionPointer &);
 
 const static Fingerprint SPEC{
         .name = "ROMA",

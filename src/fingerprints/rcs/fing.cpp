@@ -5,7 +5,7 @@
 
 #define INVALID_SEM(sem) (!(sem >= 'A' && sem <= 'Z'))
 
-InstructionAction fingerprints::fing::swap(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fing::swap(State &, Fungespace &, InstructionPointer &ip) {
     auto sem_a = ip.pop();
     sem_a = sem_a <= 25 ? sem_a + 'A' : sem_a;
 
@@ -24,7 +24,7 @@ InstructionAction fingerprints::fing::swap(Fungespace &, InstructionPointer &ip)
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fing::pop(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fing::pop(State &, Fungespace &, InstructionPointer &ip) {
     auto sem = ip.pop();
     sem = sem <= 25 ? sem + 'A' : sem;
 
@@ -34,7 +34,7 @@ InstructionAction fingerprints::fing::pop(Fungespace &, InstructionPointer &ip) 
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fing::push(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fing::push(State &, Fungespace &, InstructionPointer &ip) {
     auto sem_dst = ip.pop();
     sem_dst = sem_dst <= 25 ? sem_dst + 'A' : sem_dst;
 

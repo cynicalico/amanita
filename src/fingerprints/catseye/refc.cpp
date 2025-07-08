@@ -2,23 +2,15 @@
 #include <vector>
 #include "instruction_pointer.hpp"
 
-std::vector<Vec> &references();
-
-InstructionAction fingerprints::refc::reference(Fungespace &, InstructionPointer &ip) {
-    auto &r = references();
-    r.push_back(ip.pop_vec());
-    ip.push(r.size() - 1);
+InstructionAction fingerprints::refc::reference(State &state, Fungespace &, InstructionPointer &ip) {
+    state.refc.references.push_back(ip.pop_vec());
+    ip.push(state.refc.references.size() - 1);
     return MoveAction{};
 }
 
-InstructionAction fingerprints::refc::dereference(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::refc::dereference(State &state, Fungespace &, InstructionPointer &ip) {
     if (const auto i = ip.pop(); i < 0) ip.reflect();
-    else if (const auto &r = references(); r.size() <= i) ip.reflect();
-    else ip.push_vec(r[static_cast<std::size_t>(i)]);
+    else if (state.refc.references.size() <= i) ip.reflect();
+    else ip.push_vec(state.refc.references[static_cast<std::size_t>(i)]);
     return MoveAction{};
-}
-
-std::vector<Vec> &references() {
-    static std::vector<Vec> references{};
-    return references;
 }

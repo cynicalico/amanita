@@ -4,7 +4,7 @@
 #include "fungespace.hpp"
 #include "instruction_pointer.hpp"
 
-void run(CliArgs *cli_args);
+void run(std::unique_ptr<CliArgs> cli_args);
 
 int main(const int argc, char *argv[]) {
     argparse::ArgumentParser program("amanita", "1.0.0");
@@ -35,14 +35,14 @@ int main(const int argc, char *argv[]) {
     } catch (std::logic_error &e) {
         // no args
     }
-    const auto cli_args = std::make_unique<CliArgs>(args);
+    auto cli_args = std::make_unique<CliArgs>(args);
 
     if (program["--gui"] == true) {
         mizu::Engine("amanita", {500, 500}, [](auto &) {
-        }).mainloop<Editor>(args[0], cli_args.get(), program.get<std::int64_t>("--skip"));
+        }).mainloop<Editor>(args[0], std::move(cli_args), program.get<std::int64_t>("--skip"));
     } else {
         try {
-            run(cli_args.get());
+            run(std::move(cli_args));
         } catch (const std::exception &e) {
             fmt::println(stderr, "Exception during execution: {}", e.what());
             return 1;
@@ -52,13 +52,14 @@ int main(const int argc, char *argv[]) {
     return EXIT_SUCCESS;
 }
 
-void run(CliArgs *cli_args) {
-    Fungespace fungespace(cli_args->args[0]);
+void run(std::unique_ptr<CliArgs> cli_args) {
+    State state{std::move(cli_args)};
+    Fungespace fungespace(state.cli_args->args[0]);
 
     std::vector<InstructionPointer> active_list{};
     std::vector<InstructionPointer> inactive_list{};
 
-    active_list.emplace_back(cli_args);
+    active_list.emplace_back();
 
     while (!active_list.empty()) {
         inactive_list.clear();
@@ -73,7 +74,7 @@ void run(CliArgs *cli_args) {
             } while (true);
             ip.cache_ins = ins;
 
-            auto action = ip.instruction_stack.perform(static_cast<Instruction>(ins), fungespace, ip);
+            auto action = ip.instruction_stack.perform(static_cast<Instruction>(ins), state, fungespace, ip);
             std::visit(
                     overloaded{
                             [&](const IterAction &a) {

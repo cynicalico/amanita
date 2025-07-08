@@ -11,7 +11,7 @@ public:
 
     InstructionStack();
 
-    InstructionAction perform(Instruction ins, Fungespace &fungespace, InstructionPointer &ip);
+    InstructionAction perform(Instruction ins, State &state, Fungespace &fungespace, InstructionPointer &ip);
 
     bool load_fingerprint(std::int64_t fingerprint);
     bool unload_fingerprint(std::int64_t fingerprint);

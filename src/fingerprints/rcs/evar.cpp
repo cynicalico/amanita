@@ -6,7 +6,7 @@
 
 extern char **environ;
 
-InstructionAction fingerprints::evar::get(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::evar::get(State &, Fungespace &, InstructionPointer &ip) {
     const auto name = ip.pop_0gnirts();
 
     for (char **current = environ; *current; ++current) {
@@ -30,14 +30,14 @@ InstructionAction fingerprints::evar::get(Fungespace &, InstructionPointer &ip) 
     return MoveAction{};
 }
 
-InstructionAction fingerprints::evar::count(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::evar::count(State &, Fungespace &, InstructionPointer &ip) {
     Cell n = 0;
     for (char **current = environ; *current; ++current) n++;
     ip.push(n);
     return MoveAction{};
 }
 
-InstructionAction fingerprints::evar::put(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::evar::put(State &, Fungespace &, InstructionPointer &ip) {
     auto keyval = ip.pop_0gnirts();
 #if defined(MIZU_PLATFORM_WINDOWS)
     if (_putenv(keyval.c_str()) == -1) ip.reflect();
@@ -54,7 +54,7 @@ InstructionAction fingerprints::evar::put(Fungespace &, InstructionPointer &ip) 
     return MoveAction{};
 }
 
-InstructionAction fingerprints::evar::get_nth(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::evar::get_nth(State &, Fungespace &, InstructionPointer &ip) {
     const auto nth = ip.pop();
 
     Cell n = 0;

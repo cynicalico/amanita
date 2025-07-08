@@ -7,28 +7,21 @@
 
 #define MAX_STRING_READ 1024
 
-struct File {
-    Vec io_buffer_pos;
-    FILE *f;
-};
-
-std::unordered_map<Cell, File> &open_files();
 const char *get_funge_file_mode(Cell m);
 int get_funge_seek_origin(Cell m);
 
-InstructionAction fingerprints::file::close(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::file::close(State &state, Fungespace &, InstructionPointer &ip) {
     const auto h = ip.pop();
 
-    auto &of = open_files();
-    if (const auto it = of.find(h); it != of.end())
+    if (const auto it = state.file.open_files.find(h); it != state.file.open_files.end())
         if (const auto err = fclose(it->second.f); err == EOF) ip.reflect();
-        else of.erase(it);
+        else state.file.open_files.erase(it);
     else ip.reflect();
 
     return MoveAction{};
 }
 
-InstructionAction fingerprints::file::delete_(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::file::delete_(State &, Fungespace &, InstructionPointer &ip) {
     const auto filepath = ip.pop_0gnirts();
 
     if (remove(filepath.c_str()) != 0) ip.reflect();
@@ -36,11 +29,10 @@ InstructionAction fingerprints::file::delete_(Fungespace &, InstructionPointer &
     return MoveAction{};
 }
 
-InstructionAction fingerprints::file::read_string(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::file::read_string(State &state, Fungespace &, InstructionPointer &ip) {
     const auto h = ip.pop();
 
-    auto &of = open_files();
-    if (const auto it = of.find(h); it != of.end()) {
+    if (const auto it = state.file.open_files.find(h); it != state.file.open_files.end()) {
         char buf[MAX_STRING_READ];
         const auto s = fgets(buf, sizeof(buf), it->second.f);
 
@@ -69,11 +61,10 @@ InstructionAction fingerprints::file::read_string(Fungespace &, InstructionPoint
     return MoveAction{};
 }
 
-InstructionAction fingerprints::file::location(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::file::location(State &state, Fungespace &, InstructionPointer &ip) {
     const auto h = ip.pop();
 
-    auto &of = open_files();
-    if (const auto it = of.find(h); it != of.end()) {
+    if (const auto it = state.file.open_files.find(h); it != state.file.open_files.end()) {
         if (const auto l = ftell(it->second.f); l != -1) {
             ip.push(h);
             ip.push(l);
@@ -91,7 +82,7 @@ InstructionAction fingerprints::file::location(Fungespace &, InstructionPointer 
     return MoveAction{};
 }
 
-InstructionAction fingerprints::file::open(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::file::open(State &state, Fungespace &, InstructionPointer &ip) {
     const auto filepath = ip.pop_0gnirts();
     const auto m = ip.pop();
     const auto io_buffer_y = ip.pop();
@@ -108,9 +99,8 @@ InstructionAction fingerprints::file::open(Fungespace &, InstructionPointer &ip)
             ip.reflect();
             ip.push(0);
         } else {
-            auto &of = open_files();
-            const auto h = of.size() + 1;
-            of.emplace(h, File{{io_buffer_x, io_buffer_y}, file});
+            const auto h = state.file.open_files.size() + 1;
+            state.file.open_files.emplace(h, State::File{{io_buffer_x, io_buffer_y}, file});
             ip.push(h);
         }
     } else {
@@ -121,12 +111,11 @@ InstructionAction fingerprints::file::open(Fungespace &, InstructionPointer &ip)
     return MoveAction{};
 }
 
-InstructionAction fingerprints::file::write_string(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::file::write_string(State &state, Fungespace &, InstructionPointer &ip) {
     const auto s = ip.pop_0gnirts();
     const auto h = ip.pop();
 
-    auto &of = open_files();
-    if (const auto it = of.find(h); it != of.end()) {
+    if (const auto it = state.file.open_files.find(h); it != state.file.open_files.end()) {
         if (const auto err = fputs(s.c_str(), it->second.f); err == EOF) ip.reflect();
     } else {
         ip.reflect();
@@ -137,7 +126,7 @@ InstructionAction fingerprints::file::write_string(Fungespace &, InstructionPoin
     return MoveAction{};
 }
 
-InstructionAction fingerprints::file::read_bytes(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction fingerprints::file::read_bytes(State &state, Fungespace &fungespace, InstructionPointer &ip) {
     const auto n = ip.pop();
     const auto h = ip.pop();
 
@@ -146,8 +135,7 @@ InstructionAction fingerprints::file::read_bytes(Fungespace &fungespace, Instruc
         return MoveAction{};
     }
 
-    auto &of = open_files();
-    if (const auto it = of.find(h); it != of.end()) {
+    if (const auto it = state.file.open_files.find(h); it != state.file.open_files.end()) {
         std::vector<unsigned char> buf(n);
         if (const auto bytes_read = fread(&buf[0], sizeof(unsigned char), n, it->second.f);
             bytes_read != n || ferror(it->second.f) != 0) {
@@ -165,14 +153,13 @@ InstructionAction fingerprints::file::read_bytes(Fungespace &fungespace, Instruc
     return MoveAction{};
 }
 
-InstructionAction fingerprints::file::seek(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::file::seek(State &state, Fungespace &, InstructionPointer &ip) {
     const auto n = ip.pop();
     const auto m = ip.pop();
     const auto h = ip.pop();
 
     if (const auto origin = get_funge_seek_origin(m); origin != std::numeric_limits<int>::max()) {
-        auto &of = open_files();
-        if (const auto it = of.find(h); it != of.end()) {
+        if (const auto it = state.file.open_files.find(h); it != state.file.open_files.end()) {
             if (fseek(it->second.f, static_cast<long>(n), origin) != 0) ip.reflect();
         } else {
             ip.reflect();
@@ -186,7 +173,7 @@ InstructionAction fingerprints::file::seek(Fungespace &, InstructionPointer &ip)
     return MoveAction{};
 }
 
-InstructionAction fingerprints::file::write_bytes(Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction fingerprints::file::write_bytes(State &state, Fungespace &fungespace, InstructionPointer &ip) {
     const auto n = ip.pop();
     const auto h = ip.pop();
 
@@ -195,8 +182,7 @@ InstructionAction fingerprints::file::write_bytes(Fungespace &fungespace, Instru
         return MoveAction{};
     }
 
-    auto &of = open_files();
-    if (const auto it = of.find(h); it != of.end()) {
+    if (const auto it = state.file.open_files.find(h); it != state.file.open_files.end()) {
         std::vector<unsigned char> buf(n);
         for (Index i = 0; i < n; ++i)
             buf[i] = fungespace.get(it->second.io_buffer_pos.x + i, it->second.io_buffer_pos.y) & 0xff;
@@ -211,11 +197,6 @@ InstructionAction fingerprints::file::write_bytes(Fungespace &fungespace, Instru
     ip.push(h);
 
     return MoveAction{};
-}
-
-std::unordered_map<Cell, File> &open_files() {
-    static std::unordered_map<Cell, File> open_files{};
-    return open_files;
 }
 
 const char *get_funge_file_mode(const Cell m) {

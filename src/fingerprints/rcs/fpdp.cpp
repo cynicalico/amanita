@@ -3,22 +3,22 @@
 #include "instruction_pointer.hpp"
 
 namespace fingerprints::fpdp {
-union DpUnion {
+union Union {
     double d;
     Cell i;
 };
-static_assert(sizeof(DpUnion) == sizeof(double), "double/Cell union must be same byte size");
+static_assert(sizeof(Union) == sizeof(double), "double/Cell union must be same byte size");
 
-DpUnion pop(InstructionPointer &ip) {
-    DpUnion u;
+Union pop(InstructionPointer &ip) {
+    Union u;
     u.i = ip.pop();
     return u;
 }
 
-void push(InstructionPointer &ip, DpUnion u) { ip.push(u.i); }
+void push(InstructionPointer &ip, Union u) { ip.push(u.i); }
 } // namespace fingerprints::fpdp
 
-InstructionAction fingerprints::fpdp::add(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpdp::add(State &, Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const double b = u.d;
     u = pop(ip);
@@ -30,7 +30,7 @@ InstructionAction fingerprints::fpdp::add(Fungespace &, InstructionPointer &ip) 
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpdp::sin(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpdp::sin(State &, Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const double a = u.d;
 
@@ -40,7 +40,7 @@ InstructionAction fingerprints::fpdp::sin(Fungespace &, InstructionPointer &ip) 
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpdp::cos(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpdp::cos(State &, Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const double a = u.d;
 
@@ -50,7 +50,7 @@ InstructionAction fingerprints::fpdp::cos(Fungespace &, InstructionPointer &ip) 
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpdp::div(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpdp::div(State &, Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const double b = u.d;
     u = pop(ip);
@@ -62,7 +62,7 @@ InstructionAction fingerprints::fpdp::div(Fungespace &, InstructionPointer &ip) 
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpdp::asin(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpdp::asin(State &, Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const double a = u.d;
 
@@ -72,17 +72,17 @@ InstructionAction fingerprints::fpdp::asin(Fungespace &, InstructionPointer &ip)
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpdp::itof(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpdp::itof(State &, Fungespace &, InstructionPointer &ip) {
     const auto i = ip.pop();
 
-    DpUnion u;
+    Union u;
     u.d = static_cast<double>(i);
     push(ip, u);
 
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpdp::atan(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpdp::atan(State &, Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const double a = u.d;
 
@@ -92,7 +92,7 @@ InstructionAction fingerprints::fpdp::atan(Fungespace &, InstructionPointer &ip)
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpdp::acos(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpdp::acos(State &, Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const double a = u.d;
 
@@ -102,14 +102,14 @@ InstructionAction fingerprints::fpdp::acos(Fungespace &, InstructionPointer &ip)
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpdp::ftoi(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpdp::ftoi(State &, Fungespace &, InstructionPointer &ip) {
     const auto u = pop(ip);
     ip.push(static_cast<Cell>(std::round(u.d)));
 
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpdp::ln(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpdp::ln(State &, Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const double a = u.d;
 
@@ -119,7 +119,7 @@ InstructionAction fingerprints::fpdp::ln(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpdp::log10(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpdp::log10(State &, Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const double a = u.d;
 
@@ -129,7 +129,7 @@ InstructionAction fingerprints::fpdp::log10(Fungespace &, InstructionPointer &ip
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpdp::mul(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpdp::mul(State &, Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const double b = u.d;
     u = pop(ip);
@@ -141,7 +141,7 @@ InstructionAction fingerprints::fpdp::mul(Fungespace &, InstructionPointer &ip) 
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpdp::neg(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpdp::neg(State &, Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const double a = u.d;
 
@@ -151,7 +151,7 @@ InstructionAction fingerprints::fpdp::neg(Fungespace &, InstructionPointer &ip) 
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpdp::print(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpdp::print(State &, Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const double a = u.d;
 
@@ -160,7 +160,7 @@ InstructionAction fingerprints::fpdp::print(Fungespace &, InstructionPointer &ip
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpdp::sqrt(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpdp::sqrt(State &, Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const double a = u.d;
 
@@ -170,11 +170,11 @@ InstructionAction fingerprints::fpdp::sqrt(Fungespace &, InstructionPointer &ip)
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpdp::parse(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpdp::parse(State &, Fungespace &, InstructionPointer &ip) {
     const auto s = ip.pop_0gnirts();
 
     try {
-        DpUnion u;
+        Union u;
         u.d = std::stod(s);
         push(ip, u);
     } catch (const std::exception &) { ip.reflect(); }
@@ -182,7 +182,7 @@ InstructionAction fingerprints::fpdp::parse(Fungespace &, InstructionPointer &ip
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpdp::sub(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpdp::sub(State &, Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const double b = u.d;
     u = pop(ip);
@@ -194,7 +194,7 @@ InstructionAction fingerprints::fpdp::sub(Fungespace &, InstructionPointer &ip) 
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpdp::tan(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpdp::tan(State &, Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const double a = u.d;
 
@@ -204,7 +204,7 @@ InstructionAction fingerprints::fpdp::tan(Fungespace &, InstructionPointer &ip) 
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpdp::abs(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpdp::abs(State &, Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const double a = u.d;
 
@@ -214,7 +214,7 @@ InstructionAction fingerprints::fpdp::abs(Fungespace &, InstructionPointer &ip) 
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpdp::exp(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpdp::exp(State &, Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const double a = u.d;
 
@@ -224,7 +224,7 @@ InstructionAction fingerprints::fpdp::exp(Fungespace &, InstructionPointer &ip) 
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpdp::pow(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpdp::pow(State &, Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const double b = u.d;
     u = pop(ip);

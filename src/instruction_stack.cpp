@@ -66,7 +66,8 @@ InstructionStack::InstructionStack() {
     for (std::size_t i = 0; i < 26; ++i) loaded_fingerprints[i] = std::vector<const char *>();
 }
 
-InstructionAction InstructionStack::perform(Instruction ins, Fungespace &fungespace, InstructionPointer &ip) {
+InstructionAction
+InstructionStack::perform(Instruction ins, State &state, Fungespace &fungespace, InstructionPointer &ip) {
     if (ip.string_mode) {
         if (ins != Instruction::ToggleStringmode) {
             ip.push(static_cast<std::int64_t>(ins));
@@ -76,12 +77,12 @@ InstructionAction InstructionStack::perform(Instruction ins, Fungespace &fungesp
 
     if (ins < Instruction::Space || ins > Instruction::InputCharacter) {
         fmt::println("Unknown instruction: {}/{}, reflecting", static_cast<std::int64_t>(ins), static_cast<char>(ins));
-        return fns[static_cast<std::size_t>(Instruction::Reflect)].back()(fungespace, ip);
+        return fns[static_cast<std::size_t>(Instruction::Reflect)].back()(state, fungespace, ip);
     }
 
     if (fns[static_cast<std::size_t>(ins)].empty())
-        return fns[static_cast<std::size_t>(Instruction::Reflect)].back()(fungespace, ip);
-    return fns[static_cast<std::size_t>(ins)].back()(fungespace, ip);
+        return fns[static_cast<std::size_t>(Instruction::Reflect)].back()(state, fungespace, ip);
+    return fns[static_cast<std::size_t>(ins)].back()(state, fungespace, ip);
 }
 
 bool InstructionStack::load_fingerprint(const std::int64_t fingerprint) {

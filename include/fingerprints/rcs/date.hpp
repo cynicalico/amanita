@@ -17,13 +17,13 @@
 #include "common.hpp"
 
 namespace fingerprints::date {
-InstructionAction add_days(Fungespace &, InstructionPointer &ip);
-InstructionAction julian_to_calendar(Fungespace &, InstructionPointer &ip);
-InstructionAction days_difference(Fungespace &, InstructionPointer &ip);
-InstructionAction calendar_to_julian(Fungespace &, InstructionPointer &ip);
-InstructionAction yd_to_ymd(Fungespace &, InstructionPointer &ip);
-InstructionAction day_of_week(Fungespace &, InstructionPointer &ip);
-InstructionAction day_of_year(Fungespace &, InstructionPointer &ip);
+InstructionAction add_days(State &, Fungespace &, InstructionPointer &);
+InstructionAction julian_to_calendar(State &, Fungespace &, InstructionPointer &);
+InstructionAction days_difference(State &, Fungespace &, InstructionPointer &);
+InstructionAction calendar_to_julian(State &, Fungespace &, InstructionPointer &);
+InstructionAction yd_to_ymd(State &, Fungespace &, InstructionPointer &);
+InstructionAction day_of_week(State &, Fungespace &, InstructionPointer &);
+InstructionAction day_of_year(State &, Fungespace &, InstructionPointer &);
 
 const Fingerprint SPEC{
         .id = 0x44415445,

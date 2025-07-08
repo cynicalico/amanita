@@ -19,12 +19,17 @@ const mizu::Rgba CURSOR_COLOR = mizu::rgb(0x0037da);
 
 void draw_rect(mizu::G2d &g2d, glm::vec2 pos, glm::vec2 size, const mizu::Color &color);
 
-Editor::Editor(mizu::Engine *engine, const std::filesystem::path &path, CliArgs *cli_args, std::int64_t skip_ticks)
+Editor::Editor(
+        mizu::Engine *engine,
+        const std::filesystem::path &path,
+        std::unique_ptr<CliArgs> cli_args,
+        std::int64_t skip_ticks)
     : Application(engine),
       g2d(*engine->g2d),
       window(*engine->window),
       input(*engine->input),
       viewport_pos{0, 0},
+      state{std::move(cli_args)},
       fungespace(path) {
     very_large_font = std::make_unique<mizu::Font>(g2d, "font/ter-u24b.bdf");
     large_font = std::make_unique<mizu::Font>(g2d, "font/ter-u18b.bdf");
@@ -68,7 +73,7 @@ Editor::Editor(mizu::Engine *engine, const std::filesystem::path &path, CliArgs 
 
     ticker = mizu::Ticker(std::chrono::milliseconds(1));
     slow_ticker = mizu::Ticker(std::chrono::milliseconds(50));
-    active_list.emplace_back(cli_args);
+    active_list.emplace_back();
 
     if (skip_ticks > 0) {
         for (std::int64_t i = 0; i < skip_ticks; i++) {
@@ -309,7 +314,7 @@ void Editor::do_single_tick() {
         } while (true);
         ip.cache_ins = ins;
 
-        auto action = ip.instruction_stack.perform(static_cast<Instruction>(ins), fungespace, ip);
+        auto action = ip.instruction_stack.perform(static_cast<Instruction>(ins), state, fungespace, ip);
         std::visit(
                 overloaded{
                         [&](const IterAction &a) {

@@ -3,22 +3,22 @@
 #include "instruction_pointer.hpp"
 
 namespace fingerprints::fpsp {
-union SpUnion {
+union Union {
     float f;
     std::int32_t i;
 };
-static_assert(sizeof(SpUnion) == sizeof(float), "float/std::int32_t union must be same byte size");
+static_assert(sizeof(Union) == sizeof(float), "float/std::int32_t union must be same byte size");
 
-SpUnion pop(InstructionPointer &ip) {
-    SpUnion u;
+Union pop(InstructionPointer &ip) {
+    Union u;
     u.i = static_cast<std::int32_t>(ip.pop());
     return u;
 }
 
-void push(InstructionPointer &ip, SpUnion u) { ip.push(u.i); }
+void push(InstructionPointer &ip, Union u) { ip.push(u.i); }
 } // namespace fingerprints::fpsp
 
-InstructionAction fingerprints::fpsp::add(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::add(State &, Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const float b = u.f;
     u = pop(ip);
@@ -30,7 +30,7 @@ InstructionAction fingerprints::fpsp::add(Fungespace &, InstructionPointer &ip) 
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpsp::sin(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::sin(State &, Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const float a = u.f;
 
@@ -40,7 +40,7 @@ InstructionAction fingerprints::fpsp::sin(Fungespace &, InstructionPointer &ip) 
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpsp::cos(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::cos(State &, Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const float a = u.f;
 
@@ -50,7 +50,7 @@ InstructionAction fingerprints::fpsp::cos(Fungespace &, InstructionPointer &ip) 
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpsp::div(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::div(State &, Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const float b = u.f;
     u = pop(ip);
@@ -62,7 +62,7 @@ InstructionAction fingerprints::fpsp::div(Fungespace &, InstructionPointer &ip) 
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpsp::asin(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::asin(State &, Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const float a = u.f;
 
@@ -72,17 +72,17 @@ InstructionAction fingerprints::fpsp::asin(Fungespace &, InstructionPointer &ip)
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpsp::itof(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::itof(State &, Fungespace &, InstructionPointer &ip) {
     const auto i = static_cast<std::int32_t>(ip.pop());
 
-    SpUnion u;
+    Union u;
     u.f = static_cast<float>(i);
     push(ip, u);
 
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpsp::atan(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::atan(State &, Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const float a = u.f;
 
@@ -92,7 +92,7 @@ InstructionAction fingerprints::fpsp::atan(Fungespace &, InstructionPointer &ip)
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpsp::acos(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::acos(State &, Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const float a = u.f;
 
@@ -102,14 +102,14 @@ InstructionAction fingerprints::fpsp::acos(Fungespace &, InstructionPointer &ip)
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpsp::ftoi(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::ftoi(State &, Fungespace &, InstructionPointer &ip) {
     const auto u = pop(ip);
     ip.push(static_cast<std::int32_t>(std::round(u.f)));
 
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpsp::ln(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::ln(State &, Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const float a = u.f;
 
@@ -119,7 +119,7 @@ InstructionAction fingerprints::fpsp::ln(Fungespace &, InstructionPointer &ip) {
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpsp::log10(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::log10(State &, Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const float a = u.f;
 
@@ -129,7 +129,7 @@ InstructionAction fingerprints::fpsp::log10(Fungespace &, InstructionPointer &ip
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpsp::mul(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::mul(State &, Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const float b = u.f;
     u = pop(ip);
@@ -141,7 +141,7 @@ InstructionAction fingerprints::fpsp::mul(Fungespace &, InstructionPointer &ip) 
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpsp::neg(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::neg(State &, Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const float a = u.f;
 
@@ -151,7 +151,7 @@ InstructionAction fingerprints::fpsp::neg(Fungespace &, InstructionPointer &ip) 
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpsp::print(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::print(State &, Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const float a = u.f;
 
@@ -160,7 +160,7 @@ InstructionAction fingerprints::fpsp::print(Fungespace &, InstructionPointer &ip
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpsp::sqrt(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::sqrt(State &, Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const float a = u.f;
 
@@ -170,11 +170,11 @@ InstructionAction fingerprints::fpsp::sqrt(Fungespace &, InstructionPointer &ip)
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpsp::parse(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::parse(State &, Fungespace &, InstructionPointer &ip) {
     const auto s = ip.pop_0gnirts();
 
     try {
-        SpUnion u;
+        Union u;
         u.f = std::stof(s);
         push(ip, u);
     } catch (const std::exception &) { ip.reflect(); }
@@ -182,7 +182,7 @@ InstructionAction fingerprints::fpsp::parse(Fungespace &, InstructionPointer &ip
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpsp::sub(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::sub(State &, Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const float b = u.f;
     u = pop(ip);
@@ -194,7 +194,7 @@ InstructionAction fingerprints::fpsp::sub(Fungespace &, InstructionPointer &ip) 
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpsp::tan(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::tan(State &, Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const float a = u.f;
 
@@ -204,7 +204,7 @@ InstructionAction fingerprints::fpsp::tan(Fungespace &, InstructionPointer &ip) 
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpsp::abs(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::abs(State &, Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const float a = u.f;
 
@@ -214,7 +214,7 @@ InstructionAction fingerprints::fpsp::abs(Fungespace &, InstructionPointer &ip) 
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpsp::exp(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::exp(State &, Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const float a = u.f;
 
@@ -224,7 +224,7 @@ InstructionAction fingerprints::fpsp::exp(Fungespace &, InstructionPointer &ip) 
     return MoveAction{};
 }
 
-InstructionAction fingerprints::fpsp::pow(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::fpsp::pow(State &, Fungespace &, InstructionPointer &ip) {
     auto u = pop(ip);
     const float b = u.f;
     u = pop(ip);

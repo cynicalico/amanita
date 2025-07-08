@@ -3,24 +3,20 @@
 #include <unordered_map>
 #include "instruction_pointer.hpp"
 
-using namespace std::chrono;
-using Clock = steady_clock;
-
-std::unordered_map<Id, Clock::time_point> &marks();
-
-InstructionAction fingerprints::hrti::granularity(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::hrti::granularity(State &, Fungespace &, InstructionPointer &ip) {
     ip.push(1);
     return MoveAction{};
 }
 
-InstructionAction fingerprints::hrti::mark(Fungespace &, InstructionPointer &ip) {
-    marks()[ip.id] = Clock::now();
+InstructionAction fingerprints::hrti::mark(State &state, Fungespace &, InstructionPointer &ip) {
+    state.hrti.marks[ip.id] = Clock::now();
     return MoveAction{};
 }
 
-InstructionAction fingerprints::hrti::timer(Fungespace &, InstructionPointer &ip) {
-    auto m = marks();
-    if (const auto it = m.find(ip.id); it != m.end()) {
+InstructionAction fingerprints::hrti::timer(State &state, Fungespace &, InstructionPointer &ip) {
+    using namespace std::chrono;
+
+    if (const auto it = state.hrti.marks.find(ip.id); it != state.hrti.marks.end()) {
         const auto elapsed = Clock::now() - it->second;
         ip.push(duration_cast<microseconds>(elapsed).count());
     } else {
@@ -29,20 +25,17 @@ InstructionAction fingerprints::hrti::timer(Fungespace &, InstructionPointer &ip
     return MoveAction{};
 }
 
-InstructionAction fingerprints::hrti::erase_mark(Fungespace &, InstructionPointer &ip) {
-    marks().erase(ip.id);
+InstructionAction fingerprints::hrti::erase_mark(State &state, Fungespace &, InstructionPointer &ip) {
+    state.hrti.marks.erase(ip.id);
     return MoveAction{};
 }
 
-InstructionAction fingerprints::hrti::second(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::hrti::second(State &, Fungespace &, InstructionPointer &ip) {
+    using namespace std::chrono;
+
     const auto now = Clock::now();
     const auto last_second = std::chrono::floor<seconds>(now);
     const auto elapsed = now - last_second;
     ip.push(duration_cast<microseconds>(elapsed).count());
     return MoveAction{};
-}
-
-std::unordered_map<Id, Clock::time_point> &marks() {
-    static std::unordered_map<Id, Clock::time_point> marks{};
-    return marks;
 }

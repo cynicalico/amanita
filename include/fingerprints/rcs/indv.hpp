@@ -23,10 +23,10 @@
 #include "common.hpp"
 
 namespace fingerprints::indv {
-InstructionAction get_number(Fungespace &, InstructionPointer &ip);
-InstructionAction put_number(Fungespace &, InstructionPointer &ip);
-InstructionAction get_vector(Fungespace &, InstructionPointer &ip);
-InstructionAction put_vector(Fungespace &, InstructionPointer &ip);
+InstructionAction get_number(State &, Fungespace &, InstructionPointer &);
+InstructionAction put_number(State &, Fungespace &, InstructionPointer &);
+InstructionAction get_vector(State &, Fungespace &, InstructionPointer &);
+InstructionAction put_vector(State &, Fungespace &, InstructionPointer &);
 
 const Fingerprint SPEC{
         .id = 0x494E4456,

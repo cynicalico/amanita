@@ -1,8 +1,10 @@
 #ifndef AMANITA_COMMON_HPP
 #define AMANITA_COMMON_HPP
 
+#include <chrono>
 #include <cstdint>
 #include <functional>
+#include <memory>
 #include <string>
 #include <unordered_map>
 #include <variant>
@@ -86,6 +88,37 @@ struct CliArgs {
         : args(std::move(args)) {}
 };
 
+/*********
+ * STATE *
+ *********/
+
+using Clock = std::chrono::steady_clock;
+
+struct State {
+    std::unique_ptr<CliArgs> cli_args{nullptr};
+
+    struct {
+        std::unordered_map<Id, Clock::time_point> marks{};
+    } hrti;
+
+    struct {
+        std::vector<Vec> references{};
+    } refc;
+
+    struct File { // For FILE
+        Vec io_buffer_pos;
+        FILE *f;
+    };
+
+    struct {
+        std::unordered_map<Cell, File> open_files{};
+    } file;
+
+    struct {
+        bool utc{false};
+    } time;
+};
+
 /***********************
  * INSTRUCTION ACTIONS *
  ***********************/
@@ -115,7 +148,7 @@ struct IterAction {
 class Fungespace;
 class InstructionPointer;
 
-using InstructionFunc = std::function<InstructionAction(Fungespace &, InstructionPointer &)>;
+using InstructionFunc = std::function<InstructionAction(State &, Fungespace &, InstructionPointer &)>;
 using InstructionMapping = std::unordered_map<Instruction, InstructionFunc>;
 
 struct Fingerprint {

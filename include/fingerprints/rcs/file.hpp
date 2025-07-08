@@ -29,15 +29,15 @@
 #include "common.hpp"
 
 namespace fingerprints::file {
-InstructionAction close(Fungespace &, InstructionPointer &ip);
-InstructionAction delete_(Fungespace &, InstructionPointer &ip);
-InstructionAction read_string(Fungespace &, InstructionPointer &ip);
-InstructionAction location(Fungespace &, InstructionPointer &ip);
-InstructionAction open(Fungespace &, InstructionPointer &ip);
-InstructionAction write_string(Fungespace &, InstructionPointer &ip);
-InstructionAction read_bytes(Fungespace &, InstructionPointer &ip);
-InstructionAction seek(Fungespace &, InstructionPointer &ip);
-InstructionAction write_bytes(Fungespace &, InstructionPointer &ip);
+InstructionAction close(State &, Fungespace &, InstructionPointer &);
+InstructionAction delete_(State &, Fungespace &, InstructionPointer &);
+InstructionAction read_string(State &, Fungespace &, InstructionPointer &);
+InstructionAction location(State &, Fungespace &, InstructionPointer &);
+InstructionAction open(State &, Fungespace &, InstructionPointer &);
+InstructionAction write_string(State &, Fungespace &, InstructionPointer &);
+InstructionAction read_bytes(State &, Fungespace &, InstructionPointer &);
+InstructionAction seek(State &, Fungespace &, InstructionPointer &);
+InstructionAction write_bytes(State &, Fungespace &, InstructionPointer &);
 
 const Fingerprint SPEC{
         .name = "FILE",

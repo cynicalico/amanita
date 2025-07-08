@@ -6,12 +6,12 @@
 #include "instruction_pointer.hpp"
 #include "subprocess.h"
 
-InstructionAction fingerprints::perl::shelled(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::perl::shelled(State &, Fungespace &, InstructionPointer &ip) {
     ip.push(1);
     return MoveAction{};
 }
 
-InstructionAction fingerprints::perl::eval(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::perl::eval(State &, Fungespace &, InstructionPointer &ip) {
     const auto s = ip.pop_0gnirts();
 
     std::stringstream ss2;
@@ -47,7 +47,7 @@ InstructionAction fingerprints::perl::eval(Fungespace &, InstructionPointer &ip)
     return MoveAction{};
 }
 
-InstructionAction fingerprints::perl::int_eval(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::perl::int_eval(State &, Fungespace &, InstructionPointer &ip) {
     const auto s = ip.pop_0gnirts();
 
     std::stringstream ss2;

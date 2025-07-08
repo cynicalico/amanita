@@ -35,11 +35,11 @@
 #include "common.hpp"
 
 namespace fingerprints::subr {
-InstructionAction set_absolute_mode(Fungespace &, InstructionPointer &ip);
-InstructionAction call(Fungespace &, InstructionPointer &ip);
-InstructionAction jump(Fungespace &, InstructionPointer &ip);
-InstructionAction set_relative_mode(Fungespace &, InstructionPointer &ip);
-InstructionAction ret(Fungespace &, InstructionPointer &ip);
+InstructionAction set_absolute_mode(State &, Fungespace &, InstructionPointer &);
+InstructionAction call(State &, Fungespace &, InstructionPointer &);
+InstructionAction jump(State &, Fungespace &, InstructionPointer &);
+InstructionAction set_relative_mode(State &, Fungespace &, InstructionPointer &);
+InstructionAction ret(State &, Fungespace &, InstructionPointer &);
 
 const Fingerprint SPEC{
         .id = 0x53554252,

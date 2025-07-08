@@ -28,27 +28,27 @@
 #include "common.hpp"
 
 namespace fingerprints::fpdp {
-InstructionAction add(Fungespace &, InstructionPointer &ip);
-InstructionAction sin(Fungespace &, InstructionPointer &ip);
-InstructionAction cos(Fungespace &, InstructionPointer &ip);
-InstructionAction div(Fungespace &, InstructionPointer &ip);
-InstructionAction asin(Fungespace &, InstructionPointer &ip);
-InstructionAction itof(Fungespace &, InstructionPointer &ip);
-InstructionAction atan(Fungespace &, InstructionPointer &ip);
-InstructionAction acos(Fungespace &, InstructionPointer &ip);
-InstructionAction ftoi(Fungespace &, InstructionPointer &ip);
-InstructionAction ln(Fungespace &, InstructionPointer &ip);
-InstructionAction log10(Fungespace &, InstructionPointer &ip);
-InstructionAction mul(Fungespace &, InstructionPointer &ip);
-InstructionAction neg(Fungespace &, InstructionPointer &ip);
-InstructionAction print(Fungespace &, InstructionPointer &ip);
-InstructionAction sqrt(Fungespace &, InstructionPointer &ip);
-InstructionAction parse(Fungespace &, InstructionPointer &ip);
-InstructionAction sub(Fungespace &, InstructionPointer &ip);
-InstructionAction tan(Fungespace &, InstructionPointer &ip);
-InstructionAction abs(Fungespace &, InstructionPointer &ip);
-InstructionAction exp(Fungespace &, InstructionPointer &ip);
-InstructionAction pow(Fungespace &, InstructionPointer &ip);
+InstructionAction add(State &, Fungespace &, InstructionPointer &);
+InstructionAction sin(State &, Fungespace &, InstructionPointer &);
+InstructionAction cos(State &, Fungespace &, InstructionPointer &);
+InstructionAction div(State &, Fungespace &, InstructionPointer &);
+InstructionAction asin(State &, Fungespace &, InstructionPointer &);
+InstructionAction itof(State &, Fungespace &, InstructionPointer &);
+InstructionAction atan(State &, Fungespace &, InstructionPointer &);
+InstructionAction acos(State &, Fungespace &, InstructionPointer &);
+InstructionAction ftoi(State &, Fungespace &, InstructionPointer &);
+InstructionAction ln(State &, Fungespace &, InstructionPointer &);
+InstructionAction log10(State &, Fungespace &, InstructionPointer &);
+InstructionAction mul(State &, Fungespace &, InstructionPointer &);
+InstructionAction neg(State &, Fungespace &, InstructionPointer &);
+InstructionAction print(State &, Fungespace &, InstructionPointer &);
+InstructionAction sqrt(State &, Fungespace &, InstructionPointer &);
+InstructionAction parse(State &, Fungespace &, InstructionPointer &);
+InstructionAction sub(State &, Fungespace &, InstructionPointer &);
+InstructionAction tan(State &, Fungespace &, InstructionPointer &);
+InstructionAction abs(State &, Fungespace &, InstructionPointer &);
+InstructionAction exp(State &, Fungespace &, InstructionPointer &);
+InstructionAction pow(State &, Fungespace &, InstructionPointer &);
 
 const Fingerprint SPEC{
         .id = 0x46504450,

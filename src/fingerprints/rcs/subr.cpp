@@ -6,12 +6,12 @@ Vec pop_offset_vec(InstructionPointer &ip) {
     return ip.pop_vec();
 }
 
-InstructionAction fingerprints::subr::set_absolute_mode(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::subr::set_absolute_mode(State &, Fungespace &, InstructionPointer &ip) {
     ip.relative_mode = false;
     return MoveAction{};
 }
 
-InstructionAction fingerprints::subr::call(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::subr::call(State &, Fungespace &, InstructionPointer &ip) {
     const auto n = ip.pop();
     const auto dst = pop_offset_vec(ip);
 
@@ -30,18 +30,18 @@ InstructionAction fingerprints::subr::call(Fungespace &, InstructionPointer &ip)
     return MoveAction{};
 }
 
-InstructionAction fingerprints::subr::jump(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::subr::jump(State &, Fungespace &, InstructionPointer &ip) {
     ip.pos = pop_offset_vec(ip);
     ip.delta = EAST;
     return MoveAction{};
 }
 
-InstructionAction fingerprints::subr::set_relative_mode(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::subr::set_relative_mode(State &, Fungespace &, InstructionPointer &ip) {
     ip.relative_mode = true;
     return MoveAction{};
 }
 
-InstructionAction fingerprints::subr::ret(Fungespace &, InstructionPointer &ip) {
+InstructionAction fingerprints::subr::ret(State &, Fungespace &, InstructionPointer &ip) {
     const auto n = ip.pop();
 
     for (Index i = 0; i < n; ++i) ip.call_stack.push_back(ip.pop());

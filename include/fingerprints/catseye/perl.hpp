@@ -24,9 +24,9 @@
 #include "common.hpp"
 
 namespace fingerprints::perl {
-InstructionAction shelled(Fungespace &, InstructionPointer &ip);
-InstructionAction eval(Fungespace &, InstructionPointer &ip);
-InstructionAction int_eval(Fungespace &, InstructionPointer &ip);
+InstructionAction shelled(State &, Fungespace &, InstructionPointer &);
+InstructionAction eval(State &, Fungespace &, InstructionPointer &);
+InstructionAction int_eval(State &, Fungespace &, InstructionPointer &);
 
 const Fingerprint SPEC{
         .id = 0x5045524c,

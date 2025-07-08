@@ -7,12 +7,8 @@ Cell next_ip_id() {
     return ++next_id;
 }
 
-InstructionPointer::InstructionPointer(CliArgs *interpreter)
-    : cli_args(interpreter) {}
-
 InstructionPointer::InstructionPointer(const InstructionPointer &other)
-    : cli_args(other.cli_args),
-      id(next_ip_id()), // Redundant, but it makes the intent clearer
+    : id(next_ip_id()), // Redundant, but it makes the intent clearer
       alive(other.alive),
       pos{other.pos},
       delta{other.delta},
