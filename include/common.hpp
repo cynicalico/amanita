@@ -128,7 +128,7 @@ struct State {
         WSADATA wsa_data{};
         std::unordered_map<Cell, SOCKET> sockets{};
 #else
-        std::unordered_map<Cell, Socket> sockets{};
+        std::unordered_map<Cell, int> sockets{};
 #endif
     } sock;
 };

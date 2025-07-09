@@ -29,7 +29,7 @@ bool check_winsock_initialized(State &state) {
 #include <arpa/inet.h>
 #include <netdb.h>
 
-#define CHECK_WINSOCK_INITIALIZED(state, ip) (void);
+#define CHECK_WINSOCK_INITIALIZED(state, ip)
 #endif
 
 constexpr int BAD_PARAM = std::numeric_limits<int>::max();
