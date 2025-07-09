@@ -127,9 +127,9 @@ struct State {
 #if defined(MIZU_PLATFORM_WINDOWS)
         bool initialized{false};
         WSADATA wsa_data{};
-        std::unordered_map<std::int64_t, SOCKET> sockets{};
+        std::unordered_map<Cell, SOCKET> sockets{};
 #else
-        std::unordered_map<std::int64_t, Socket> sockets{};
+        std::unordered_map<Cell, Socket> sockets{};
 #endif
     } sock;
 };

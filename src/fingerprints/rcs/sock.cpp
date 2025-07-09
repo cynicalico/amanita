@@ -65,7 +65,7 @@ InstructionAction fingerprints::sock::accept(State &state, Fungespace &, Instruc
         return MoveAction{};
     }
 
-    const auto accept_s = static_cast<std::int64_t>(state.sock.sockets.size() + 1);
+    const auto accept_s = static_cast<Cell>(state.sock.sockets.size() + 1);
     state.sock.sockets.emplace(accept_s, accept_socket);
 
     ip.push(service.sin_port);
@@ -282,7 +282,7 @@ InstructionAction fingerprints::sock::create(State &state, Fungespace &, Instruc
         return MoveAction{};
     }
 
-    const auto s = static_cast<std::int64_t>(state.sock.sockets.size() + 1);
+    const auto s = static_cast<Cell>(state.sock.sockets.size() + 1);
     state.sock.sockets.emplace(s, h);
 
     ip.push(s);
