@@ -88,71 +88,7 @@ y claims all of the following:
 	That the stack sizes are [ 0 ] from top to bottom
 	That the command-line arguments were: [ "mycology.b98" ]
 	That the environment variables are:
-		MOTD_SHOWN=pam
-		XDG_RUNTIME_DIR=/run/user/1000
-		XDG_SESSION_ID=2
-		XDG_MENU_PREFIX=plasma-
-		MAIL=/var/spool/mail/bo
-		MANPAGER=sh -c 'col -bx | bat -l man -p'
-		XDG_CONFIG_DIRS=/home/bo/.config/kdedefaults:/etc/xdg
-		LC_TELEPHONE=en_US.UTF-8
-		XDG_SEAT_PATH=/org/freedesktop/DisplayManager/Seat0
-		ICEAUTHORITY=/run/user/1000/iceauth_lsexlL
-		LC_IDENTIFICATION=en_US.UTF-8
-		KDE_APPLICATIONS_AS_SCOPE=1
-		PAM_KWALLET5_LOGIN=/run/user/1000/kwallet5.socket
-		MANAGERPID=1096
-		DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
-		KITTY_INSTALLATION_DIR=/usr/lib/kitty
-		KITTY_PUBLIC_KEY=1:lJ`$L5Xrr0>o0XMtlIp*c~*+-z|hU?SLj2MhSs+p
-		PATH=/home/bo/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/bo/.local/share/JetBrains/Toolbox/scripts
-		VIRTUAL_ENV_DISABLE_PROMPT=1
-		KITTY_WINDOW_ID=1
-		SHLVL=1
-		DEBUGINFOD_URLS=https://debuginfod.archlinux.org https://debuginfod.cachyos.org 
-		HOME=/home/bo
-		JOURNAL_STREAM=9:33179
-		USER=bo
-		XDG_SESSION_DESKTOP=KDE
-		SYSTEMD_EXEC_PID=1528
-		LC_MEASUREMENT=en_US.UTF-8
-		LANG=en_US.UTF-8
-		COLORTERM=truecolor
-		XKB_DEFAULT_LAYOUT=us
-		XDG_CURRENT_DESKTOP=KDE
-		SESSION_MANAGER=local/rove:@/tmp/.ICE-unix/1278,unix/rove:/tmp/.ICE-unix/1278
-		MANROFFOPT=-c
-		PWD=/home/bo/dev/amanita/programs
-		LC_TIME=en_US.UTF-8
-		KITTY_PID=1569
-		XDG_SESSION_CLASS=user
-		XAUTHORITY=/run/user/1000/xauth_EvxUIX
-		MEMORY_PRESSURE_WATCH=/sys/fs/cgroup/user.slice/user-1000.slice/user@1000.service/app.slice/app-org.kde.plasma\x2dfallback\x2dsession\x2drestore@autostart.service/memory.pressure
-		DESKTOP_SESSION=plasma
-		LC_ADDRESS=en_US.UTF-8
-		LC_MONETARY=en_US.UTF-8
-		SHELL=/bin/fish
-		LOGNAME=bo
-		DISPLAY=:0
-		GTK2_RC_FILES=/etc/gtk-2.0/gtkrc:/home/bo/.gtkrc-2.0:/home/bo/.config/gtkrc-2.0
-		XDG_SESSION_PATH=/org/freedesktop/DisplayManager/Session1
-		GTK_RC_FILES=/etc/gtk/gtkrc:/home/bo/.gtkrc:/home/bo/.config/gtkrc
-		XDG_SEAT=seat0
-		LC_NUMERIC=en_US.UTF-8
-		KDE_SESSION_UID=1000
-		WAYLAND_DISPLAY=wayland-0
-		TERMINFO=/usr/lib/kitty/terminfo
-		LC_PAPER=en_US.UTF-8
-		XDG_SESSION_TYPE=wayland
-		LIBVA_DRIVER_NAME=nvidia
-		TERM=xterm-kitty
-		MEMORY_PRESSURE_WRITE=c29tZSAyMDAwMDAgMjAwMDAwMAA=
-		LC_NAME=en_US.UTF-8
-		KDE_SESSION_VERSION=6
-		KDE_FULL_SESSION=true
-		INVOCATION_ID=b8c1ae4cc7f748dfbe39d8e42ebb00bb
-		XDG_VTNR=2
-		QT_WAYLAND_RECONNECT=1
+        [snip]
 Best that the above claims are manually verified to be correct.
 GOOD: 1y works
 GOOD: 5y works
