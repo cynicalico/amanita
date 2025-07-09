@@ -15,7 +15,7 @@ CPMAddPackage(
         NAME mizu
         GITHUB_REPOSITORY cynicalico/mizu
         GIT_TAG 173fbd4b3c51ac83ac763748b17b910b93361c89
-        OPTIONS "MIZU_BUILD_EXAMPLE OFF MIZU_BUILD_AUDIO OFF"
+        OPTIONS "MIZU_BUILD_EXAMPLE OFF" "MIZU_BUILD_AUDIO OFF"
 )
 
 add_executable(amanita

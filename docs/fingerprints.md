@@ -55,7 +55,7 @@ The Mycology column indicates whether an extension is tested in Mycology.
 |      ❌      |    ❌     | SGNE | `0x53474e45`  |          RCS           | Extension to SGNL                       |
 |      ❌      |    ❌     | SMEM | `0x534d454d`  |          RCS           | SysV IPC Shared Memory                  |
 |      ❌      |    ❌     | SMPH | `0x534d5048`  |          RCS           | SysV IPC Semaphores                     |
-|      ❌      |    ✅     | SOCK | `0x534F434B`  |          RCS           | tcp/ip socket extension                 |
+|      ✅      |    ✅     | SOCK | `0x534F434B`  |          RCS           | tcp/ip socket extension                 |
 |      ❌      |    ❌     | SORT | `0x534f5254`  |          RCS           | Sorting Functions                       |
 |      ❌      |    ❌     | STCK | `0x5354434b`  |          RCS           | Stack Manipulation                      |
 |      ✅      |    ✅     | STRN | `0x5354524E`  |          RCS           | String functions                        |

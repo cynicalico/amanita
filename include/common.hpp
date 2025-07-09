@@ -134,6 +134,10 @@ struct State {
         WSADATA wsa_data{};
         std::unordered_map<std::int64_t, Socket> sockets{};
     } sock;
+#else
+    struct {
+        std::unordered_map<std::int64_t, int> sockets{};
+    } sock;
 #endif
 };
 

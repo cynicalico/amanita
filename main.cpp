@@ -116,5 +116,7 @@ void run(std::unique_ptr<CliArgs> cli_args) {
         for (auto &ip: active_list) ip.step_to_next_instruction(fungespace, ip.cache_ins, false);
     }
 
+#if defined(MIZU_PLATFORM_WINDOWS)
     if (state.sock.initialized) WSACleanup();
+#endif
 }
