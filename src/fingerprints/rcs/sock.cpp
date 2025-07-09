@@ -211,12 +211,12 @@ InstructionAction fingerprints::sock::set_opt(State &state, Fungespace &, Instru
     BOOL opt_val = n == 0 ? FALSE : TRUE;
     constexpr int opt_len = sizeof(BOOL);
     if (setsockopt(it->second, SOL_SOCKET, o, reinterpret_cast<char *>(&opt_val), opt_len) == SOCKET_ERROR)
-        ip.reflect();
 #else
     int opt_val = n == 0 ? 0 : 1;
     constexpr int opt_len = sizeof(int);
-    if (setsockopt(it->second, SOL_SOCKET, o, &opt_val, opt_len) == -1) ip.reflect();
+    if (setsockopt(it->second, SOL_SOCKET, o, &opt_val, opt_len) == -1)
 #endif
+        ip.reflect();
 
     return MoveAction{};
 }
