@@ -4,6 +4,7 @@
 
 #if defined(MIZU_PLATFORM_WINDOWS)
 #include <mutex>
+
 #include <winsock2.h>
 #include <ws2tcpip.h>
 
@@ -18,9 +19,17 @@ bool check_winsock_initialized(State &state) {
     });
     return state.sock.initialized;
 }
+
+#define CHECK_WINSOCK_INITIALIZED(state, ip)                                                                           \
+    if (!check_winsock_initialized(state)) {                                                                           \
+        ip.reflect();                                                                                                  \
+        return MoveAction{};                                                                                           \
+    }
 #else
 #include <arpa/inet.h>
 #include <netdb.h>
+
+#define CHECK_WINSOCK_INITIALIZED(state, ip) (void);
 #endif
 
 constexpr int BAD_PARAM = std::numeric_limits<int>::max();
@@ -32,6 +41,8 @@ int get_funge_typ(std::int64_t typ);
 int get_funge_pro(std::int64_t pro);
 
 InstructionAction fingerprints::sock::accept(State &state, Fungespace &, InstructionPointer &ip) {
+    CHECK_WINSOCK_INITIALIZED(state, ip);
+
     const auto s = ip.pop();
 
     const auto it = state.sock.sockets.find(s);
@@ -39,34 +50,24 @@ InstructionAction fingerprints::sock::accept(State &state, Fungespace &, Instruc
         ip.reflect();
         return MoveAction{};
     }
-#if defined(MIZU_PLATFORM_WINDOWS)
-    if (!check_winsock_initialized(state)) {
-        ip.reflect();
-        return MoveAction{};
-    }
 
-    sockaddr_in service;
-    int service_size = sizeof(service);
-    const SOCKET accept_socket = ::accept(it->second.h, reinterpret_cast<SOCKADDR *>(&service), &service_size);
-    if (accept_socket == INVALID_SOCKET || service.sin_family != AF_INET) {
-        ip.reflect();
-        return MoveAction{};
-    }
-
-    const auto accept_s = static_cast<std::int64_t>(state.sock.sockets.size() + 1);
-    state.sock.sockets.emplace(accept_s, State::Socket{.h = accept_socket});
-#else
     sockaddr_in service{};
+#if defined(MIZU_PLATFORM_WINDOWS)
+    int service_size = sizeof(service);
+    const SOCKET accept_socket = ::accept(it->second, reinterpret_cast<SOCKADDR *>(&service), &service_size);
+    if (accept_socket == INVALID_SOCKET || service.sin_family != AF_INET) {
+#else
     socklen_t service_size = sizeof(service);
     const int accept_socket = ::accept(it->second, reinterpret_cast<sockaddr *>(&service), &service_size);
     if (accept_socket == -1 || service.sin_family != AF_INET) {
+#endif
         ip.reflect();
         return MoveAction{};
     }
 
     const auto accept_s = static_cast<std::int64_t>(state.sock.sockets.size() + 1);
     state.sock.sockets.emplace(accept_s, accept_socket);
-#endif
+
     ip.push(service.sin_port);
     ip.push(service.sin_addr.s_addr);
     ip.push(accept_s);
@@ -75,6 +76,8 @@ InstructionAction fingerprints::sock::accept(State &state, Fungespace &, Instruc
 }
 
 InstructionAction fingerprints::sock::bind(State &state, Fungespace &, InstructionPointer &ip) {
+    CHECK_WINSOCK_INITIALIZED(state, ip);
+
     const auto addr = ip.pop();
     const auto port = ip.pop();
     const auto ct = get_funge_ct(ip.pop());
@@ -85,31 +88,25 @@ InstructionAction fingerprints::sock::bind(State &state, Fungespace &, Instructi
         ip.reflect();
         return MoveAction{};
     }
-#if defined(MIZU_PLATFORM_WINDOWS)
-    if (!check_winsock_initialized(state)) {
-        ip.reflect();
-        return MoveAction{};
-    }
 
-    sockaddr_in service;
-    service.sin_family = ct;
-    service.sin_addr.s_addr = static_cast<ULONG>(addr);
-    service.sin_port = htons(port);
-
-    if (::bind(it->second.h, reinterpret_cast<SOCKADDR *>(&service), sizeof(service)) == SOCKET_ERROR) ip.reflect();
-#else
     sockaddr_in service{};
     service.sin_family = ct;
-    service.sin_addr.s_addr = static_cast<uint32_t>(addr);
     service.sin_port = htons(port);
-
-    if (::bind(it->second, reinterpret_cast<sockaddr *>(&service), sizeof(service)) == -1) ip.reflect();
+#if defined(MIZU_PLATFORM_WINDOWS)
+    service.sin_addr.s_addr = static_cast<ULONG>(addr);
+    if (::bind(it->second, reinterpret_cast<SOCKADDR *>(&service), sizeof(service)) == SOCKET_ERROR)
+#else
+    service.sin_addr.s_addr = static_cast<uint32_t>(addr);
+    if (::bind(it->second, reinterpret_cast<sockaddr *>(&service), sizeof(service)) == -1)
 #endif
+        ip.reflect();
 
     return MoveAction{};
 }
 
 InstructionAction fingerprints::sock::connect(State &state, Fungespace &, InstructionPointer &ip) {
+    CHECK_WINSOCK_INITIALIZED(state, ip);
+
     const auto addr = ip.pop();
     const auto port = ip.pop();
     const auto ct = get_funge_ct(ip.pop());
@@ -120,37 +117,27 @@ InstructionAction fingerprints::sock::connect(State &state, Fungespace &, Instru
         ip.reflect();
         return MoveAction{};
     }
-#if defined(MIZU_PLATFORM_WINDOWS)
-    if (!check_winsock_initialized(state)) {
-        ip.reflect();
-        return MoveAction{};
-    }
 
-    sockaddr_in service;
-    service.sin_family = ct;
-    service.sin_addr.s_addr = static_cast<ULONG>(addr);
-    service.sin_port = htons(port);
-
-    if (::connect(it->second.h, reinterpret_cast<SOCKADDR *>(&service), sizeof(service)) == SOCKET_ERROR) ip.reflect();
-#else
     sockaddr_in service{};
     service.sin_family = ct;
-    service.sin_addr.s_addr = static_cast<std::uint32_t>(addr);
     service.sin_port = htons(port);
-
-    if (::connect(it->second, reinterpret_cast<sockaddr *>(&service), sizeof(service))  == -1) ip.reflect();
+#if defined(MIZU_PLATFORM_WINDOWS)
+    service.sin_addr.s_addr = static_cast<ULONG>(addr);
+    if (::connect(it->second, reinterpret_cast<SOCKADDR *>(&service), sizeof(service)) == SOCKET_ERROR)
+#else
+    service.sin_addr.s_addr = static_cast<std::uint32_t>(addr);
+    if (::connect(it->second, reinterpret_cast<sockaddr *>(&service), sizeof(service)) == -1)
 #endif
+        ip.reflect();
+
     return MoveAction{};
 }
 
 InstructionAction fingerprints::sock::convert_addr(State &state, Fungespace &, InstructionPointer &ip) {
+    CHECK_WINSOCK_INITIALIZED(state, ip);
+
     const auto addr_s = ip.pop_0gnirts();
-#if defined(MIZU_PLATFORM_WINDOWS)
-    if (!check_winsock_initialized(state)) {
-        ip.reflect();
-        return MoveAction{};
-    }
-#endif
+
     addrinfo *result;
     if (getaddrinfo(addr_s.c_str(), nullptr, nullptr, &result) != 0 || result->ai_family != AF_INET) {
         ip.reflect();
@@ -164,6 +151,8 @@ InstructionAction fingerprints::sock::convert_addr(State &state, Fungespace &, I
 }
 
 InstructionAction fingerprints::sock::kill(State &state, Fungespace &, InstructionPointer &ip) {
+    CHECK_WINSOCK_INITIALIZED(state, ip);
+
     const auto s = ip.pop();
 
     const auto it = state.sock.sockets.find(s);
@@ -171,22 +160,22 @@ InstructionAction fingerprints::sock::kill(State &state, Fungespace &, Instructi
         ip.reflect();
         return MoveAction{};
     }
-#if defined(MIZU_PLATFORM_WINDOWS)
-    if (!check_winsock_initialized(state)) {
-        ip.reflect();
-        return MoveAction{};
-    }
 
-    if (closesocket(it->second.h) == SOCKET_ERROR) ip.reflect();
-    else state.sock.sockets.erase(it);
+#if defined(MIZU_PLATFORM_WINDOWS)
+    if (closesocket(it->second) == SOCKET_ERROR) ip.reflect();
+    else
 #else
     if (close(it->second) == -1) ip.reflect();
-    else state.sock.sockets.erase(it);
+    else
 #endif
+        state.sock.sockets.erase(it);
+
     return MoveAction{};
 }
 
 InstructionAction fingerprints::sock::listen(State &state, Fungespace &, InstructionPointer &ip) {
+    CHECK_WINSOCK_INITIALIZED(state, ip);
+
     const auto s = ip.pop();
     const auto n = static_cast<int>(ip.pop());
 
@@ -195,20 +184,19 @@ InstructionAction fingerprints::sock::listen(State &state, Fungespace &, Instruc
         ip.reflect();
         return MoveAction{};
     }
-#if defined(MIZU_PLATFORM_WINDOWS)
-    if (!check_winsock_initialized(state)) {
-        ip.reflect();
-        return MoveAction{};
-    }
 
-    if (::listen(it->second.h, n) == SOCKET_ERROR) ip.reflect();
+#if defined(MIZU_PLATFORM_WINDOWS)
+    if (::listen(it->second, n) == SOCKET_ERROR) ip.reflect();
 #else
     if (::listen(it->second, n) == -1) ip.reflect();
 #endif
+
     return MoveAction{};
 }
 
 InstructionAction fingerprints::sock::set_opt(State &state, Fungespace &, InstructionPointer &ip) {
+    CHECK_WINSOCK_INITIALIZED(state, ip);
+
     const auto s = ip.pop();
     const auto o = get_funge_o(ip.pop());
     const auto n = static_cast<int>(ip.pop());
@@ -218,25 +206,24 @@ InstructionAction fingerprints::sock::set_opt(State &state, Fungespace &, Instru
         ip.reflect();
         return MoveAction{};
     }
-#if defined(MIZU_PLATFORM_WINDOWS)
-    if (!check_winsock_initialized(state)) {
-        ip.reflect();
-        return MoveAction{};
-    }
 
+#if defined(MIZU_PLATFORM_WINDOWS)
     BOOL opt_val = n == 0 ? FALSE : TRUE;
     constexpr int opt_len = sizeof(BOOL);
-    if (setsockopt(it->second.h, SOL_SOCKET, o, reinterpret_cast<char *>(&opt_val), opt_len) == SOCKET_ERROR)
+    if (setsockopt(it->second, SOL_SOCKET, o, reinterpret_cast<char *>(&opt_val), opt_len) == SOCKET_ERROR)
         ip.reflect();
 #else
     int opt_val = n == 0 ? 0 : 1;
     constexpr int opt_len = sizeof(int);
     if (setsockopt(it->second, SOL_SOCKET, o, &opt_val, opt_len) == -1) ip.reflect();
 #endif
+
     return MoveAction{};
 }
 
 InstructionAction fingerprints::sock::recv(State &state, Fungespace &fungespace, InstructionPointer &ip) {
+    CHECK_WINSOCK_INITIALIZED(state, ip);
+
     const auto s = ip.pop();
     const auto l = static_cast<int>(ip.pop());
     auto v = ip.pop_offset_vec();
@@ -248,25 +235,12 @@ InstructionAction fingerprints::sock::recv(State &state, Fungespace &fungespace,
     }
 
     static char buf[8192];
-#if defined(MIZU_PLATFORM_WINDOWS)
-    if (!check_winsock_initialized(state)) {
-        ip.reflect();
-        return MoveAction{};
-    }
-
-    const auto bytes_read = ::recv(it->second.h, buf, l, 0);
-    if (bytes_read == SOCKET_ERROR) {
-        ip.reflect();
-    } else {
-        for (int i = 0; i < bytes_read; ++i) {
-            fungespace.put(v.x, v.y, buf[i]);
-            v += EAST;
-        }
-    }
-    ip.push(bytes_read);
-#else
     const auto bytes_read = ::recv(it->second, buf, l, 0);
+#if defined(MIZU_PLATFORM_WINDOWS)
+    if (bytes_read == SOCKET_ERROR) {
+#else
     if (bytes_read == -1) {
+#endif
         ip.reflect();
     } else {
         for (int i = 0; i < bytes_read; ++i) {
@@ -275,11 +249,13 @@ InstructionAction fingerprints::sock::recv(State &state, Fungespace &fungespace,
         }
     }
     ip.push(bytes_read);
-#endif
+
     return MoveAction{};
 }
 
 InstructionAction fingerprints::sock::create(State &state, Fungespace &, InstructionPointer &ip) {
+    CHECK_WINSOCK_INITIALIZED(state, ip);
+
     const auto pro = get_funge_pro(ip.pop());
     const auto typ = get_funge_typ(ip.pop());
     const auto pf = get_funge_pf(ip.pop());
@@ -290,31 +266,18 @@ InstructionAction fingerprints::sock::create(State &state, Fungespace &, Instruc
     }
 
 #if defined(MIZU_PLATFORM_WINDOWS)
-    if (!check_winsock_initialized(state)) {
-        ip.reflect();
-        return MoveAction{};
-    }
-
     addrinfo hints;
     ZeroMemory(&hints, sizeof(hints));
     hints.ai_family = pf;
     hints.ai_socktype = typ;
     hints.ai_protocol = pro;
 
-    SOCKET h = INVALID_SOCKET;
-    h = socket(hints.ai_family, hints.ai_socktype, hints.ai_protocol);
+    SOCKET h = socket(hints.ai_family, hints.ai_socktype, hints.ai_protocol);
     if (h == INVALID_SOCKET) {
-        ip.reflect();
-        return MoveAction{};
-    }
-
-    const auto s = static_cast<std::int64_t>(state.sock.sockets.size() + 1);
-    state.sock.sockets.emplace(s, State::Socket{hints, h});
-
-    ip.push(s);
 #else
     int h = socket(pf, typ, pro);
     if (h == -1) {
+#endif
         ip.reflect();
         return MoveAction{};
     }
@@ -323,11 +286,13 @@ InstructionAction fingerprints::sock::create(State &state, Fungespace &, Instruc
     state.sock.sockets.emplace(s, h);
 
     ip.push(s);
-#endif
+
     return MoveAction{};
 }
 
 InstructionAction fingerprints::sock::send(State &state, Fungespace &fungespace, InstructionPointer &ip) {
+    CHECK_WINSOCK_INITIALIZED(state, ip);
+
     const auto s = ip.pop();
     const auto l = static_cast<int>(ip.pop());
     auto v = ip.pop_offset_vec();
@@ -337,32 +302,22 @@ InstructionAction fingerprints::sock::send(State &state, Fungespace &fungespace,
         ip.reflect();
         return MoveAction{};
     }
+
+    std::string buf;
+    for (int i = 0; i < l; ++i) {
+        buf += static_cast<char>(fungespace.get(v.x, v.y));
+        v += EAST;
+    }
+
 #if defined(MIZU_PLATFORM_WINDOWS)
-    if (!check_winsock_initialized(state)) {
-        ip.reflect();
-        return MoveAction{};
-    }
-
-    std::string buf;
-    for (int i = 0; i < l; ++i) {
-        buf += static_cast<char>(fungespace.get(v.x, v.y));
-        v += EAST;
-    }
-
-    const auto bytes_sent = ::send(it->second.h, buf.c_str(), l, 0);
+    const auto bytes_sent = ::send(it->second, buf.c_str(), l, 0);
     if (bytes_sent == SOCKET_ERROR) ip.reflect();
-    ip.push(bytes_sent);
 #else
-    std::string buf;
-    for (int i = 0; i < l; ++i) {
-        buf += static_cast<char>(fungespace.get(v.x, v.y));
-        v += EAST;
-    }
-
     const auto bytes_sent = ::send(it->second, buf.c_str(), l, 0);
     if (bytes_sent == -1) ip.reflect();
-    ip.push(bytes_sent);
 #endif
+    ip.push(bytes_sent);
+
     return MoveAction{};
 }
 

@@ -123,22 +123,15 @@ struct State {
         bool utc{false};
     } time;
 
-#if defined(MIZU_PLATFORM_WINDOWS)
-    struct Socket {
-        addrinfo hints{};
-        SOCKET h{INVALID_SOCKET};
-    };
-
     struct {
+#if defined(MIZU_PLATFORM_WINDOWS)
         bool initialized{false};
         WSADATA wsa_data{};
-        std::unordered_map<std::int64_t, Socket> sockets{};
-    } sock;
+        std::unordered_map<std::int64_t, SOCKET> sockets{};
 #else
-    struct {
-        std::unordered_map<std::int64_t, int> sockets{};
-    } sock;
+        std::unordered_map<std::int64_t, Socket> sockets{};
 #endif
+    } sock;
 };
 
 /***********************
