@@ -1,5 +1,4 @@
-#ifndef AMANITA_EVAR_HPP
-#define AMANITA_EVAR_HPP
+#pragma once
 
 /* G	(0gnirts -- 0gnirts)	Get value of an environment variable
  * N	( -- n )	            Get number of environment variables
@@ -25,5 +24,3 @@ const Fingerprint SPEC{
                 {Instruction::V, get_nth},
         }};
 } // namespace fingerprints::evar
-
-#endif // AMANITA_EVAR_HPP

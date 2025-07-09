@@ -1,5 +1,4 @@
-#ifndef AMANITA_NULL_HPP
-#define AMANITA_NULL_HPP
+#pragma once
 
 /* After successfully loading fingerprint 0x4e554c4c, all 26 instructions A to Z take on the semantics of r.
  *
@@ -29,5 +28,3 @@ const Fingerprint SPEC{
                 {Instruction::Y, instruction_reflect}, {Instruction::Z, instruction_reflect},
         }};
 } // namespace fingerprints::null
-
-#endif // AMANITA_NULL_HPP

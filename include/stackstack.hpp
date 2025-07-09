@@ -1,13 +1,13 @@
-#ifndef AMANITA_STACKSTACK_HPP
-#define AMANITA_STACKSTACK_HPP
+#pragma once
 
 #include <cstdint>
 #include <deque>
 #include <string>
 #include <vector>
 #include "common.hpp"
+#include "double_ended_stack.hpp"
 
-using Stack = std::deque<Cell>;
+using Stack = DoubleEndedStack<Cell>;
 
 class StackStack {
 public:
@@ -41,5 +41,3 @@ private:
     void push_(Cell value, std::size_t stack_idx);
     Cell pop_(std::size_t stack_idx);
 };
-
-#endif // AMANITA_STACKSTACK_HPP

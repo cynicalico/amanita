@@ -1,5 +1,4 @@
-#ifndef AMANITA_MODU_HPP
-#define AMANITA_MODU_HPP
+#pragma once
 
 /* The MODU fingerprint implements some of the finer, less-well-agreed-upon points of modulo arithmetic. With positive
  *      arguments, these instructions work exactly the same as % does. However, when negative values are involved, they
@@ -28,5 +27,3 @@ const Fingerprint SPEC{
                 {Instruction::R, c_language_integer_remainder},
         }};
 } // namespace fingerprints::modu
-
-#endif // AMANITA_MODU_HPP

@@ -1,5 +1,4 @@
-#ifndef AMANITA_MODE_HPP
-#define AMANITA_MODE_HPP
+#pragma once
 
 /*
  * After successfully loading MODE, the instructions H, I, Q, and S take on new semantics, which alter four new states
@@ -37,5 +36,3 @@ const Fingerprint SPEC{
                 {Instruction::S, toggle_switchmode},
         }};
 } // namespace fingerprints::mode
-
-#endif // AMANITA_MODE_HPP

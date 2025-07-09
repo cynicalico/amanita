@@ -1,5 +1,4 @@
-#ifndef AMANITA_STRN_HPP
-#define AMANITA_STRN_HPP
+#pragma once
 
 /*
  * A   (0gnirts 0gnirts -- 0gnirts)    Append bottom string to upper string
@@ -79,5 +78,3 @@ const Fingerprint SPEC{
                 {Instruction::V, atoi},
         }};
 } // namespace fingerprints::strn
-
-#endif // AMANITA_STRN_HPP

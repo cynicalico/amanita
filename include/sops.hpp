@@ -1,5 +1,4 @@
-#ifndef AMANITA_SOPS_HPP
-#define AMANITA_SOPS_HPP
+#pragma once
 
 #include <algorithm>
 #include <string>
@@ -46,5 +45,3 @@ inline std::string trim_copy(std::string s) {
     trim(s);
     return s;
 }
-
-#endif // AMANITA_SOPS_HPP

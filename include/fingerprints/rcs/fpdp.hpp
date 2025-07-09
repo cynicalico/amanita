@@ -1,5 +1,4 @@
-#ifndef AMANITA_FPDP_HPP
-#define AMANITA_FPDP_HPP
+#pragma once
 
 /*
  * A	(a b -- n)	    Add two double precision fp numbers
@@ -62,5 +61,3 @@ const Fingerprint SPEC{
                 {Instruction::Y, pow},
         }};
 } // namespace fingerprints::fpdp
-
-#endif // AMANITA_FPDP_HPP

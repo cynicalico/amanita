@@ -1,5 +1,4 @@
-#ifndef AMANITA_INSTRUCTION_STACK_HPP
-#define AMANITA_INSTRUCTION_STACK_HPP
+#pragma once
 
 #include <vector>
 #include "common.hpp"
@@ -23,5 +22,3 @@ public:
 private:
     void populate_default_fns_();
 };
-
-#endif // AMANITA_INSTRUCTION_STACK_HPP

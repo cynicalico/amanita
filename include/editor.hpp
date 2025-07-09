@@ -1,5 +1,4 @@
-#ifndef AMANITA_EDITOR_HPP
-#define AMANITA_EDITOR_HPP
+#pragma once
 
 #include "fungespace.hpp"
 #include "instruction_pointer.hpp"
@@ -67,5 +66,3 @@ public:
     void do_single_tick();
     void check_move_viewport();
 };
-
-#endif // AMANITA_EDITOR_HPP

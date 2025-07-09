@@ -1,5 +1,4 @@
-#ifndef AMANITA_PERL_HPP
-#define AMANITA_PERL_HPP
+#pragma once
 
 /* The PERL fingerprint is designed to provide a basic, no-frills interface
  * to the Perl language.
@@ -37,5 +36,3 @@ const Fingerprint SPEC{
                 {Instruction::I, int_eval},
         }};
 } // namespace fingerprints::perl
-
-#endif // AMANITA_PERL_HPP

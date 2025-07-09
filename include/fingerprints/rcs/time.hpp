@@ -1,5 +1,4 @@
-#ifndef AMANITA_TIME_HPP
-#define AMANITA_TIME_HPP
+#pragma once
 
 /*
  * D   ( -- n) Day of Month
@@ -44,5 +43,3 @@ const Fingerprint SPEC{
                 {Instruction::Y, year},
         }};
 } // namespace fingerprints::time
-
-#endif // AMANITA_TIME_HPP

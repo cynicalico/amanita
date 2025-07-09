@@ -1,5 +1,4 @@
-#ifndef AMANITA_FILE_HPP
-#define AMANITA_FILE_HPP
+#pragma once
 
 /* C	(h --)	            Close a file
  * D	(0gnirts -- )	    Delete specified file
@@ -54,5 +53,3 @@ const Fingerprint SPEC{
                 {Instruction::W, write_bytes},
         }};
 } // namespace fingerprints::file
-
-#endif // AMANITA_FILE_HPP

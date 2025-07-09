@@ -1,5 +1,4 @@
-#ifndef AMANITA_INSTRUCTIONS_HPP
-#define AMANITA_INSTRUCTIONS_HPP
+#pragma once
 
 #include <cstdint>
 
@@ -102,5 +101,3 @@ enum class Instruction : std::int64_t {
 };
 
 inline bool operator==(const Instruction lhs, const std::int64_t rhs) { return static_cast<std::int64_t>(lhs) == rhs; }
-
-#endif // AMANITA_INSTRUCTIONS_HPP

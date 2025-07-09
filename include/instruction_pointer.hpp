@@ -1,5 +1,4 @@
-#ifndef AMANITA_INSTRUCTION_POINTER_HPP
-#define AMANITA_INSTRUCTION_POINTER_HPP
+#pragma once
 
 #include "common.hpp"
 #include "instruction_stack.hpp"
@@ -73,5 +72,3 @@ private:
     Vec saved_pos_{ZERO};
     Vec saved_delta_{ZERO};
 };
-
-#endif // AMANITA_INSTRUCTION_POINTER_HPP

@@ -1,5 +1,4 @@
-#ifndef AMANITA_BASE_INSTRUCTIONS_HPP
-#define AMANITA_BASE_INSTRUCTIONS_HPP
+#pragma once
 
 #include "common.hpp"
 
@@ -72,5 +71,3 @@ InstructionAction instruction_begin_block(State &, Fungespace &, InstructionPoin
 InstructionAction instruction_north_south_if(State &, Fungespace &, InstructionPointer &);
 InstructionAction instruction_end_block(State &, Fungespace &, InstructionPointer &);
 InstructionAction instruction_input_character(State &, Fungespace &, InstructionPointer &);
-
-#endif // AMANITA_BASE_INSTRUCTIONS_HPP

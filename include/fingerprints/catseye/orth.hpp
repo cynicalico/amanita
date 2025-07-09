@@ -1,5 +1,4 @@
-#ifndef AMANITA_ORTH_HPP
-#define AMANITA_ORTH_HPP
+#pragma once
 
 /* The ORTH fingerprint is designed to ease transition between the Orthogonal programming language and Befunge-98 (or
  * higher dimension Funges.) Even if transition from Orthogonal is not an issue, the ORTH library contains some
@@ -76,5 +75,3 @@ const Fingerprint SPEC{
                 {Instruction::S, output_string},
         }};
 } // namespace fingerprints::orth
-
-#endif // AMANITA_ORTH_HPP

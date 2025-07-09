@@ -1,5 +1,4 @@
-#ifndef AMANITA_FRTH_HPP
-#define AMANITA_FRTH_HPP
+#pragma once
 
 /*
  * D   ( .. -- .. n)       Push depth of stack to tos
@@ -41,4 +40,3 @@ const Fingerprint SPEC{
         }};
 } // namespace fingerprints::frth
 
-#endif // AMANITA_FRTH_HPP

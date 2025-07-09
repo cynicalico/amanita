@@ -1,5 +1,6 @@
 #include <fmt/format.h>
 #include "argparse.hpp"
+#include "double_ended_stack.hpp"
 #include "editor.hpp"
 #include "fungespace.hpp"
 #include "instruction_pointer.hpp"

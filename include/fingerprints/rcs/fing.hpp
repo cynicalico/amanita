@@ -1,5 +1,4 @@
-#ifndef AMANITA_FING_HPP
-#define AMANITA_FING_HPP
+#pragma once
 
 /*
  * X	(sem sem -- )	Swap two semantics
@@ -29,6 +28,3 @@ const Fingerprint SPEC{
                 {Instruction::Z, push},
         }};
 } // namespace fingerprints::fing
-
-
-#endif // AMANITA_FING_HPP

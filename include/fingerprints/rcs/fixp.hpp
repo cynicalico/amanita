@@ -1,5 +1,4 @@
-#ifndef AMANITA_FIXP_HPP
-#define AMANITA_FIXP_HPP
+#pragma once
 
 /*
  * A	(a b -- a and b)	And
@@ -67,5 +66,3 @@ const Fingerprint SPEC{
                 {Instruction::X, xor_},
         }};
 } // namespace fingerprints::fixp
-
-#endif // AMANITA_FIXP_HPP

@@ -1,5 +1,4 @@
-#ifndef AMANITA_CPLI_HPP
-#define AMANITA_CPLI_HPP
+#pragma once
 
 /*
  * A	(ar ai br bi -- r i)	Add two complex integers
@@ -32,5 +31,3 @@ const Fingerprint SPEC{
                 {Instruction::V, abs},
         }};
 } // namespace fingerprints::cpli
-
-#endif // AMANITA_CPLI_HPP

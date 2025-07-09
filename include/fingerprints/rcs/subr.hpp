@@ -1,5 +1,4 @@
-#ifndef AMANITA_SUBR_HPP
-#define AMANITA_SUBR_HPP
+#pragma once
 
 /*
  * A	( -- )	            Set absolute mode
@@ -52,5 +51,3 @@ const Fingerprint SPEC{
                 {Instruction::R, ret},
         }};
 } // namespace fingerprints::subr
-
-#endif // AMANITA_SUBR_HPP

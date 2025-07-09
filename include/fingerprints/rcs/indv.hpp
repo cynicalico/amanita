@@ -1,5 +1,4 @@
-#ifndef AMANITA_INDV_HPP
-#define AMANITA_INDV_HPP
+#pragma once
 
 /* G   (Vp - n)    Pointer get number
  * P   (n Vp -- )  Pointer put number
@@ -38,5 +37,3 @@ const Fingerprint SPEC{
                 {Instruction::W, put_vector},
         }};
 } // namespace fingerprints::indv
-
-#endif // AMANITA_INDV_HPP

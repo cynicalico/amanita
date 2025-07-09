@@ -21,6 +21,7 @@ CPMAddPackage(
 add_executable(amanita
         include/base_instructions.hpp
         include/common.hpp
+        include/double_ended_stack.hpp
         include/editor.hpp
         include/fungespace.hpp
         include/instruction_pointer.hpp

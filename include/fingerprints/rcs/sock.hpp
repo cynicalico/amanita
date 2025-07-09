@@ -1,5 +1,4 @@
-#ifndef AMANITA_SOCK_HPP
-#define AMANITA_SOCK_HPP
+#pragma once
 
 /*
  * A   (s -- prt addr s)   Accept a connection
@@ -81,5 +80,3 @@ const Fingerprint SPEC{
                 {Instruction::W, send},
         }};
 } // namespace fingerprints::sock
-
-#endif // AMANITA_SOCK_HPP

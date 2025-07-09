@@ -1,5 +1,4 @@
-#ifndef AMANITA_ROMA_HPP
-#define AMANITA_ROMA_HPP
+#pragma once
 
 /* After successfully loading ROMA, the instructions C, D, I, L, M, V, and X take on new semantics.
  *
@@ -39,5 +38,3 @@ const static Fingerprint SPEC{
                 {Instruction::X, push_10},
         }};
 } // namespace fingerprints::roma
-
-#endif // AMANITA_ROMA_HPP

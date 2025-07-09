@@ -101,12 +101,7 @@ Cell StackStack::pop_(std::size_t stack_idx) {
     if (stacks[stack_idx].empty()) return 0;
 
     Cell v;
-    if (queuemode) {
-        v = stacks[stack_idx].front();
-        stacks[stack_idx].pop_front();
-    } else {
-        v = stacks[stack_idx].back();
-        stacks[stack_idx].pop_back();
-    }
+    if (queuemode) v = stacks[stack_idx].pop_front();
+    else v = stacks[stack_idx].pop_back();
     return v;
 }

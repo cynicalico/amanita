@@ -1,5 +1,4 @@
-#ifndef AMANITA_FUNGESPACE_HPP
-#define AMANITA_FUNGESPACE_HPP
+#pragma once
 
 #include <cstdint>
 #include <filesystem>
@@ -62,5 +61,3 @@ private:
     void check_resize_(const FixedCoord_ &coord);
     void check_shrink_bounds_(Index x, Index y);
 };
-
-#endif // AMANITA_FUNGESPACE_HPP

@@ -1,5 +1,4 @@
-#ifndef AMANITA_HRTI_HPP
-#define AMANITA_HRTI_HPP
+#pragma once
 
 /* The HRTI fingerprint allows a Funge program to measure elapsed time much more finely than the clock values returned
  *      by y. After successfully loading HRTI, the instructions E, G, M, S, and T take on new semantics.
@@ -40,5 +39,3 @@ const Fingerprint SPEC{
                 {Instruction::S, second},
         }};
 } // namespace fingerprints::hrti
-
-#endif // AMANITA_HRTI_HPP

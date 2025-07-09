@@ -1,5 +1,4 @@
-#ifndef AMANITA_DIRF_HPP
-#define AMANITA_DIRF_HPP
+#pragma once
 
 /* C    (0gnirts -- )	Change directory
  * M	(0gnirts -- )	Make a directory
@@ -24,5 +23,3 @@ const Fingerprint SPEC{
                 {Instruction::R, rmdir},
         }};
 } // namespace fingerprints::dirf
-
-#endif // AMANITA_DIRF_HPP

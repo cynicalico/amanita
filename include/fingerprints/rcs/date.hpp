@@ -1,5 +1,4 @@
-#ifndef AMANITA_DATE_HPP
-#define AMANITA_DATE_HPP
+#pragma once
 
 /* A   (y m d days -- y m d)       Add days to date
  * C   (jd -- y m d)               Convert julian day to calendar date
@@ -36,5 +35,3 @@ const Fingerprint SPEC{
                 {Instruction::W, day_of_week},
                 {Instruction::Y, day_of_year}}};
 } // namespace fingerprints::date
-
-#endif // AMANITA_DATE_HPP

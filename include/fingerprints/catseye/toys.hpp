@@ -1,5 +1,4 @@
-#ifndef AMANITA_TOYS_HPP
-#define AMANITA_TOYS_HPP
+#pragma once
 
 /* After successfully loading TOYS, the instructions A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V,
  *      W, X, Y, and Z take on new semantics (and INTERCAL-esque names).
@@ -144,5 +143,3 @@ const Fingerprint SPEC{
                 {Instruction::Z, barn_door},
         }};
 } // namespace fingerprints::toys
-
-#endif // AMANITA_TOYS_HPP

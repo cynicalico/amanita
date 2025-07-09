@@ -35,32 +35,32 @@
 
 const std::unordered_map<std::int64_t, const Fingerprint &> &registry() {
     static std::unordered_map<std::int64_t, const Fingerprint &> registry{
-            // // Cat's Eye
-            // {fingerprints::hrti::SPEC.id, fingerprints::hrti::SPEC},
-            // {fingerprints::mode::SPEC.id, fingerprints::mode::SPEC},
-            // {fingerprints::modu::SPEC.id, fingerprints::modu::SPEC},
-            // {fingerprints::null::SPEC.id, fingerprints::null::SPEC},
-            // {fingerprints::orth::SPEC.id, fingerprints::orth::SPEC},
-            // {fingerprints::perl::SPEC.id, fingerprints::perl::SPEC},
-            // {fingerprints::refc::SPEC.id, fingerprints::refc::SPEC},
-            // {fingerprints::roma::SPEC.id, fingerprints::roma::SPEC},
-            // {fingerprints::toys::SPEC.id, fingerprints::toys::SPEC},
-            // // RCS
-            // {fingerprints::cpli::SPEC.id, fingerprints::cpli::SPEC},
-            // {fingerprints::date::SPEC.id, fingerprints::date::SPEC},
-            // {fingerprints::dirf::SPEC.id, fingerprints::dirf::SPEC},
-            // {fingerprints::evar::SPEC.id, fingerprints::evar::SPEC},
-            // {fingerprints::file::SPEC.id, fingerprints::file::SPEC},
-            // {fingerprints::fing::SPEC.id, fingerprints::fing::SPEC},
-            // {fingerprints::fixp::SPEC.id, fingerprints::fixp::SPEC},
-            // {fingerprints::fpdp::SPEC.id, fingerprints::fpdp::SPEC},
-            // {fingerprints::fpsp::SPEC.id, fingerprints::fpsp::SPEC},
-            // {fingerprints::frth::SPEC.id, fingerprints::frth::SPEC},
-            // {fingerprints::indv::SPEC.id, fingerprints::indv::SPEC},
+            // Cat's Eye
+            {fingerprints::hrti::SPEC.id, fingerprints::hrti::SPEC},
+            {fingerprints::mode::SPEC.id, fingerprints::mode::SPEC},
+            {fingerprints::modu::SPEC.id, fingerprints::modu::SPEC},
+            {fingerprints::null::SPEC.id, fingerprints::null::SPEC},
+            {fingerprints::orth::SPEC.id, fingerprints::orth::SPEC},
+            {fingerprints::perl::SPEC.id, fingerprints::perl::SPEC},
+            {fingerprints::refc::SPEC.id, fingerprints::refc::SPEC},
+            {fingerprints::roma::SPEC.id, fingerprints::roma::SPEC},
+            {fingerprints::toys::SPEC.id, fingerprints::toys::SPEC},
+            // RCS
+            {fingerprints::cpli::SPEC.id, fingerprints::cpli::SPEC},
+            {fingerprints::date::SPEC.id, fingerprints::date::SPEC},
+            {fingerprints::dirf::SPEC.id, fingerprints::dirf::SPEC},
+            {fingerprints::evar::SPEC.id, fingerprints::evar::SPEC},
+            {fingerprints::file::SPEC.id, fingerprints::file::SPEC},
+            {fingerprints::fing::SPEC.id, fingerprints::fing::SPEC},
+            {fingerprints::fixp::SPEC.id, fingerprints::fixp::SPEC},
+            {fingerprints::fpdp::SPEC.id, fingerprints::fpdp::SPEC},
+            {fingerprints::fpsp::SPEC.id, fingerprints::fpsp::SPEC},
+            {fingerprints::frth::SPEC.id, fingerprints::frth::SPEC},
+            {fingerprints::indv::SPEC.id, fingerprints::indv::SPEC},
             {fingerprints::sock::SPEC.id, fingerprints::sock::SPEC},
-            // {fingerprints::strn::SPEC.id, fingerprints::strn::SPEC},
-            // {fingerprints::subr::SPEC.id, fingerprints::subr::SPEC},
-            // {fingerprints::time::SPEC.id, fingerprints::time::SPEC},
+            {fingerprints::strn::SPEC.id, fingerprints::strn::SPEC},
+            {fingerprints::subr::SPEC.id, fingerprints::subr::SPEC},
+            {fingerprints::time::SPEC.id, fingerprints::time::SPEC},
     };
     return registry;
 }

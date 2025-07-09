@@ -1,5 +1,4 @@
-#ifndef AMANITA_REFC_HPP
-#define AMANITA_REFC_HPP
+#pragma once
 
 /* The REFC fingerprint allows vectors to be encoded into and decoded from single scalar cell values.
  * After successfully loading REFC, the instructions D and R take on new semantics.
@@ -28,5 +27,3 @@ const Fingerprint SPEC{
                 {Instruction::D, dereference},
         }};
 } // namespace fingerprints::refc
-
-#endif // AMANITA_REFC_HPP

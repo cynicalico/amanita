@@ -1,5 +1,4 @@
-#ifndef AMANITA_COMMON_HPP
-#define AMANITA_COMMON_HPP
+#pragma once
 
 #include <chrono>
 #include <cstdint>
@@ -180,5 +179,3 @@ template<class... Ts>
 struct overloaded : Ts... {
     using Ts::operator()...;
 };
-
-#endif // AMANITA_COMMON_HPP
