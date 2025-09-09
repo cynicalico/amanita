@@ -14,14 +14,24 @@ target_sources(
         amanita
 
         PRIVATE
+        src/vm.cpp
         main.cpp
 
-#        PRIVATE
-#        FILE_SET amanita_headers
-#        TYPE HEADERS
-#        BASE_DIRS
-#        include
-#        FILES
+        PRIVATE
+        FILE_SET amanita_headers
+        TYPE HEADERS
+        BASE_DIRS
+        include
+        FILES
+        include/vm.hpp
+
+        PRIVATE
+        FILE_SET amanita_thirdparty_headers
+        TYPE HEADERS
+        BASE_DIRS
+        thirdparty
+        FILES
+        thirdparty/argparse.hpp
 )
 
 target_compile_features(amanita PRIVATE cxx_std_23)
