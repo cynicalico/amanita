@@ -1,3 +1,5 @@
+#include "vm.hpp"
+
 #include "argparse.hpp"
 
 #include <fmt/format.h>
@@ -33,13 +35,20 @@ int main(int argc, char *argv[]) {
         try {
             args.insert_range(args.end(), run_command.get<std::vector<std::string>>("args"));
         } catch (std::logic_error &) {
+            // we didn't get any args
         }
 
         std::vector<std::string> include_paths = {"."};
         try {
             include_paths.insert_range(include_paths.end(), run_command.get<std::vector<std::string>>("--include"));
         } catch (std::logic_error &) {
+            // we didn't get any additional include paths
         }
+
+        const auto vm = new amanita::VM(args[0], args);
+        vm->run();
+
+        return vm->exit_code;
     }
 
     return 0;

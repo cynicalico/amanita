@@ -14,6 +14,13 @@ target_sources(
         amanita
 
         PRIVATE
+        src/base_semantics.cpp
+        src/fungespace.cpp
+        src/instruction_pointer.cpp
+        src/semantic_stack.cpp
+        src/sops.cpp
+        src/stackstack.cpp
+        src/vec.cpp
         src/vm.cpp
         main.cpp
 
@@ -23,6 +30,17 @@ target_sources(
         BASE_DIRS
         include
         FILES
+        include/action.hpp
+        include/base_semantics.hpp
+        include/fungespace.hpp
+        include/instruction.hpp
+        include/instruction_pointer.hpp
+        include/semantic.hpp
+        include/semantic_stack.hpp
+        include/sops.hpp
+        include/stackstack.hpp
+        include/state.hpp
+        include/vec.hpp
         include/vm.hpp
 
         PRIVATE
