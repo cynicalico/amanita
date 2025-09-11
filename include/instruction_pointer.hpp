@@ -20,6 +20,7 @@ public:
     Vec pos;
     Vec delta;
     bool stringmode;
+    Vec storage_offset;
     StackStack *stackstack;
 
     InstructionPointer();
@@ -31,12 +32,22 @@ public:
     InstructionPointer(InstructionPointer &&other) noexcept = delete;
     InstructionPointer &operator=(InstructionPointer &&other) noexcept = delete;
 
+    void perform(Instruction ins, State *state, std::vector<Action> &actions);
     void perform(State *state, std::vector<Action> &actions);
 
     void push(std::int64_t value);
+    std::int64_t peek() const;
     std::int64_t pop();
+    Vec pop_vec();
+    Vec pop_offset_vec();
 
     void reflect();
+    void go_north();
+    void go_south();
+    void go_east();
+    void go_west();
+    void turn_left();
+    void turn_right();
 
     void step();
     void step_wrap(State *state);

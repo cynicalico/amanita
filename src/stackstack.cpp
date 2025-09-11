@@ -11,6 +11,9 @@ void amanita::StackStack::push(const std::int64_t value) {
 }
 
 std::int64_t amanita::StackStack::peek() const {
+    if (stacks_[toss_].empty())
+        return 0;
+
     return stacks_[toss_].back();
 }
 

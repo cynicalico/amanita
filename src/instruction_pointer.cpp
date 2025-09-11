@@ -13,22 +13,65 @@ amanita::InstructionPointer::InstructionPointer()
       pos(Vec::ZERO),
       delta(Vec::EAST),
       stringmode(false),
+      storage_offset(Vec::ZERO),
       stackstack(new StackStack()) {}
 
+void amanita::InstructionPointer::perform(Instruction ins, State *state, std::vector<Action> &actions) {
+    semantics->perform(ins, state, this, actions);
+}
+
 void amanita::InstructionPointer::perform(State *state, std::vector<Action> &actions) {
-    semantics->perform(curr_ins, state, this, actions);
+    perform(curr_ins, state, actions);
 }
 
 void amanita::InstructionPointer::push(std::int64_t value) {
     stackstack->push(value);
 }
 
+std::int64_t amanita::InstructionPointer::peek() const {
+    return stackstack->peek();
+}
+
 std::int64_t amanita::InstructionPointer::pop() {
     return stackstack->pop();
 }
 
+amanita::Vec amanita::InstructionPointer::pop_vec() {
+    const auto y = pop();
+    const auto x = pop();
+    return {x, y};
+}
+
+amanita::Vec amanita::InstructionPointer::pop_offset_vec() {
+    return pop_vec() + storage_offset;
+}
+
 void amanita::InstructionPointer::reflect() {
     delta *= -1;
+}
+
+void amanita::InstructionPointer::go_north() {
+    delta = Vec::NORTH;
+}
+
+void amanita::InstructionPointer::go_south() {
+    delta = Vec::SOUTH;
+}
+
+void amanita::InstructionPointer::go_east() {
+    delta = Vec::EAST;
+}
+
+void amanita::InstructionPointer::go_west() {
+    delta = Vec::WEST;
+}
+
+void amanita::InstructionPointer::turn_left() {
+    delta = {delta.y, -delta.x};
+}
+
+void amanita::InstructionPointer::turn_right() {
+    delta = {-delta.y, delta.x};
 }
 
 void amanita::InstructionPointer::step() {

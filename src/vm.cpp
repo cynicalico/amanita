@@ -34,10 +34,15 @@ void amanita::VM::step() {
     }
     state->ips.clear();
 
-    for (const auto action: actions) {
+    for (const auto &action: actions) {
         std::visit(
                 overloaded{
-                        [&](const ActionIter &) {},
+                        [&](const ActionIter &a) {
+                            bool bail = false;
+                            for (const auto &iter_action: a.actions) {
+                                // TODO
+                            }
+                        },
                         [&](const ActionKill &a) {
                             delete a.ip;
                         },
