@@ -17,6 +17,7 @@ public:
     Instruction curr_ins;
     Instruction prev_ins;
 
+    bool alive;
     Vec pos;
     Vec delta;
     bool stringmode;
@@ -35,11 +36,12 @@ public:
     void perform(Instruction ins, State *state, std::vector<Action> &actions);
     void perform(State *state, std::vector<Action> &actions);
 
-    void push(std::int64_t value);
-    std::int64_t peek() const;
-    std::int64_t pop();
-    Vec pop_vec();
-    Vec pop_offset_vec();
+    void stack_clear();
+    void stack_push(std::int64_t value);
+    std::int64_t stack_peek() const;
+    std::int64_t stack_pop();
+    Vec stack_pop_vec();
+    Vec stack_pop_offset_vec();
 
     void reflect();
     void go_north();

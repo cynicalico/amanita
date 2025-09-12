@@ -7,14 +7,18 @@
 amanita::VM::VM()
     : src_path(""),
       state(new State{
-              Status::Running, std::vector<std::string>(), new Fungespace(), std::vector<InstructionPointer *>()}) {
+              Status::Running, 0, std::vector<std::string>(), new Fungespace(), std::vector<InstructionPointer *>()}) {
     reset();
 }
 
 amanita::VM::VM(std::filesystem::path src_path, std::vector<std::string> args)
     : src_path(std::move(src_path)),
       state(new State{
-              Status::Running, std::move(args), new Fungespace(this->src_path), std::vector<InstructionPointer *>()}) {
+              Status::Running,
+              0,
+              std::move(args),
+              new Fungespace(this->src_path),
+              std::vector<InstructionPointer *>()}) {
     reset();
 }
 
@@ -26,51 +30,37 @@ void amanita::VM::reset() {
     state->ips.back()->curr_ins = state->fungespace->get_ins(state->ips.back()->pos);
 }
 
-void process_action(amanita::State *state, const amanita::Action &action) {
-    std::visit(
-            amanita::overloaded{
-                    [&](const amanita::ActionIter &a) {
-                        for (const auto &iter_action: a.actions)
-                            process_action(state, iter_action);
-                    },
-                    [&](const amanita::ActionKill &a) {
-                        delete a.ip;
-                    },
-                    [&](const amanita::ActionMove &a) {
-                        if (!state->ips.empty() && state->ips.back() != a.ip)
-                            state->ips.push_back(a.ip);
-                        else if (state->ips.empty())
-                            state->ips.push_back(a.ip);
-                    },
-                    [&](const amanita::ActionSplit &) { /* TODO */ },
-                    [&](const amanita::ActionQuit &a) {
-                        // exit_code = a.exit_code;
-                        state->status = amanita::Status::Stopped;
-                    }},
-            action);
-}
-
 void amanita::VM::step() {
-    std::vector<Action> actions{};
+    next_ips_buf_.clear();
+
     for (const auto ip: state->ips) {
         ip->check_step_to_next_instruction(state);
-        ip->perform(state, actions);
-    }
-    state->ips.clear();
 
-    for (const auto &action: actions) {
-        process_action(state, action);
+        actions_buf_.clear();
+        ip->perform(state, actions_buf_);
 
         if (state->status == Status::Stopped)
             return;
+
+        if (!ip->alive)
+            continue;
+
+        for (const auto &action: actions_buf_) {
+            switch (action.type) {
+            case ActionType::Split: /* TODO */ break;
+            }
+        }
+
+        next_ips_buf_.push_back(ip);
     }
 
-    if (state->ips.empty()) {
+    if (next_ips_buf_.empty()) {
         state->status = Status::Stopped;
         return;
     }
 
-    for (auto ip: state->ips) {
+    std::swap(state->ips, next_ips_buf_);
+    for (const auto ip: state->ips) {
         ip->prev_ins = ip->curr_ins;
         ip->step_to_next_instruction(state);
     }

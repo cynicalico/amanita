@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
         const auto vm = new amanita::VM(args[0], args);
         vm->run();
 
-        return vm->exit_code;
+        return vm->state->exit_code;
     }
 
     return 0;

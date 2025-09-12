@@ -12,6 +12,8 @@ class StackStack {
 public:
     StackStack();
 
+    void clear();
+
     void push(std::int64_t value);
     std::int64_t peek() const;
     std::int64_t pop();

@@ -10,6 +10,7 @@ amanita::InstructionPointer::InstructionPointer()
     : semantics(new SemanticStack()),
       curr_ins(Instruction::Space),
       prev_ins(Instruction::Space),
+      alive(true),
       pos(Vec::ZERO),
       delta(Vec::EAST),
       stringmode(false),
@@ -24,26 +25,30 @@ void amanita::InstructionPointer::perform(State *state, std::vector<Action> &act
     perform(curr_ins, state, actions);
 }
 
-void amanita::InstructionPointer::push(std::int64_t value) {
+void amanita::InstructionPointer::stack_clear() {
+    stackstack->clear();
+}
+
+void amanita::InstructionPointer::stack_push(std::int64_t value) {
     stackstack->push(value);
 }
 
-std::int64_t amanita::InstructionPointer::peek() const {
+std::int64_t amanita::InstructionPointer::stack_peek() const {
     return stackstack->peek();
 }
 
-std::int64_t amanita::InstructionPointer::pop() {
+std::int64_t amanita::InstructionPointer::stack_pop() {
     return stackstack->pop();
 }
 
-amanita::Vec amanita::InstructionPointer::pop_vec() {
-    const auto y = pop();
-    const auto x = pop();
+amanita::Vec amanita::InstructionPointer::stack_pop_vec() {
+    const auto y = stack_pop();
+    const auto x = stack_pop();
     return {x, y};
 }
 
-amanita::Vec amanita::InstructionPointer::pop_offset_vec() {
-    return pop_vec() + storage_offset;
+amanita::Vec amanita::InstructionPointer::stack_pop_offset_vec() {
+    return stack_pop_vec() + storage_offset;
 }
 
 void amanita::InstructionPointer::reflect() {
@@ -109,6 +114,7 @@ void amanita::InstructionPointer::check_step_to_next_instruction(State *state) {
     // With multiple IPs, the instruction an IP was going to execute could also be replaced with `;` or ` `.
     // In either case, we need to step to something valid before we execute anything.
 
+    curr_ins = state->fungespace->get_ins(pos);
     if (!stringmode) {
         switch (curr_ins) {
         case Instruction::JumpOver: step_to_next(state, Instruction::JumpOver);

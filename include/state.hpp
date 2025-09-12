@@ -11,6 +11,7 @@ enum class Status { Running, Stopped };
 
 struct State {
     Status status;
+    int exit_code;
     std::vector<std::string> args;
 
     Fungespace *fungespace;

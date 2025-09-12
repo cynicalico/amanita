@@ -1,5 +1,6 @@
 #pragma once
 
+#include "action.hpp"
 #include "state.hpp"
 
 #include <filesystem>
@@ -17,5 +18,9 @@ public:
     void reset();
     void step();
     void run();
+
+private:
+    std::vector<InstructionPointer *> next_ips_buf_{};
+    std::vector<Action> actions_buf_{};
 };
 } // namespace amanita

@@ -13,8 +13,7 @@ void amanita::SemanticStack::perform(
         Instruction ins, State *state, InstructionPointer *ip, std::vector<Action> &actions) {
     if (ip->stringmode) {
         if (ins != Instruction::ToggleStringmode) {
-            ip->push(static_cast<std::int64_t>(ins));
-            actions.emplace_back(ActionMove{ip});
+            ip->stack_push(static_cast<std::int64_t>(ins));
             return;
         }
     }

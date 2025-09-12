@@ -6,6 +6,10 @@ amanita::StackStack::StackStack()
     stacks_.emplace_back();
 }
 
+void amanita::StackStack::clear() {
+    stacks_[toss_].clear();
+}
+
 void amanita::StackStack::push(const std::int64_t value) {
     push_(toss_, value);
 }
