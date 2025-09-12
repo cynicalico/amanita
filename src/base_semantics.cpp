@@ -5,6 +5,8 @@
 
 #include <fmt/format.h>
 
+#include <utility>
+
 void amanita::semantic_space(State *, InstructionPointer *ip, std::vector<Action> &actions) {
     std::unreachable();
 }

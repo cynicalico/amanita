@@ -26,6 +26,30 @@ void amanita::VM::reset() {
     state->ips.back()->curr_ins = state->fungespace->get_ins(state->ips.back()->pos);
 }
 
+void process_action(amanita::State *state, const amanita::Action &action) {
+    std::visit(
+            amanita::overloaded{
+                    [&](const amanita::ActionIter &a) {
+                        for (const auto &iter_action: a.actions)
+                            process_action(state, iter_action);
+                    },
+                    [&](const amanita::ActionKill &a) {
+                        delete a.ip;
+                    },
+                    [&](const amanita::ActionMove &a) {
+                        if (!state->ips.empty() && state->ips.back() != a.ip)
+                            state->ips.push_back(a.ip);
+                        else if (state->ips.empty())
+                            state->ips.push_back(a.ip);
+                    },
+                    [&](const amanita::ActionSplit &) { /* TODO */ },
+                    [&](const amanita::ActionQuit &a) {
+                        // exit_code = a.exit_code;
+                        state->status = amanita::Status::Stopped;
+                    }},
+            action);
+}
+
 void amanita::VM::step() {
     std::vector<Action> actions{};
     for (const auto ip: state->ips) {
@@ -35,26 +59,7 @@ void amanita::VM::step() {
     state->ips.clear();
 
     for (const auto &action: actions) {
-        std::visit(
-                overloaded{
-                        [&](const ActionIter &a) {
-                            bool bail = false;
-                            for (const auto &iter_action: a.actions) {
-                                // TODO
-                            }
-                        },
-                        [&](const ActionKill &a) {
-                            delete a.ip;
-                        },
-                        [&](const ActionMove &a) {
-                            state->ips.push_back(a.ip);
-                        },
-                        [&](const ActionSplit &) {},
-                        [&](const ActionQuit &a) {
-                            exit_code = a.exit_code;
-                            state->status = Status::Stopped;
-                        }},
-                action);
+        process_action(state, action);
 
         if (state->status == Status::Stopped)
             return;
