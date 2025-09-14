@@ -42,6 +42,9 @@ public:
     std::int64_t stack_pop();
     Vec stack_pop_vec();
     Vec stack_pop_offset_vec();
+    void stack_begin_block();
+    void stack_end_block();
+    void stack_stack_under_stack();
 
     void reflect();
     void go_north();

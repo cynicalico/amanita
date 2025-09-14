@@ -18,6 +18,10 @@ public:
     std::int64_t peek() const;
     std::int64_t pop();
 
+    void begin_block(const Vec &storage_offset);
+    bool end_block(Vec &storage_offset);
+    bool stack_under_stack();
+
 private:
     std::vector<Stack> stacks_;
     std::size_t toss_;

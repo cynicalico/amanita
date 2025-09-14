@@ -222,8 +222,19 @@ void amanita::semantic_input_file(State *, InstructionPointer *ip, std::vector<A
     ip->reflect(); // TODO
 }
 
-void amanita::semantic_jump_forward(State *, InstructionPointer *ip, std::vector<Action> &) {
-    ip->reflect(); // TODO
+void amanita::semantic_jump_forward(State *state, InstructionPointer *ip, std::vector<Action> &) {
+    auto n = ip->stack_pop();
+
+    const auto saved_delta = ip->delta;
+
+    if (n < 0) {
+        ip->reflect();
+        n = std::abs(n);
+    }
+    for (std::int64_t i = 0; i < n; ++i)
+        ip->step_wrap(state);
+
+    ip->delta = saved_delta;
 }
 
 void amanita::semantic_iterate(State *state, InstructionPointer *ip, std::vector<Action> &actions) {
@@ -274,8 +285,10 @@ void amanita::semantic_reflect(State *, InstructionPointer *ip, std::vector<Acti
     ip->reflect();
 }
 
-void amanita::semantic_store_character(State *, InstructionPointer *ip, std::vector<Action> &) {
-    ip->reflect(); // TODO
+void amanita::semantic_store_character(State *state, InstructionPointer *ip, std::vector<Action> &) {
+    const auto value = ip->stack_pop();
+    ip->step_wrap(state);
+    state->fungespace->put(ip->pos, value);
 }
 
 void amanita::semantic_split(State *, InstructionPointer *ip, std::vector<Action> &) {
@@ -283,7 +296,7 @@ void amanita::semantic_split(State *, InstructionPointer *ip, std::vector<Action
 }
 
 void amanita::semantic_stack_under_stack(State *, InstructionPointer *ip, std::vector<Action> &) {
-    ip->reflect(); // TODO
+    ip->stack_stack_under_stack();
 }
 
 void amanita::semantic_go_south(State *, InstructionPointer *ip, std::vector<Action> &) {
@@ -310,7 +323,7 @@ void amanita::semantic_get_sysinfo(State *, InstructionPointer *ip, std::vector<
 void amanita::semantic_no_operation(State *, InstructionPointer *ip, std::vector<Action> &) {}
 
 void amanita::semantic_begin_block(State *, InstructionPointer *ip, std::vector<Action> &) {
-    ip->reflect(); // TODO
+    ip->stack_begin_block();
 }
 
 void amanita::semantic_north_south_if(State *, InstructionPointer *ip, std::vector<Action> &) {
@@ -322,7 +335,7 @@ void amanita::semantic_north_south_if(State *, InstructionPointer *ip, std::vect
 }
 
 void amanita::semantic_end_block(State *, InstructionPointer *ip, std::vector<Action> &) {
-    ip->reflect(); // TODO
+    ip->stack_end_block();
 }
 
 void amanita::semantic_input_character(State *, InstructionPointer *ip, std::vector<Action> &) {

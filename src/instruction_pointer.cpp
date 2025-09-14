@@ -51,6 +51,24 @@ amanita::Vec amanita::InstructionPointer::stack_pop_offset_vec() {
     return stack_pop_vec() + storage_offset;
 }
 
+void amanita::InstructionPointer::stack_begin_block() {
+    stackstack->begin_block(storage_offset);
+    storage_offset = pos + delta;
+}
+
+void amanita::InstructionPointer::stack_end_block() {
+    Vec new_storage_offset;
+    if (const auto success = stackstack->end_block(new_storage_offset); !success)
+        reflect();
+    else
+        storage_offset = new_storage_offset;
+}
+
+void amanita::InstructionPointer::stack_stack_under_stack() {
+    if (!stackstack->stack_under_stack())
+        reflect();
+}
+
 void amanita::InstructionPointer::reflect() {
     delta *= -1;
 }
