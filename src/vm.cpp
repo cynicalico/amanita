@@ -51,16 +51,11 @@ void amanita::VM::step() {
 
         for (const auto &action: actions_buf_) {
             switch (action.type) {
-            case ActionType::Split: {
-                auto new_ip = std::make_unique<InstructionPointer>(*action.ip);
-                new_ip->reflect();
-                next_ips_buf_.push_back(std::move(new_ip));
-                break;
-            }
+            case ActionType::Split: next_ips_buf_.emplace_back(std::make_unique<InstructionPointer>(*action.ip)); break;
             }
         }
 
-        next_ips_buf_.push_back(std::move(ip));
+        next_ips_buf_.emplace_back(std::move(ip));
     }
 
     if (next_ips_buf_.empty()) {

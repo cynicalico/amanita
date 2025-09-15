@@ -28,7 +28,7 @@ amanita::InstructionPointer::InstructionPointer(const InstructionPointer &other)
       prev_ins(other.prev_ins),
       alive(other.alive),
       pos(other.pos),
-      delta(other.delta),
+      delta(-other.delta),
       stringmode(other.stringmode),
       storage_offset(other.storage_offset),
       stackstack(std::make_unique<StackStack>(*other.stackstack)) {}

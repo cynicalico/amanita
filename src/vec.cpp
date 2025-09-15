@@ -15,6 +15,10 @@ void amanita::Vec::operator+=(const Vec &other) {
     y += other.y;
 }
 
+amanita::Vec amanita::Vec::operator-() const {
+    return {-x, -y};
+}
+
 amanita::Vec amanita::Vec::operator-(const Vec &other) const {
     return {x - other.x, y - other.y};
 }

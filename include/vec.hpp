@@ -27,6 +27,7 @@ struct Vec {
     Vec operator+(const Vec &other) const;
     void operator+=(const Vec &other);
 
+    Vec operator-() const;
     Vec operator-(const Vec &other) const;
     void operator-=(const Vec &other);
 
@@ -39,4 +40,7 @@ struct Vec {
     Vec operator/(const Vec &other) const;
     void operator/=(const Vec &other);
 };
+
+bool operator==(const Vec &lhs, const Vec &rhs);
+bool operator!=(const Vec &lhs, const Vec &rhs);
 } // namespace amanita
