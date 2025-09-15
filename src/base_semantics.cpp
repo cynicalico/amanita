@@ -2,6 +2,7 @@
 
 #include "fungespace.hpp"
 #include "instruction_pointer.hpp"
+#include "semantic_stack.hpp"
 
 #include <fmt/format.h>
 
@@ -56,7 +57,12 @@ void amanita::semantic_load_semantics(State *, InstructionPointer *ip, std::vect
         fingerprint += ip->stack_pop();
     }
 
-    ip->reflect();
+    if (!ip->load_fingerprint(fingerprint)) {
+        ip->reflect();
+    } else {
+        ip->stack_push(fingerprint);
+        ip->stack_push(1);
+    }
 }
 
 void amanita::semantic_unload_semantics(State *, InstructionPointer *ip, std::vector<Action> &) {
@@ -68,7 +74,8 @@ void amanita::semantic_unload_semantics(State *, InstructionPointer *ip, std::ve
         fingerprint += ip->stack_pop();
     }
 
-    ip->reflect();
+    if (!ip->unload_fingerprint(fingerprint))
+        ip->reflect();
 }
 
 void amanita::semantic_multiply(State *, InstructionPointer *ip, std::vector<Action> &) {

@@ -109,6 +109,14 @@ void amanita::InstructionPointer::turn_right() {
     delta = {-delta.y, delta.x};
 }
 
+bool amanita::InstructionPointer::load_fingerprint(std::int64_t fingerprint) {
+    return semantics->load_fingerprint(fingerprint);
+}
+
+bool amanita::InstructionPointer::unload_fingerprint(std::int64_t fingerprint) {
+    return semantics->unload_fingerprint(fingerprint);
+}
+
 void amanita::InstructionPointer::step() {
     pos += delta;
 }

@@ -1,9 +1,24 @@
 #include "semantic_stack.hpp"
 
+#include "fingerprints/catseye/modu.hpp"
+#include "fingerprints/catseye/roma.hpp"
+
 #include "base_semantics.hpp"
 #include "instruction_pointer.hpp"
 
 #include <fmt/format.h>
+#include <ranges>
+
+namespace amanita {
+const std::unordered_map<std::int64_t, const Fingerprint &> &fingerprint_registry() {
+    static std::unordered_map<std::int64_t, const Fingerprint &> registry{
+            // Cat's Eye
+            {modu::FINGERPRINT.id, modu::FINGERPRINT},
+            {roma::FINGERPRINT.id, roma::FINGERPRINT},
+    };
+    return registry;
+}
+} // namespace amanita
 
 amanita::SemanticStack::SemanticStack() {
     populate_default_fns_();
@@ -28,6 +43,26 @@ void amanita::SemanticStack::perform(
         semantics_[static_cast<std::size_t>(Instruction::Reflect)].back()(state, ip, actions);
     else
         stack.back()(state, ip, actions);
+}
+
+bool amanita::SemanticStack::load_fingerprint(std::int64_t fingerprint) {
+    const auto &registry = fingerprint_registry();
+    if (const auto it = registry.find(fingerprint); it != registry.end()) {
+        for (const auto &[ins, semantic]: it->second.semantics)
+            semantics_[static_cast<std::size_t>(ins)].emplace_back(semantic);
+        return true;
+    }
+    return false;
+}
+
+bool amanita::SemanticStack::unload_fingerprint(std::int64_t fingerprint) {
+    const auto &registry = fingerprint_registry();
+    if (const auto it = registry.find(fingerprint); it != registry.end()) {
+        for (const auto &ins: it->second.semantics | std::views::keys)
+            semantics_[static_cast<std::size_t>(ins)].pop_back();
+        return true;
+    }
+    return false;
 }
 
 void amanita::SemanticStack::populate_default_fns_() {

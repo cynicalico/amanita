@@ -57,6 +57,9 @@ public:
     void turn_left();
     void turn_right();
 
+    bool load_fingerprint(std::int64_t fingerprint);
+    bool unload_fingerprint(std::int64_t fingerprint);
+
     void step();
     void step_wrap(State *state);
     void step_to_next(State *state, Instruction target_ins);

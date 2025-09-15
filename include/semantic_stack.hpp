@@ -13,6 +13,9 @@ public:
 
     void perform(Instruction ins, State *state, InstructionPointer *ip, std::vector<Action> &actions);
 
+    bool load_fingerprint(std::int64_t fingerprint);
+    bool unload_fingerprint(std::int64_t fingerprint);
+
 private:
     std::array<std::vector<Semantic>, 127> semantics_{};
 
