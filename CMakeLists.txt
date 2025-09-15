@@ -33,6 +33,7 @@ target_sources(
         include
         FILES
         include/fingerprint/catseye/modu.hpp
+        include/fingerprint/catseye/null.hpp
         include/fingerprint/catseye/roma.hpp
         include/action.hpp
         include/base_semantics.hpp

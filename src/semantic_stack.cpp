@@ -1,6 +1,7 @@
 #include "semantic_stack.hpp"
 
 #include "fingerprint/catseye/modu.hpp"
+#include "fingerprint/catseye/null.hpp"
 #include "fingerprint/catseye/roma.hpp"
 
 #include "base_semantics.hpp"
@@ -13,6 +14,7 @@ const std::unordered_map<std::int64_t, const Fingerprint &> &fingerprint_registr
     static std::unordered_map<std::int64_t, const Fingerprint &> registry{
             // Cat's Eye
             {modu::FINGERPRINT.id, modu::FINGERPRINT},
+            {null::FINGERPRINT.id, modu::FINGERPRINT},
             {roma::FINGERPRINT.id, roma::FINGERPRINT},
     };
     return registry;
