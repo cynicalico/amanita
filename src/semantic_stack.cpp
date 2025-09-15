@@ -31,7 +31,6 @@ void amanita::SemanticStack::perform(
 }
 
 void amanita::SemanticStack::populate_default_fns_() {
-    semantics_.resize(static_cast<std::size_t>(Instruction::InputCharacter) + 1);
     semantics_[static_cast<std::size_t>(Instruction::Space)].emplace_back(semantic_space);
     semantics_[static_cast<std::size_t>(Instruction::LogicalNot)].emplace_back(semantic_logical_not);
     semantics_[static_cast<std::size_t>(Instruction::ToggleStringmode)].emplace_back(semantic_toggle_stringmode);

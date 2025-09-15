@@ -17,6 +17,7 @@ int main(int argc, char *argv[]) {
             .default_value<std::vector<std::string>>({"."})
             .append()
             .help("Additional paths to search for `i`");
+    run_command.add_argument("-t", "--time").default_value(false).flag().help("Time execution");
     run_command.add_argument("args").help("Arguments passed to program").remaining();
 
     program.add_subparser(run_command);
@@ -46,7 +47,13 @@ int main(int argc, char *argv[]) {
         }
 
         const auto vm = new amanita::VM(args[0], args);
+
+        const auto t1 = std::chrono::steady_clock::now().time_since_epoch().count();
         vm->run();
+        const auto t2 = std::chrono::steady_clock::now().time_since_epoch().count();
+
+        if (run_command.get<bool>("time"))
+            fmt::println("\nExecution time: {:.2f}ms", (static_cast<double>(t2) - static_cast<double>(t1)) / 1'000'000);
 
         return vm->state->exit_code;
     }

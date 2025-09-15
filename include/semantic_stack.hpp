@@ -3,6 +3,7 @@
 #include "instruction.hpp"
 #include "semantic.hpp"
 
+#include <array>
 #include <vector>
 
 namespace amanita {
@@ -13,7 +14,7 @@ public:
     void perform(Instruction ins, State *state, InstructionPointer *ip, std::vector<Action> &actions);
 
 private:
-    std::vector<std::vector<Semantic>> semantics_{};
+    std::array<std::vector<Semantic>, 127> semantics_{};
 
     void populate_default_fns_();
 };
