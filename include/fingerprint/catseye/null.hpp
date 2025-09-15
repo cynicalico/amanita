@@ -4,10 +4,9 @@
 #include "fingerprint.hpp"
 
 namespace amanita::null {
-const Fingerprint FINGERPRINT{
-        .name = "NULL",
-        .id = 0x4e554c4c,
-        .semantics = {
+const Fingerprint FINGERPRINT(
+        "NULL",
+        {
                 {Instruction::A, semantic_reflect}, {Instruction::B, semantic_reflect},
                 {Instruction::C, semantic_reflect}, {Instruction::D, semantic_reflect},
                 {Instruction::E, semantic_reflect}, {Instruction::F, semantic_reflect},
@@ -21,5 +20,5 @@ const Fingerprint FINGERPRINT{
                 {Instruction::U, semantic_reflect}, {Instruction::V, semantic_reflect},
                 {Instruction::W, semantic_reflect}, {Instruction::X, semantic_reflect},
                 {Instruction::Y, semantic_reflect}, {Instruction::Z, semantic_reflect},
-        }};
+        });
 }

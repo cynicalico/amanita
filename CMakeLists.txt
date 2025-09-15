@@ -17,6 +17,7 @@ target_sources(
         src/fingerprint/catseye/modu.cpp
         src/fingerprint/catseye/roma.cpp
         src/base_semantics.cpp
+        src/fingerprint.cpp
         src/fungespace.cpp
         src/instruction_pointer.cpp
         src/semantic_stack.cpp

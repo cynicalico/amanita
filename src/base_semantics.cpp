@@ -53,10 +53,8 @@ void amanita::semantic_load_semantics(State *, InstructionPointer *ip, std::vect
     const auto n = ip->stack_pop();
 
     std::int64_t fingerprint = 0;
-    for (std::int64_t i = 0; i < n; i++) {
-        fingerprint *= 256;
-        fingerprint += ip->stack_pop();
-    }
+    for (std::int64_t i = 0; i < n; i++)
+        fingerprint = fingerprint * 256 + ip->stack_pop();
 
     if (!ip->load_fingerprint(fingerprint)) {
         ip->reflect();
@@ -70,10 +68,8 @@ void amanita::semantic_unload_semantics(State *, InstructionPointer *ip, std::ve
     const auto n = ip->stack_pop();
 
     std::int64_t fingerprint = 0;
-    for (std::int64_t i = 0; i < n; i++) {
-        fingerprint *= 256;
-        fingerprint += ip->stack_pop();
-    }
+    for (std::int64_t i = 0; i < n; i++)
+        fingerprint = fingerprint * 256 + ip->stack_pop();
 
     if (!ip->unload_fingerprint(fingerprint))
         ip->reflect();
