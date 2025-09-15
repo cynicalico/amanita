@@ -5,7 +5,11 @@
 
 #include <fmt/format.h>
 
+#include <chrono>
+#include <stack>
 #include <utility>
+
+extern char **environ;
 
 void amanita::semantic_space(State *, InstructionPointer *, std::vector<Action> &) {
     std::unreachable();
@@ -44,11 +48,27 @@ void amanita::semantic_fetch_character(State *state, InstructionPointer *ip, std
 }
 
 void amanita::semantic_load_semantics(State *, InstructionPointer *ip, std::vector<Action> &) {
-    ip->reflect(); // TODO
+    const auto n = ip->stack_pop();
+
+    std::int64_t fingerprint = 0;
+    for (std::int64_t i = 0; i < n; i++) {
+        fingerprint *= 256;
+        fingerprint += ip->stack_pop();
+    }
+
+    ip->reflect();
 }
 
 void amanita::semantic_unload_semantics(State *, InstructionPointer *ip, std::vector<Action> &) {
-    ip->reflect(); // TODO
+    const auto n = ip->stack_pop();
+
+    std::int64_t fingerprint = 0;
+    for (std::int64_t i = 0; i < n; i++) {
+        fingerprint *= 256;
+        fingerprint += ip->stack_pop();
+    }
+
+    ip->reflect();
 }
 
 void amanita::semantic_multiply(State *, InstructionPointer *ip, std::vector<Action> &) {
@@ -126,7 +146,9 @@ void amanita::semantic_push_niner(State *, InstructionPointer *ip, std::vector<A
 }
 
 void amanita::semantic_duplicate(State *, InstructionPointer *ip, std::vector<Action> &) {
-    ip->stack_push(ip->stack_peek());
+    const auto value = ip->stack_pop();
+    ip->stack_push(value);
+    ip->stack_push(value);
 }
 
 void amanita::semantic_jump_over(State *, InstructionPointer *ip, std::vector<Action> &) {
@@ -316,8 +338,123 @@ void amanita::semantic_absolute_delta(State *, InstructionPointer *ip, std::vect
     ip->delta = ip->stack_pop_vec();
 }
 
-void amanita::semantic_get_sysinfo(State *, InstructionPointer *ip, std::vector<Action> &) {
-    ip->reflect(); // TODO
+void amanita::semantic_get_sysinfo(State *state, InstructionPointer *ip, std::vector<Action> &) {
+    static std::vector<std::int64_t> buf{};
+
+    const auto n = ip->stack_pop();
+
+    // 0x01: high if t is implemented
+    // 0x02: high if i is implemented
+    // 0x04: high if o is implemented
+    // 0x08: high if = is implemented
+    // 0x10: high if unbuffered stdio
+    buf.push_back(0b00000);
+
+    // number of bytes per std::int64_t
+    buf.push_back(8);
+
+    // implementation's handprint ("NITA")
+    buf.push_back(0x4e495441);
+
+    // implementation's version number (1.0.0)
+    buf.push_back(100);
+
+    // id code for the operating paradigm
+    // 0 = unavailable
+    // 1 = equivalent to C-language `system()` call behavior
+    // 2 = equivalent to interpretation by a specific shell of program (document)
+    // 3 = equivalent to interpretation by the same shell that started this Funge interpreter
+    buf.push_back(0);
+
+    // path separator character
+    buf.push_back('/');
+
+    // number of scalars per vector (1 for une, 2 for be, 3 for trefunge)
+    buf.push_back(2);
+
+    // TODO: unique ID for current IP
+    buf.push_back(0);
+
+    // unique team number for current IP -- always 0, we don't use this
+    buf.push_back(0);
+
+    // fungespace position of current IP
+    buf.push_back(ip->pos.y);
+    buf.push_back(ip->pos.x);
+
+    // fungespace delta of current IP
+    buf.push_back(ip->delta.y);
+    buf.push_back(ip->delta.x);
+
+    // fungespace storage offset of current IP
+    buf.push_back(ip->storage_offset.y);
+    buf.push_back(ip->storage_offset.x);
+
+    const auto min_coord = state->fungespace->min_coord();
+    const auto max_coord = state->fungespace->max_coord();
+
+    // least point which contains a non-space std::int64_t
+    buf.push_back(min_coord.y);
+    buf.push_back(min_coord.x);
+
+    // greatest point which contains a non-space std::int64_t relative to the least
+    buf.push_back(max_coord.y - 1 + std::abs(min_coord.y));
+    buf.push_back(max_coord.x - 1 + std::abs(min_coord.x));
+
+    const auto now = std::chrono::current_zone()->to_local(std::chrono::system_clock::now());
+
+    const std::chrono::year_month_day ymd{std::chrono::floor<std::chrono::days>(now)};
+    const auto year = static_cast<int>(ymd.year());
+    const auto month = static_cast<unsigned>(ymd.month());
+    const auto day = static_cast<unsigned>(ymd.day());
+    // clang-format off
+    // current ((year - 1900) * 256 * 256) + (month * 256) + (day of month)
+    buf.push_back(
+            (static_cast<long long>(year) - 1900) * 256 * 256 +
+            static_cast<long long>(month) * 256 +
+            static_cast<long long>(day));
+    // clang-format on
+
+    const std::chrono::hh_mm_ss hms{now - std::chrono::floor<std::chrono::days>(now)};
+    const auto hour = static_cast<long long>(hms.hours().count());
+    const auto minute = static_cast<long long>(hms.minutes().count());
+    const auto second = hms.seconds().count();
+    // current (hour * 256 * 256) + (minute * 256) + (second)
+    buf.push_back(hour * 256 * 256 + minute * 256 + second);
+
+    // number of stacks in use by IP
+    buf.push_back(static_cast<std::int64_t>(ip->stack_count()));
+
+    // size of each stack in stackstack (from TOSS to BOSS)
+    for (const auto &size: ip->stack_sizes())
+        buf.push_back(static_cast<std::int64_t>(size));
+
+    // command line arguments followed by double null
+    for (const auto &arg: state->args) {
+        for (const auto &c: arg)
+            buf.push_back(c);
+        buf.push_back('\0');
+    }
+    buf.push_back('\0');
+    buf.push_back('\0');
+
+    // env variables followed by null
+    for (char **current = environ; *current; ++current) {
+        for (char *c = *current; *c; ++c)
+            buf.push_back(*c);
+        buf.push_back('\0');
+    }
+    buf.push_back('\0');
+
+    if (n <= 0)
+        for (std::size_t i = 0; i < buf.size(); ++i)
+            ip->stack_push(buf[buf.size() - 1 - i]);
+    else if (static_cast<std::size_t>(n) <= buf.size())
+        ip->stack_push(buf[static_cast<std::size_t>(n) - 1]);
+    else
+        ip->stack_push(ip->stack_pick(n - buf.size()));
+
+    buf.clear();
 }
 
 void amanita::semantic_no_operation(State *, InstructionPointer *ip, std::vector<Action> &) {}

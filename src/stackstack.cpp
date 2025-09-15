@@ -99,6 +99,25 @@ bool amanita::StackStack::stack_under_stack() {
     return true;
 }
 
+std::size_t amanita::StackStack::count() const {
+    return stacks_.size();
+}
+
+std::vector<std::size_t> amanita::StackStack::sizes() const {
+    std::vector<std::size_t> sizes{};
+    sizes.reserve(stacks_.size());
+    for (const auto &stack: stacks_)
+        sizes.push_back(stack.size());
+    return sizes;
+}
+
+std::int64_t amanita::StackStack::pick(const std::size_t i) const {
+    std::int64_t j = static_cast<std::int64_t>(stacks_[toss_].size()) - i;
+    if (j >= 0)
+        return stacks_[toss_][static_cast<std::size_t>(j)];
+    return 0;
+}
+
 void amanita::StackStack::push_(const std::size_t stack_idx, const std::int64_t value) {
     stacks_[stack_idx].push_back(value);
 }

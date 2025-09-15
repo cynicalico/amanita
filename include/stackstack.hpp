@@ -22,6 +22,10 @@ public:
     bool end_block(Vec &storage_offset);
     bool stack_under_stack();
 
+    std::size_t count() const;
+    std::vector<std::size_t> sizes() const;
+    std::int64_t pick(std::size_t i) const;
+
 private:
     std::vector<Stack> stacks_;
     std::size_t toss_;

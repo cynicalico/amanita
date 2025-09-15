@@ -45,6 +45,9 @@ public:
     void stack_begin_block();
     void stack_end_block();
     void stack_stack_under_stack();
+    std::size_t stack_count() const;
+    std::vector<std::size_t> stack_sizes() const;
+    std::int64_t stack_pick(std::size_t i) const;
 
     void reflect();
     void go_north();

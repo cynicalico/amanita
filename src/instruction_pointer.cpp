@@ -69,6 +69,18 @@ void amanita::InstructionPointer::stack_stack_under_stack() {
         reflect();
 }
 
+std::size_t amanita::InstructionPointer::stack_count() const {
+    return stackstack->count();
+}
+
+std::vector<std::size_t> amanita::InstructionPointer::stack_sizes() const {
+    return stackstack->sizes();
+}
+
+std::int64_t amanita::InstructionPointer::stack_pick(std::size_t i) const {
+    return stackstack->pick(i);
+}
+
 void amanita::InstructionPointer::reflect() {
     delta *= -1;
 }
