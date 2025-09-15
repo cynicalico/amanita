@@ -4,6 +4,7 @@
 #include "semantic.hpp"
 
 #include <array>
+#include <optional>
 #include <vector>
 
 namespace amanita {
@@ -11,7 +12,8 @@ class SemanticStack {
 public:
     SemanticStack();
 
-    void perform(Instruction ins, State *state, InstructionPointer *ip, std::vector<Action> &actions);
+    Semantic operator[](Instruction ins);
+    std::optional<Semantic> at(Instruction ins);
 
     bool load_fingerprint(std::int64_t fingerprint);
     bool unload_fingerprint(std::int64_t fingerprint);

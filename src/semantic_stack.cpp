@@ -1,10 +1,9 @@
 #include "semantic_stack.hpp"
 
-#include "../include/fingerprint/catseye/modu.hpp"
-#include "../include/fingerprint/catseye/roma.hpp"
+#include "fingerprint/catseye/modu.hpp"
+#include "fingerprint/catseye/roma.hpp"
 
 #include "base_semantics.hpp"
-#include "instruction_pointer.hpp"
 
 #include <fmt/format.h>
 #include <ranges>
@@ -24,25 +23,14 @@ amanita::SemanticStack::SemanticStack() {
     populate_default_fns_();
 }
 
-void amanita::SemanticStack::perform(
-        Instruction ins, State *state, InstructionPointer *ip, std::vector<Action> &actions) {
-    if (ip->stringmode) {
-        if (ins != Instruction::ToggleStringmode) {
-            ip->stack_push(static_cast<std::int64_t>(ins));
-            return;
-        }
-    }
+amanita::Semantic amanita::SemanticStack::operator[](Instruction ins) {
+    return semantics_[static_cast<std::size_t>(ins)].back();
+}
 
-    if (ins < Instruction::Space || ins > Instruction::InputCharacter) {
-        fmt::println(stderr, "Unknown instruction: {}, reflecting", static_cast<std::int64_t>(ins));
-        semantics_[static_cast<std::size_t>(Instruction::Reflect)].back()(state, ip, actions);
-        return;
-    }
-
-    if (const auto stack = semantics_[static_cast<std::size_t>(ins)]; stack.empty())
-        semantics_[static_cast<std::size_t>(Instruction::Reflect)].back()(state, ip, actions);
-    else
-        stack.back()(state, ip, actions);
+std::optional<amanita::Semantic> amanita::SemanticStack::at(Instruction ins) {
+    if (semantics_[static_cast<std::size_t>(ins)].empty())
+        return std::nullopt;
+    return semantics_[static_cast<std::size_t>(ins)].back();
 }
 
 bool amanita::SemanticStack::load_fingerprint(std::int64_t fingerprint) {

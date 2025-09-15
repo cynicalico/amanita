@@ -10,7 +10,7 @@ amanita::VM::VM()
               std::vector<std::string>(),
               std::make_unique<Fungespace>(),
               std::vector<std::unique_ptr<InstructionPointer>>())) {
-    reset();
+    state->ips.push_back(std::make_unique<InstructionPointer>());
 }
 
 amanita::VM::VM(std::filesystem::path src_path, std::vector<std::string> args)
@@ -21,18 +21,8 @@ amanita::VM::VM(std::filesystem::path src_path, std::vector<std::string> args)
               std::move(args),
               std::make_unique<Fungespace>(this->src_path),
               std::vector<std::unique_ptr<InstructionPointer>>())) {
-    reset();
-}
-
-void amanita::VM::reset() {
-    state->status = Status::Running;
-
-    state->ips.clear();
     state->ips.push_back(std::make_unique<InstructionPointer>());
-    state->ips.back()->curr_ins = state->fungespace->get_ins(state->ips.back()->pos);
 }
-
-#include <fmt/format.h>
 
 void amanita::VM::step() {
     next_ips_buf_.clear();

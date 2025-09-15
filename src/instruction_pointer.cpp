@@ -1,7 +1,6 @@
 #include "instruction_pointer.hpp"
 
 #include "fungespace.hpp"
-#include "semantic_stack.hpp"
 #include "state.hpp"
 
 #include <fmt/format.h>
@@ -34,7 +33,23 @@ amanita::InstructionPointer::InstructionPointer(const InstructionPointer &other)
       stackstack(std::make_unique<StackStack>(*other.stackstack)) {}
 
 void amanita::InstructionPointer::perform(const Instruction ins, State *state, std::vector<Action> &actions) {
-    semantics->perform(ins, state, this, actions);
+    if (stringmode) {
+        if (ins != Instruction::ToggleStringmode) {
+            stack_push(static_cast<std::int64_t>(ins));
+            return;
+        }
+    }
+
+    if (ins < Instruction::Space || ins > Instruction::InputCharacter) {
+        fmt::println(stderr, "Unknown instruction: {}, reflecting", static_cast<std::int64_t>(ins));
+        (*semantics)[Instruction::Reflect](state, this, actions);
+        return;
+    }
+
+    if (const auto semantic = semantics->at(ins); semantic)
+        semantic.value()(state, this, actions);
+    else
+        (*semantics)[Instruction::Reflect](state, this, actions);
 }
 
 void amanita::InstructionPointer::perform(State *state, std::vector<Action> &actions) {

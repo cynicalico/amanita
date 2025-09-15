@@ -16,7 +16,6 @@ public:
     VM();
     VM(std::filesystem::path src_path, std::vector<std::string> args);
 
-    void reset();
     void step();
     void run();
 
