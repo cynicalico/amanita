@@ -2,20 +2,19 @@
 
 #include "action.hpp"
 #include "instruction.hpp"
+#include "semantic_stack.hpp"
 #include "stackstack.hpp"
 #include "vec.hpp"
 
+#include <memory>
 #include <vector>
 
 namespace amanita {
 std::int64_t next_ip_id();
 
-class SemanticStack;
-class State;
-
 class InstructionPointer {
 public:
-    SemanticStack *semantics;
+    std::unique_ptr<SemanticStack> semantics;
     Instruction curr_ins;
     Instruction prev_ins;
 
@@ -25,16 +24,15 @@ public:
     Vec delta;
     bool stringmode;
     Vec storage_offset;
-    StackStack *stackstack;
+    std::unique_ptr<StackStack> stackstack;
 
     InstructionPointer();
-    ~InstructionPointer() = default;
 
     InstructionPointer(const InstructionPointer &other);
-    InstructionPointer &operator=(const InstructionPointer &other) = default;
+    InstructionPointer &operator=(const InstructionPointer &other) = delete;
 
-    InstructionPointer(InstructionPointer &&other) noexcept = delete;
-    InstructionPointer &operator=(InstructionPointer &&other) noexcept = delete;
+    InstructionPointer(InstructionPointer &&other) noexcept = default;
+    InstructionPointer &operator=(InstructionPointer &&other) noexcept = default;
 
     void perform(Instruction ins, State *state, std::vector<Action> &actions);
     void perform(State *state, std::vector<Action> &actions);

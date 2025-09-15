@@ -12,7 +12,7 @@ std::int64_t amanita::next_ip_id() {
 }
 
 amanita::InstructionPointer::InstructionPointer()
-    : semantics(new SemanticStack()),
+    : semantics(std::make_unique<SemanticStack>()),
       curr_ins(Instruction::Space),
       prev_ins(Instruction::Space),
       alive(true),
@@ -20,10 +20,10 @@ amanita::InstructionPointer::InstructionPointer()
       delta(Vec::EAST),
       stringmode(false),
       storage_offset(Vec::ZERO),
-      stackstack(new StackStack()) {}
+      stackstack(std::make_unique<StackStack>()) {}
 
 amanita::InstructionPointer::InstructionPointer(const InstructionPointer &other)
-    : semantics(new SemanticStack(*other.semantics)),
+    : semantics(std::make_unique<SemanticStack>(*other.semantics)),
       curr_ins(other.curr_ins),
       prev_ins(other.prev_ins),
       alive(other.alive),
@@ -31,9 +31,9 @@ amanita::InstructionPointer::InstructionPointer(const InstructionPointer &other)
       delta(other.delta),
       stringmode(other.stringmode),
       storage_offset(other.storage_offset),
-      stackstack(new StackStack(*other.stackstack)) {}
+      stackstack(std::make_unique<StackStack>(*other.stackstack)) {}
 
-void amanita::InstructionPointer::perform(Instruction ins, State *state, std::vector<Action> &actions) {
+void amanita::InstructionPointer::perform(const Instruction ins, State *state, std::vector<Action> &actions) {
     semantics->perform(ins, state, this, actions);
 }
 
@@ -45,7 +45,7 @@ void amanita::InstructionPointer::stack_clear() {
     stackstack->clear();
 }
 
-void amanita::InstructionPointer::stack_push(std::int64_t value) {
+void amanita::InstructionPointer::stack_push(const std::int64_t value) {
     stackstack->push(value);
 }
 

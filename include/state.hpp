@@ -1,12 +1,13 @@
 #pragma once
 
+#include "fungespace.hpp"
+#include "instruction_pointer.hpp"
+
+#include <memory>
 #include <string>
 #include <vector>
 
 namespace amanita {
-class Fungespace;
-class InstructionPointer;
-
 enum class Status { Running, Stopped };
 
 struct State {
@@ -14,7 +15,7 @@ struct State {
     int exit_code;
     std::vector<std::string> args;
 
-    Fungespace *fungespace;
-    std::vector<InstructionPointer *> ips;
+    std::unique_ptr<Fungespace> fungespace;
+    std::vector<std::unique_ptr<InstructionPointer>> ips;
 };
 } // namespace amanita

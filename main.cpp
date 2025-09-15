@@ -1,9 +1,9 @@
 #include "vm.hpp"
 
+#include <fmt/format.h>
 #include "argparse.hpp"
 
-#include <fmt/format.h>
-
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -46,7 +46,7 @@ int main(int argc, char *argv[]) {
             // we didn't get any additional include paths
         }
 
-        const auto vm = new amanita::VM(args[0], args);
+        const auto vm = std::make_unique<amanita::VM>(args[0], args);
 
         const auto t1 = std::chrono::steady_clock::now().time_since_epoch().count();
         vm->run();

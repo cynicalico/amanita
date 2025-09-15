@@ -4,12 +4,13 @@
 #include "state.hpp"
 
 #include <filesystem>
+#include <memory>
 
 namespace amanita {
 class VM {
 public:
     std::filesystem::path src_path;
-    State *state;
+    std::unique_ptr<State> state;
     int exit_code{0};
 
     VM();
@@ -20,7 +21,7 @@ public:
     void run();
 
 private:
-    std::vector<InstructionPointer *> next_ips_buf_{};
+    std::vector<std::unique_ptr<InstructionPointer>> next_ips_buf_{};
     std::vector<Action> actions_buf_{};
 };
 } // namespace amanita

@@ -3,6 +3,7 @@
 #include "fungespace.hpp"
 #include "instruction_pointer.hpp"
 #include "semantic_stack.hpp"
+#include "state.hpp"
 
 #include <fmt/format.h>
 
