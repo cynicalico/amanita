@@ -39,14 +39,18 @@ int main(int argc, char *argv[]) {
             // we didn't get any args
         }
 
-        std::vector<std::string> include_paths = {"."};
+        std::vector include_paths = {std::filesystem::current_path()};
+
+        std::vector<std::string> buf;
         try {
-            include_paths.insert_range(include_paths.end(), run_command.get<std::vector<std::string>>("--include"));
+            buf = run_command.get<std::vector<std::string>>("--include");
         } catch (std::logic_error &) {
             // we didn't get any additional include paths
         }
+        for (const auto &path: buf)
+            include_paths.emplace_back(path);
 
-        const auto vm = std::make_unique<amanita::VM>(args[0], args);
+        const auto vm = std::make_unique<amanita::VM>(args[0], args, include_paths);
 
         const auto t1 = std::chrono::steady_clock::now().time_since_epoch().count();
         vm->run();

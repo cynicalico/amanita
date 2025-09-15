@@ -2,25 +2,22 @@
 
 #include "action.hpp"
 
+#include <fmt/format.h>
+
 amanita::VM::VM()
     : src_path(""),
-      state(std::make_unique<State>(
-              Status::Running,
-              0,
-              std::vector<std::string>(),
-              std::make_unique<Fungespace>(),
-              std::vector<std::unique_ptr<InstructionPointer>>())) {
+      state(std::make_unique<State>(std::vector<std::string>(), std::vector({std::filesystem::current_path()}))) {
     state->ips.push_back(std::make_unique<InstructionPointer>());
 }
 
-amanita::VM::VM(std::filesystem::path src_path, std::vector<std::string> args)
+amanita::VM::VM(
+        std::filesystem::path src_path, std::vector<std::string> args, std::vector<std::filesystem::path> include_paths)
     : src_path(std::move(src_path)),
-      state(std::make_unique<State>(
-              Status::Running,
-              0,
-              std::move(args),
-              std::make_unique<Fungespace>(this->src_path),
-              std::vector<std::unique_ptr<InstructionPointer>>())) {
+      state(std::make_unique<State>(std::move(args), std::move(include_paths))) {
+    if (Vec unused{Vec::ZERO};
+        !state->fungespace->input_file(this->src_path.string(), state->include_paths, 0, {0, 0}, unused)) {
+        throw std::runtime_error(fmt::format("Failed to open file: '{}'", src_path.string()));
+    }
     state->ips.push_back(std::make_unique<InstructionPointer>());
 }
 

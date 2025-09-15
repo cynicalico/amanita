@@ -72,6 +72,11 @@ std::int64_t amanita::InstructionPointer::stack_pop() {
     return stackstack->pop();
 }
 
+void amanita::InstructionPointer::stack_push_vec(Vec v) {
+    stack_push(v.x);
+    stack_push(v.y);
+}
+
 amanita::Vec amanita::InstructionPointer::stack_pop_vec() {
     const auto y = stack_pop();
     const auto x = stack_pop();
@@ -80,6 +85,17 @@ amanita::Vec amanita::InstructionPointer::stack_pop_vec() {
 
 amanita::Vec amanita::InstructionPointer::stack_pop_offset_vec() {
     return stack_pop_vec() + storage_offset;
+}
+
+std::string amanita::InstructionPointer::stack_pop_0gnirts() {
+    std::string ret;
+    char c;
+    do {
+        c = static_cast<char>(stack_pop() & 0xff);
+        if (c != '\0')
+            ret += c;
+    } while (c != '\0');
+    return ret;
 }
 
 void amanita::InstructionPointer::stack_begin_block() {

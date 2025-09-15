@@ -41,8 +41,10 @@ public:
     void stack_push(std::int64_t value);
     std::int64_t stack_peek() const;
     std::int64_t stack_pop();
+    void stack_push_vec(Vec v);
     Vec stack_pop_vec();
     Vec stack_pop_offset_vec();
+    std::string stack_pop_0gnirts();
     void stack_begin_block();
     void stack_end_block();
     void stack_stack_under_stack();

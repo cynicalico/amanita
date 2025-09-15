@@ -171,8 +171,14 @@ void amanita::semantic_go_east(State *, InstructionPointer *ip, std::vector<Acti
     ip->go_east();
 }
 
-void amanita::semantic_go_away(State *, InstructionPointer *ip, std::vector<Action> &) {
-    ip->reflect(); // TODO
+void amanita::semantic_go_away(State *state, InstructionPointer *ip, std::vector<Action> &) {
+    switch (get(state, 0, 3)) {
+    case 0: ip->go_north(); break;
+    case 1: ip->go_south(); break;
+    case 2: ip->go_east(); break;
+    case 3: ip->go_west(); break;
+    default: std::unreachable();
+    }
 }
 
 void amanita::semantic_stop(State *, InstructionPointer *ip, std::vector<Action> &) {
@@ -244,8 +250,17 @@ void amanita::semantic_go_high(State *, InstructionPointer *ip, std::vector<Acti
     ip->reflect(); // not supported in Befunge mode
 }
 
-void amanita::semantic_input_file(State *, InstructionPointer *ip, std::vector<Action> &) {
-    ip->reflect(); // TODO
+void amanita::semantic_input_file(State *state, InstructionPointer *ip, std::vector<Action> &) {
+    const auto filename = ip->stack_pop_0gnirts();
+    const auto flags = ip->stack_pop();
+    const auto origin = ip->stack_pop_offset_vec();
+
+    if (Vec size; state->fungespace->input_file(filename, state->include_paths, flags, origin, size)) {
+        ip->stack_push_vec(size);
+        ip->stack_push_vec(origin);
+    } else {
+        ip->reflect();
+    }
 }
 
 void amanita::semantic_jump_forward(State *state, InstructionPointer *ip, std::vector<Action> &) {
@@ -291,8 +306,14 @@ void amanita::semantic_clear_stack(State *, InstructionPointer *ip, std::vector<
     ip->stack_clear();
 }
 
-void amanita::semantic_output_file(State *, InstructionPointer *ip, std::vector<Action> &) {
-    ip->reflect(); // TODO
+void amanita::semantic_output_file(State *state, InstructionPointer *ip, std::vector<Action> &) {
+    const auto filename = ip->stack_pop_0gnirts();
+    const auto flags = ip->stack_pop();
+    const auto origin = ip->stack_pop_offset_vec();
+    const auto size = ip->stack_pop_vec();
+
+    if (!state->fungespace->output_file(filename, flags, origin, size))
+        ip->reflect();
 }
 
 void amanita::semantic_put(State *state, InstructionPointer *ip, std::vector<Action> &) {
@@ -352,7 +373,7 @@ void amanita::semantic_get_sysinfo(State *state, InstructionPointer *ip, std::ve
     // 0x04: high if o is implemented
     // 0x08: high if = is implemented
     // 0x10: high if unbuffered stdio
-    buf.push_back(0b00001);
+    buf.push_back(0b00111);
 
     // number of bytes per std::int64_t
     buf.push_back(8);

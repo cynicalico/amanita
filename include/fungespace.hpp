@@ -30,10 +30,13 @@ class Fungespace {
     };
 
 public:
-    Fungespace();
-    explicit Fungespace(const std::filesystem::path &path);
+    bool input_file(
+            const std::string &filename,
+            const std::vector<std::filesystem::path> &include_paths,
+            std::int64_t flags,
+            const Vec &origin,
+            Vec &size);
 
-    bool input_file(const std::string &filename, std::int64_t flags, const Vec &origin, Vec &size);
     bool output_file(const std::string &filename, std::int64_t flags, const Vec &origin, const Vec &size) const;
 
     bool is_in_bounds(const Vec &v) const;

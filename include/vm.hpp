@@ -14,7 +14,7 @@ public:
     int exit_code{0};
 
     VM();
-    VM(std::filesystem::path src_path, std::vector<std::string> args);
+    VM(std::filesystem::path src_path, std::vector<std::string> args, std::vector<std::filesystem::path> include_paths);
 
     void step();
     void run();

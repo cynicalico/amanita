@@ -9,6 +9,24 @@ if (MSVC)
     set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 endif ()
 
+include(FetchContent)
+
+FetchContent_Declare(
+        fmt
+        GIT_REPOSITORY https://github.com/fmtlib/fmt
+        GIT_TAG 11.2.0
+        GIT_SHALLOW TRUE
+)
+FetchContent_MakeAvailable(fmt)
+
+FetchContent_Declare(
+        pcg
+        GIT_REPOSITORY https://github.com/imneme/pcg-cpp
+        GIT_TAG 428802d1a5634f96bcd0705fab379ff0113bcf13
+        GIT_SHALLOW TRUE
+)
+FetchContent_MakeAvailable(pcg)
+
 add_executable(amanita)
 target_sources(
         amanita
@@ -23,6 +41,7 @@ target_sources(
         src/semantic_stack.cpp
         src/sops.cpp
         src/stackstack.cpp
+        src/state.cpp
         src/vec.cpp
         src/vm.cpp
         main.cpp
@@ -57,6 +76,16 @@ target_sources(
         thirdparty
         FILES
         thirdparty/argparse.hpp
+
+        PRIVATE
+        FILE_SET pcg_headers
+        TYPE HEADERS
+        BASE_DIRS
+        ${pcg_SOURCE_DIR}/include
+        FILES
+        ${pcg_SOURCE_DIR}/include/pcg_extras.hpp
+        ${pcg_SOURCE_DIR}/include/pcg_random.hpp
+        ${pcg_SOURCE_DIR}/include/pcg_uint128.hpp
 )
 
 target_compile_features(amanita PRIVATE cxx_std_23)
@@ -66,16 +95,5 @@ endif ()
 if (MSVC)
     target_compile_options(amanita PRIVATE /utf-8)
 endif ()
-
-include(FetchContent)
-
-FetchContent_Declare(
-        fmt
-        GIT_REPOSITORY https://github.com/fmtlib/fmt
-        GIT_TAG 11.2.0
-        GIT_SHALLOW TRUE
-        GIT_PROGRESS TRUE
-)
-FetchContent_MakeAvailable(fmt)
 
 target_link_libraries(amanita PRIVATE fmt::fmt)

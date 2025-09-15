@@ -10,16 +10,19 @@
 
 constexpr std::size_t CHUNK_SIZE = 1024;
 
-amanita::Fungespace::Fungespace() = default;
-
-amanita::Fungespace::Fungespace(const std::filesystem::path &path) {
-    if (Vec unused{Vec::ZERO}; !input_file(path.string(), 0, {0, 0}, unused))
-        throw std::runtime_error(fmt::format("Failed to open file: '{}'", path));
-}
-
 bool amanita::Fungespace::input_file(
-        const std::string &filename, const std::int64_t flags, const Vec &origin, Vec &size) {
-    std::ifstream file(filename, std::ios::binary);
+        const std::string &filename,
+        const std::vector<std::filesystem::path> &include_paths,
+        const std::int64_t flags,
+        const Vec &origin,
+        Vec &size) {
+    std::ifstream file;
+    for (const auto &base_path: include_paths) {
+        file.open(base_path / filename, std::ios::binary);
+        if (file.is_open())
+            break;
+        file.clear();
+    }
     if (!file.is_open())
         return false;
 
