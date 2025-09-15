@@ -1,4 +1,4 @@
-#include "fingerprints/catseye/modu.hpp"
+#include "fingerprint/catseye/modu.hpp"
 
 #include "instruction_pointer.hpp"
 

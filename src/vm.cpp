@@ -47,7 +47,12 @@ void amanita::VM::step() {
 
         for (const auto &action: actions_buf_) {
             switch (action.type) {
-            case ActionType::Split: /* TODO */ break;
+            case ActionType::Split: {
+                auto new_ip = new InstructionPointer(*action.ip);
+                new_ip->reflect();
+                next_ips_buf_.push_back(new_ip);
+                break;
+            }
             }
         }
 

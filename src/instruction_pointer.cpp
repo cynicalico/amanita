@@ -6,6 +6,11 @@
 
 #include <fmt/format.h>
 
+std::int64_t amanita::next_ip_id() {
+    static std::int64_t next_id = 1;
+    return next_id++;
+}
+
 amanita::InstructionPointer::InstructionPointer()
     : semantics(new SemanticStack()),
       curr_ins(Instruction::Space),
@@ -16,6 +21,17 @@ amanita::InstructionPointer::InstructionPointer()
       stringmode(false),
       storage_offset(Vec::ZERO),
       stackstack(new StackStack()) {}
+
+amanita::InstructionPointer::InstructionPointer(const InstructionPointer &other)
+    : semantics(new SemanticStack(*other.semantics)),
+      curr_ins(other.curr_ins),
+      prev_ins(other.prev_ins),
+      alive(other.alive),
+      pos(other.pos),
+      delta(other.delta),
+      stringmode(other.stringmode),
+      storage_offset(other.storage_offset),
+      stackstack(new StackStack(*other.stackstack)) {}
 
 void amanita::InstructionPointer::perform(Instruction ins, State *state, std::vector<Action> &actions) {
     semantics->perform(ins, state, this, actions);

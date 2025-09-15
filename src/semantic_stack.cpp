@@ -1,7 +1,7 @@
 #include "semantic_stack.hpp"
 
-#include "fingerprints/catseye/modu.hpp"
-#include "fingerprints/catseye/roma.hpp"
+#include "../include/fingerprint/catseye/modu.hpp"
+#include "../include/fingerprint/catseye/roma.hpp"
 
 #include "base_semantics.hpp"
 #include "instruction_pointer.hpp"

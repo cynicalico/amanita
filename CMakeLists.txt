@@ -14,8 +14,8 @@ target_sources(
         amanita
 
         PRIVATE
-        src/fingerprints/catseye/modu.cpp
-        src/fingerprints/catseye/roma.cpp
+        src/fingerprint/catseye/modu.cpp
+        src/fingerprint/catseye/roma.cpp
         src/base_semantics.cpp
         src/fungespace.cpp
         src/instruction_pointer.cpp
@@ -32,8 +32,8 @@ target_sources(
         BASE_DIRS
         include
         FILES
-        include/fingerprints/catseye/modu.hpp
-        include/fingerprints/catseye/roma.hpp
+        include/fingerprint/catseye/modu.hpp
+        include/fingerprint/catseye/roma.hpp
         include/action.hpp
         include/base_semantics.hpp
         include/fingerprint.hpp

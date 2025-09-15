@@ -320,8 +320,8 @@ void amanita::semantic_store_character(State *state, InstructionPointer *ip, std
     state->fungespace->put(ip->pos, value);
 }
 
-void amanita::semantic_split(State *, InstructionPointer *ip, std::vector<Action> &) {
-    ip->reflect(); // TODO
+void amanita::semantic_split(State *, InstructionPointer *ip, std::vector<Action> &actions) {
+    actions.emplace_back(ActionType::Split, ip);
 }
 
 void amanita::semantic_stack_under_stack(State *, InstructionPointer *ip, std::vector<Action> &) {
@@ -355,7 +355,7 @@ void amanita::semantic_get_sysinfo(State *state, InstructionPointer *ip, std::ve
     // 0x04: high if o is implemented
     // 0x08: high if = is implemented
     // 0x10: high if unbuffered stdio
-    buf.push_back(0b00000);
+    buf.push_back(0b00001);
 
     // number of bytes per std::int64_t
     buf.push_back(8);
@@ -379,8 +379,8 @@ void amanita::semantic_get_sysinfo(State *state, InstructionPointer *ip, std::ve
     // number of scalars per vector (1 for une, 2 for be, 3 for trefunge)
     buf.push_back(2);
 
-    // TODO: unique ID for current IP
-    buf.push_back(0);
+    // unique ID for current IP
+    buf.push_back(ip->id);
 
     // unique team number for current IP -- always 0, we don't use this
     buf.push_back(0);

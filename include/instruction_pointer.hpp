@@ -8,6 +8,8 @@
 #include <vector>
 
 namespace amanita {
+std::int64_t next_ip_id();
+
 class SemanticStack;
 class State;
 
@@ -17,6 +19,7 @@ public:
     Instruction curr_ins;
     Instruction prev_ins;
 
+    std::int64_t id{next_ip_id()};
     bool alive;
     Vec pos;
     Vec delta;
@@ -27,8 +30,8 @@ public:
     InstructionPointer();
     ~InstructionPointer() = default;
 
-    InstructionPointer(const InstructionPointer &other) = delete;
-    InstructionPointer &operator=(const InstructionPointer &other) = delete;
+    InstructionPointer(const InstructionPointer &other);
+    InstructionPointer &operator=(const InstructionPointer &other) = default;
 
     InstructionPointer(InstructionPointer &&other) noexcept = delete;
     InstructionPointer &operator=(InstructionPointer &&other) noexcept = delete;

@@ -1,4 +1,4 @@
-#include "fingerprints/catseye/roma.hpp"
+#include "fingerprint/catseye/roma.hpp"
 
 #include "instruction_pointer.hpp"
 
