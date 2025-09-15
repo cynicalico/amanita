@@ -5,10 +5,12 @@
 
 #include <pcg_random.hpp>
 
+#include <cstdio>
 #include <filesystem>
 #include <memory>
 #include <random>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 namespace amanita {
@@ -28,6 +30,12 @@ struct State {
         pcg_extras::pcg128_t stream{static_cast<pcg_extras::pcg128_t>(0)};
     } pcg_seed_data;
     pcg64 pcg_gen;
+
+    struct File { // For FILE
+        Vec io_buffer_pos{Vec::ZERO};
+        FILE *f{nullptr};
+    };
+    std::unordered_map<std::int64_t, File> open_files{};
 
     State(std::vector<std::string> args, std::vector<std::filesystem::path> include_paths);
 };

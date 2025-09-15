@@ -3,6 +3,7 @@
 #include "fingerprint/catseye/modu.hpp"
 #include "fingerprint/catseye/null.hpp"
 #include "fingerprint/catseye/roma.hpp"
+#include "fingerprint/rcs/file.hpp"
 
 #include "base_semantics.hpp"
 
@@ -16,6 +17,9 @@ const std::unordered_map<std::int64_t, const Fingerprint &> &fingerprint_registr
             {modu::FINGERPRINT.id, modu::FINGERPRINT},
             {null::FINGERPRINT.id, modu::FINGERPRINT},
             {roma::FINGERPRINT.id, roma::FINGERPRINT},
+
+            // RCS
+            {file::FINGERPRINT.id, file::FINGERPRINT},
     };
     return registry;
 }

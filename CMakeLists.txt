@@ -34,6 +34,7 @@ target_sources(
         PRIVATE
         src/fingerprint/catseye/modu.cpp
         src/fingerprint/catseye/roma.cpp
+        src/fingerprint/rcs/file.cpp
         src/base_semantics.cpp
         src/fingerprint.cpp
         src/fungespace.cpp
@@ -55,6 +56,7 @@ target_sources(
         include/fingerprint/catseye/modu.hpp
         include/fingerprint/catseye/null.hpp
         include/fingerprint/catseye/roma.hpp
+        include/fingerprint/rcs/file.hpp
         include/action.hpp
         include/base_semantics.hpp
         include/fingerprint.hpp
