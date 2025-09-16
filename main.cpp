@@ -1,7 +1,8 @@
+#include "editor.hpp"
 #include "vm.hpp"
 
 #include <fmt/format.h>
-#include "argparse.hpp"
+#include "thirdparty/argparse.hpp"
 
 #include <memory>
 #include <string>
@@ -14,13 +15,18 @@ int main(int argc, char *argv[]) {
     run_command.add_description("Run Funge-98 program");
     run_command.add_argument("program").help("Funge-98 program to run").required();
     run_command.add_argument("-I", "--include")
+            .help("Additional paths to search for `i`")
             .default_value<std::vector<std::string>>({"."})
-            .append()
-            .help("Additional paths to search for `i`");
-    run_command.add_argument("-t", "--time").default_value(false).flag().help("Time execution");
+            .append();
+    run_command.add_argument("-t", "--time").help("Time execution").default_value(false).flag();
     run_command.add_argument("args").help("Arguments passed to program").remaining();
 
+    argparse::ArgumentParser edit_command("edit");
+    edit_command.add_description("Edit Funge-98 program");
+    edit_command.add_argument("-p", "--program").help("Funge-98 program to edit");
+
     program.add_subparser(run_command);
+    program.add_subparser(edit_command);
 
     try {
         program.parse_args(argc, argv);
@@ -60,6 +66,19 @@ int main(int argc, char *argv[]) {
             fmt::println("\nExecution time: {:.2f}ms", (static_cast<double>(t2) - static_cast<double>(t1)) / 1'000'000);
 
         return vm->state->exit_code;
+    }
+
+    if (program.is_subcommand_used("edit")) {
+        std::unique_ptr<amanita::VM> vm;
+        try {
+            std::vector args = {edit_command.get<std::string>("--program")};
+            std::vector include_paths = {std::filesystem::current_path()};
+            vm = std::make_unique<amanita::VM>(args[0], args, include_paths);
+        } catch (std::logic_error &) {
+            vm = std::make_unique<amanita::VM>();
+        }
+
+        return std::make_unique<amanita::Editor>(std::move(vm))->mainloop();
     }
 
     return 0;

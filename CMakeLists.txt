@@ -3,29 +3,11 @@ project(amanita
         VERSION 1.0.0
         DESCRIPTION "Mycology compliant Funge-98 interpreter"
         HOMEPAGE_URL "https://github.com/cynicalico/amanita"
-        LANGUAGES CXX)
+        LANGUAGES C CXX)
 
 if (MSVC)
     set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 endif ()
-
-include(FetchContent)
-
-FetchContent_Declare(
-        fmt
-        GIT_REPOSITORY https://github.com/fmtlib/fmt
-        GIT_TAG 11.2.0
-        GIT_SHALLOW TRUE
-)
-FetchContent_MakeAvailable(fmt)
-
-FetchContent_Declare(
-        pcg
-        GIT_REPOSITORY https://github.com/imneme/pcg-cpp
-        GIT_TAG 428802d1a5634f96bcd0705fab379ff0113bcf13
-        GIT_SHALLOW TRUE
-)
-FetchContent_MakeAvailable(pcg)
 
 add_executable(amanita)
 target_sources(
@@ -36,6 +18,7 @@ target_sources(
         src/fingerprint/catseye/roma.cpp
         src/fingerprint/rcs/file.cpp
         src/base_semantics.cpp
+        src/editor.cpp
         src/fingerprint.cpp
         src/fungespace.cpp
         src/instruction_pointer.cpp
@@ -59,6 +42,7 @@ target_sources(
         include/fingerprint/rcs/file.hpp
         include/action.hpp
         include/base_semantics.hpp
+        include/editor.hpp
         include/fingerprint.hpp
         include/fungespace.hpp
         include/instruction.hpp
@@ -70,24 +54,6 @@ target_sources(
         include/state.hpp
         include/vec.hpp
         include/vm.hpp
-
-        PRIVATE
-        FILE_SET amanita_thirdparty_headers
-        TYPE HEADERS
-        BASE_DIRS
-        thirdparty
-        FILES
-        thirdparty/argparse.hpp
-
-        PRIVATE
-        FILE_SET pcg_headers
-        TYPE HEADERS
-        BASE_DIRS
-        ${pcg_SOURCE_DIR}/include
-        FILES
-        ${pcg_SOURCE_DIR}/include/pcg_extras.hpp
-        ${pcg_SOURCE_DIR}/include/pcg_random.hpp
-        ${pcg_SOURCE_DIR}/include/pcg_uint128.hpp
 )
 
 target_compile_features(amanita PRIVATE cxx_std_23)
@@ -98,4 +64,5 @@ if (MSVC)
     target_compile_options(amanita PRIVATE /utf-8)
 endif ()
 
-target_link_libraries(amanita PRIVATE fmt::fmt)
+add_subdirectory(thirdparty)
+target_link_libraries(amanita PRIVATE amanita_thirdparty)
